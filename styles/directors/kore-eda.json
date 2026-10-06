@@ -1,0 +1,53 @@
+{
+  "id": "kore-eda",
+  "display_name": "Hirokazu Kore-eda",
+  "origin": "director",
+  "attribution": "Hirokazu Kore-eda",
+  "visual_style": "Cinematic, live-action",
+  "era": "2000s-present",
+  "camera": {
+    "moves": ["Static Shot", "Truck Right"],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "medium shots that include the whole room",
+    "height": "seated height, level with the people in frame"
+  },
+  "lens": {
+    "focal_bias": "a 35-50mm lens",
+    "dof": "moderate focus keeping the domestic space readable behind"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": ["daylight through a window", "ordinary household lamps"],
+    "practicals": "the light is whatever the room has, soft and unmodelled"
+  },
+  "palette": {
+    "dominant": ["warm wood", "soft green", "faded blue", "cream"],
+    "contrast": "low",
+    "grade": "gentle and naturalistic"
+  },
+  "composition": {
+    "rules": ["people framed within doorways and around low tables", "everyday clutter left in shot"],
+    "movement_of_subject": "ordinary domestic activity continues while people talk"
+  },
+  "editing": {
+    "avg_shot_len_s": 8.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "kitchen sounds, cicadas, a television in another room, traffic outside",
+    "music": {
+      "instrumentation": "A simple piano figure with light strings",
+      "tempo": "a slow tempo",
+      "dynamics": "entering late and staying quiet under the scene"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera sits at the height of people seated on the floor",
+      "ordinary domestic detail is left visible in the frame"
+    ],
+    "avoid": ["dramatic lighting", "camera movement for its own sake", "empty stylised sets"]
+  },
+  "notes": "Domestic interiors at seated height, available light, long patient takes of ordinary activity."
+}

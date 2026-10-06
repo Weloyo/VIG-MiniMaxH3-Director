@@ -1,0 +1,72 @@
+{
+ "id": "found-footage",
+ "display_name": "Found footage",
+ "origin": "director",
+ "attribution": "",
+ "visual_style": "Cinematic, live-action",
+ "era": "contemporary, camera diegetic",
+ "camera": {
+  "moves": [
+   "Shake Strongly",
+   "Pan Left",
+   "Zoom In",
+   "POV"
+  ],
+  "amplitude": "with large amplitude",
+  "speed": "at fast speed",
+  "shot_scale_bias": "whatever the operator could grab; framing found late",
+  "height": "wherever the camera was held, dropped or mounted"
+ },
+ "lens": {
+  "focal_bias": "a phone-like fixed wide",
+  "dof": "everything sharp, digitally so"
+ },
+ "lighting": {
+  "key_ratio": "low",
+  "sources": [
+   "an on-camera light",
+   "street lamps smeared by auto-exposure"
+  ],
+  "practicals": "auto white balance hunting between sources"
+ },
+ "palette": {
+  "dominant": [
+   "sensor-noise green",
+   "headlight white",
+   "night-mode grey"
+  ],
+  "contrast": "low",
+  "grade": "clipped highlights, lifted blacks, compression artifacts implied"
+ },
+ "composition": {
+  "rules": [
+   "horizon rarely level",
+   "subjects half out of frame until the camera finds them"
+  ],
+  "movement_of_subject": "people react to the camera, block it, wave it away"
+ },
+ "editing": {
+  "avg_shot_len_s": 8.0,
+  "transition_pref": "cut where the recording stops"
+ },
+ "sound": {
+  "ambience_bias": "wind on the mic, handling thumps, breath of the person filming",
+  "music": {
+   "instrumentation": "",
+   "tempo": "",
+   "dynamics": ""
+  }
+ },
+ "prompt_bias": {
+  "must_include": [
+   "the camera exists inside the scene and is handled by someone in it"
+  ],
+  "avoid": [
+   "tripods",
+   "score",
+   "graded colour",
+   "composed framing"
+  ]
+ },
+ "notes": "The camera is a witness, not a narrator."
+}

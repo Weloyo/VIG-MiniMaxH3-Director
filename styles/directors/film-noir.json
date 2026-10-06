@@ -1,0 +1,72 @@
+{
+ "id": "film-noir",
+ "display_name": "Film noir",
+ "origin": "director",
+ "attribution": "",
+ "visual_style": "Cinematic, live-action",
+ "era": "late 1940s crime picture",
+ "camera": {
+  "moves": [
+   "Push In",
+   "Tilt Up",
+   "Static Shot",
+   "Tracking Shot"
+  ],
+  "amplitude": "with small amplitude",
+  "speed": "at slow speed",
+  "shot_scale_bias": "tight singles and low angles; the room looms over the person",
+  "height": "below eye level, looking up through the smoke"
+ },
+ "lens": {
+  "focal_bias": "a 35mm prime",
+  "dof": "deep focus so the shadows stay sharp"
+ },
+ "lighting": {
+  "key_ratio": "very high",
+  "sources": [
+   "one hard key through venetian blinds",
+   "a bare bulb overhead"
+  ],
+  "practicals": "neon spill from the street, a desk lamp cutting one face in half"
+ },
+ "palette": {
+  "dominant": [
+   "ink black",
+   "smoke grey",
+   "sodium amber through glass"
+  ],
+  "contrast": "very high",
+  "grade": "crushed blacks and hot highlights, monochrome in spirit"
+ },
+ "composition": {
+  "rules": [
+   "slatted and barred shadows across faces and walls",
+   "figures silhouetted in doorways"
+  ],
+  "movement_of_subject": "people move slowly out of darkness into a blade of light"
+ },
+ "editing": {
+  "avg_shot_len_s": 6.0,
+  "transition_pref": "hard cut"
+ },
+ "sound": {
+  "ambience_bias": "rain on glass, distant traffic, a clock too loud for the room",
+  "music": {
+   "instrumentation": "A lone tenor saxophone over sparse double bass",
+   "tempo": "a slow tempo",
+   "dynamics": "smoky and low, rising only when someone lies"
+  }
+ },
+ "prompt_bias": {
+  "must_include": [
+   "hard light through blinds throws slatted shadows",
+   "half of every face stays in darkness"
+  ],
+  "avoid": [
+   "soft even lighting",
+   "cheerful colour",
+   "daylight exteriors"
+  ]
+ },
+ "notes": "Shadow is the second character."
+}

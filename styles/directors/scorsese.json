@@ -1,0 +1,73 @@
+{
+  "id": "scorsese",
+  "display_name": "Martin Scorsese",
+  "origin": "director",
+  "attribution": "Martin Scorsese",
+  "visual_style": "Cinematic, live-action",
+  "era": "1970s-present",
+  "camera": {
+    "moves": [
+      "Tracking Shot",
+      "Push In",
+      "Truck Right",
+      "Arc Shot"
+    ],
+    "amplitude": "with large amplitude",
+    "speed": "at fast speed",
+    "shot_scale_bias": "moving medium shots that stay with the subject through a space",
+    "height": "eye level, moving with the walk"
+  },
+  "lens": {
+    "focal_bias": "a 28-40mm lens",
+    "dof": "moderate focus that keeps the passing environment readable"
+  },
+  "lighting": {
+    "key_ratio": "moderate",
+    "sources": [
+      "warm interior practicals",
+      "hard bar and club lighting"
+    ],
+    "practicals": "reds and ambers from lamps and signage spill across skin"
+  },
+  "palette": {
+    "dominant": [
+      "deep red",
+      "warm amber",
+      "smoky brown",
+      "black"
+    ],
+    "contrast": "high",
+    "grade": "warm and rich with saturated reds"
+  },
+  "composition": {
+    "rules": [
+      "the subject leads the frame through a continuous space",
+      "crowded backgrounds full of incidental life"
+    ],
+    "movement_of_subject": "the subject walks steadily forward and the camera keeps exact pace"
+  },
+  "editing": {
+    "avg_shot_len_s": 3.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "overlapping voices, glassware, doors, music bleeding from another room",
+    "music": {
+      "instrumentation": "A driving rock rhythm section with guitar and drums",
+      "tempo": "a fast tempo",
+      "dynamics": "entering at full level and cutting off abruptly"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera moves continuously with the subject through a space",
+      "the background is busy with other people going about their business"
+    ],
+    "avoid": [
+      "static locked-off framing",
+      "empty sterile backgrounds",
+      "cool desaturated colour"
+    ]
+  },
+  "notes": "Propulsive tracking through crowded warm interiors. The camera keeps pace with the subject rather than waiting for them."
+}

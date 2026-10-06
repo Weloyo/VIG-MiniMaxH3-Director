@@ -1,0 +1,53 @@
+{
+  "id": "pixel-art",
+  "display_name": "Pixel-art animation",
+  "origin": "director",
+  "attribution": "",
+  "visual_style": "2D-animated",
+  "era": "1990s-present",
+  "camera": {
+    "moves": ["Pan Right", "Static Shot", "Truck Left"],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "flat side-on framing at a fixed distance",
+    "height": "level with the scene, no perspective change"
+  },
+  "lens": {
+    "focal_bias": "a flat orthographic view",
+    "dof": "everything equally sharp with no blur at any depth"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": ["light baked into the sprites themselves"],
+    "practicals": "shadow is drawn as a distinct darker colour band, never a gradient"
+  },
+  "palette": {
+    "dominant": ["a limited indexed palette of sixteen colours"],
+    "contrast": "high",
+    "grade": "flat saturated blocks with hard boundaries"
+  },
+  "composition": {
+    "rules": ["visible square pixels with hard edges", "dithered gradients instead of smooth blends", "parallax background layers"],
+    "movement_of_subject": "animation steps between a small number of drawn poses"
+  },
+  "editing": {
+    "avg_shot_len_s": 4.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "sparse synthesised ambience with short bright effect blips",
+    "music": {
+      "instrumentation": "A chiptune melody on square and triangle waves",
+      "tempo": "a moderate tempo",
+      "dynamics": "looping evenly with no dynamic change"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "hard-edged square pixels with a limited indexed palette",
+      "dithering stands in for gradients"
+    ],
+    "avoid": ["anti-aliasing", "smooth gradients", "photorealistic detail", "motion blur"]
+  },
+  "notes": "Limited palette, visible pixel grid, stepped animation. Every soft transition is dithered rather than blended."
+}

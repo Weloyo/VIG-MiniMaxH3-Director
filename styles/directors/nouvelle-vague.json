@@ -1,0 +1,71 @@
+{
+ "id": "nouvelle-vague",
+ "display_name": "Nouvelle vague",
+ "origin": "director",
+ "attribution": "",
+ "visual_style": "Cinematic, live-action",
+ "era": "early 1960s Paris on borrowed equipment",
+ "camera": {
+  "moves": [
+   "Tracking Shot",
+   "Pan Left",
+   "Shake Slightly",
+   "Zoom In"
+  ],
+  "amplitude": "with small amplitude",
+  "speed": "at fast speed",
+  "shot_scale_bias": "loose mediums walked alongside the subject through real streets",
+  "height": "eye level, handheld, carried at walking pace"
+ },
+ "lens": {
+  "focal_bias": "a 25mm wide prime",
+  "dof": "everything acceptably sharp, nothing fussy"
+ },
+ "lighting": {
+  "key_ratio": "low",
+  "sources": [
+   "daylight bounced off shop windows",
+   "whatever the cafe already had"
+  ],
+  "practicals": "bare daylight, uncorrected, sometimes blown out"
+ },
+ "palette": {
+  "dominant": [
+   "overcast grey",
+   "newspaper white",
+   "worn coat charcoal"
+  ],
+  "contrast": "low",
+  "grade": "grainy monochrome feel, printed a stop light"
+ },
+ "composition": {
+  "rules": [
+   "framing improvised around passers-by",
+   "the subject may glance at the lens and get away with it"
+  ],
+  "movement_of_subject": "people walk, smoke and talk over each other, unposed"
+ },
+ "editing": {
+  "avg_shot_len_s": 3.0,
+  "transition_pref": "jump cut mid-gesture"
+ },
+ "sound": {
+  "ambience_bias": "street noise recorded with the picture: heels, traffic, cafe clatter",
+  "music": {
+   "instrumentation": "A jazz trio of piano, brushes and upright bass",
+   "tempo": "a fast tempo",
+   "dynamics": "dropping out abruptly and returning mid-phrase"
+  }
+ },
+ "prompt_bias": {
+  "must_include": [
+   "the camera walks with the subject through a real location"
+  ],
+  "avoid": [
+   "tripod formality",
+   "studio lighting",
+   "smooth crane moves"
+  ]
+ },
+ "notes": "Rules are for other people's films."
+}

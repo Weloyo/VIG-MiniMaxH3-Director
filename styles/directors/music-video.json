@@ -1,0 +1,72 @@
+{
+ "id": "music-video",
+ "display_name": "Music video",
+ "origin": "director",
+ "attribution": "",
+ "visual_style": "Cinematic, live-action",
+ "era": "contemporary promo",
+ "camera": {
+  "moves": [
+   "Arc Shot",
+   "Push In",
+   "Shake Slightly",
+   "Roll Clockwise",
+   "Zoom In"
+  ],
+  "amplitude": "with large amplitude",
+  "speed": "at fast speed",
+  "shot_scale_bias": "punchy singles and whip-close details, always moving",
+  "height": "swinging from floor level to overhead within a sequence"
+ },
+ "lens": {
+  "focal_bias": "a 24mm wide open",
+  "dof": "shallow, backgrounds smearing into colour"
+ },
+ "lighting": {
+  "key_ratio": "high",
+  "sources": [
+   "saturated gel washes",
+   "a strobing back light"
+  ],
+  "practicals": "LED strips and lens-aimed beams as set dressing"
+ },
+ "palette": {
+  "dominant": [
+   "magenta",
+   "electric cyan",
+   "deep violet"
+  ],
+  "contrast": "very high",
+  "grade": "saturated and glossy, blacks tinted"
+ },
+ "composition": {
+  "rules": [
+   "the subject is centred and owns the frame",
+   "symmetry broken by a sudden reframe"
+  ],
+  "movement_of_subject": "performance to camera, choreographed to the beat"
+ },
+ "editing": {
+  "avg_shot_len_s": 1.5,
+  "transition_pref": "cut on the beat"
+ },
+ "sound": {
+  "ambience_bias": "the track owns the mix; the world is felt, not heard",
+  "music": {
+   "instrumentation": "A driving electronic beat with a deep synth bass",
+   "tempo": "a fast tempo",
+   "dynamics": "built in risers and dropped hard on the downbeat"
+  }
+ },
+ "prompt_bias": {
+  "must_include": [
+   "the cutting and the camera move to the music's beat"
+  ],
+  "avoid": [
+   "static coverage",
+   "naturalistic murk",
+   "long takes"
+  ]
+ },
+ "notes": "Every frame auditioning for the thumbnail."
+}

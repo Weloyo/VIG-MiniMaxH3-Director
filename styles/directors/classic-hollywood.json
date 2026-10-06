@@ -1,0 +1,72 @@
+{
+ "id": "classic-hollywood",
+ "display_name": "Classic Hollywood",
+ "origin": "director",
+ "attribution": "",
+ "visual_style": "Cinematic, live-action",
+ "era": "1940s-1950s studio picture",
+ "camera": {
+  "moves": [
+   "Push In",
+   "Tracking Shot",
+   "Pan Right",
+   "Static Shot"
+  ],
+  "amplitude": "with small amplitude",
+  "speed": "at slow speed",
+  "shot_scale_bias": "balanced coverage: establishing wide, then medium two-shots and clean close-ups",
+  "height": "chest height on a fluid head"
+ },
+ "lens": {
+  "focal_bias": "a 50mm prime",
+  "dof": "deep focus with the subject crisply separated"
+ },
+ "lighting": {
+  "key_ratio": "high",
+  "sources": [
+   "a warm key through a soft frame",
+   "a rim light carving the hair line"
+  ],
+  "practicals": "motivated table lamps and window slats, all flattering"
+ },
+ "palette": {
+  "dominant": [
+   "warm ivory",
+   "deep mahogany",
+   "silver highlights"
+  ],
+  "contrast": "medium",
+  "grade": "polished and even, nothing accidental"
+ },
+ "composition": {
+  "rules": [
+   "subjects blocked to the thirds and lit to be looked at",
+   "clean eyelines and matched shoulders"
+  ],
+  "movement_of_subject": "actors hit marks; movement is staged, entrances and exits framed"
+ },
+ "editing": {
+  "avg_shot_len_s": 5.0,
+  "transition_pref": "hard cut on action"
+ },
+ "sound": {
+  "ambience_bias": "clean, close dialogue presence over a quiet, tidy room tone",
+  "music": {
+   "instrumentation": "A full string orchestra with muted brass",
+   "tempo": "a stately moderate tempo",
+   "dynamics": "swelling under entrances and settling beneath dialogue"
+  }
+ },
+ "prompt_bias": {
+  "must_include": [
+   "every face is deliberately lit",
+   "the framing is composed, never caught"
+  ],
+  "avoid": [
+   "handheld shake",
+   "available-light murk",
+   "modern lens flares"
+  ]
+ },
+ "notes": "The studio machine at its most confident: staged, lit, upholstered."
+}

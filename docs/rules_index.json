@@ -1,0 +1,254 @@
+{
+  "_comment": "Maps validator violation codes to the verbatim wording of the official guide that the rule enforces. Repair requests quote these instead of paraphrasing, so the model corrects against the source. Quotes are transcribed from docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md and _ref_en.md, which are byte-identical copies of skills/h3-prompt-writing/references/base-en.txt and ref-en.txt.",
+  "_guides": {
+    "base": "docs/VIDEO_PROMPT_WRITING_GUIDE_base_en.md",
+    "ref": "docs/VIDEO_PROMPT_WRITING_GUIDE_ref_en.md"
+  },
+  "rules": {
+    "FIELD_MISSING": {
+      "guide": "base",
+      "section": "2.2 Part Two Contains the Three Core Fields",
+      "quote": "integrated_multimodal_description: [Shot 1] ...\n\noverall_soundscape: ...\n\nnon_diegetic_music: ..."
+    },
+    "FIELD_ORDER": {
+      "guide": "ref",
+      "section": "1. Overall Structure",
+      "quote": "A complete rewrite output consists of six sections in the following order: subject_definitions, summary, retention_analysis, detailed_description, overall_soundscape, non_diegetic_music."
+    },
+    "INSTRUCTION_MISSING": {
+      "guide": "base",
+      "section": "2.1 Part One Is the Instruction",
+      "quote": "The instruction must be the first line of the final prompt, followed by one blank line before the core fields."
+    },
+    "INSTRUCTION_UNEXPECTED": {
+      "guide": "base",
+      "section": "2.1 Part One Is the Instruction",
+      "quote": "T2VA has no image-alignment instruction and begins directly with the three core fields."
+    },
+    "INSTRUCTION_MISMATCH": {
+      "guide": "base",
+      "section": "2.1 Part One Is the Instruction",
+      "quote": "I2VA always uses: For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced."
+    },
+    "INSTRUCTION_DURATION": {
+      "guide": "base",
+      "section": "2.1 Part One Is the Instruction",
+      "quote": "Here, N is the index of the actual final shot, and S.SS is the effective video duration formatted to exactly two decimal places."
+    },
+    "INSTRUCTION_SPACING": {
+      "guide": "base",
+      "section": "2.1 Part One Is the Instruction",
+      "quote": "The instruction must be the first line of the final prompt, followed by one blank line before the core fields."
+    },
+    "SHOT_MISSING": {
+      "guide": "base",
+      "section": "4.1 Develop the Multimodal Description Along the Timeline",
+      "quote": "At the beginning of [Shot 1], state the overall style and initial composition."
+    },
+    "SHOT_FIRST_NOT_ONE": {
+      "guide": "ref",
+      "section": "5.1 Basic Format",
+      "quote": "[Shot 1] marks the opening shot and has no timestamp. Later shots use [Shot N] At MM:SS.mmm, ... to mark cut times."
+    },
+    "SHOT_SEQUENCE": {
+      "guide": "base",
+      "section": "4.2 Shots and Cuts",
+      "quote": "Do not add a timestamp to the first shot. Use sequential shot numbers for later shots, and begin each one with a strictly increasing cut time that falls within the video duration."
+    },
+    "SHOT1_HAS_TIMESTAMP": {
+      "guide": "base",
+      "section": "4.2 Shots and Cuts",
+      "quote": "Do not add a timestamp to the first shot."
+    },
+    "SHOT_TIMESTAMP_MISSING": {
+      "guide": "base",
+      "section": "4.2 Shots and Cuts",
+      "quote": "Use sequential shot numbers for later shots, and begin each one with a strictly increasing cut time that falls within the video duration: [Shot 2] At 00:03.500, the camera cuts to..."
+    },
+    "TIMESTAMP_FORMAT": {
+      "guide": "ref",
+      "section": "5.1 Basic Format",
+      "quote": "Later shots use [Shot N] At MM:SS.mmm, ... to mark cut times."
+    },
+    "TIMESTAMP_NOT_INCREASING": {
+      "guide": "base",
+      "section": "4.2 Shots and Cuts",
+      "quote": "begin each one with a strictly increasing cut time that falls within the video duration"
+    },
+    "TIMESTAMP_OUT_OF_RANGE": {
+      "guide": "base",
+      "section": "4.2 Shots and Cuts",
+      "quote": "begin each one with a strictly increasing cut time that falls within the video duration"
+    },
+    "CAMERA_LABEL_STACKED": {
+      "guide": "base",
+      "section": "4.3 Camera Motion: Motion Type + Amplitude + Speed",
+      "quote": "Camera motion should be written as a natural English action within the shot, rather than stacked as separate labels at the end of a sentence: The camera pushes in with small amplitude at slow speed toward the folded letter in her hands."
+    },
+    "CAMERA_MODIFIER_ORPHAN": {
+      "guide": "base",
+      "section": "4.3 Camera Motion: Motion Type + Amplitude + Speed",
+      "quote": "A complete camera-motion expression has three dimensions: the motion type defines how the camera moves, amplitude defines the range of compositional change, and speed defines the pacing of that change."
+    },
+    "CAMERA_AMPLITUDE_VOCAB": {
+      "guide": "base",
+      "section": "4.3 Camera Motion: Motion Type + Amplitude + Speed",
+      "quote": "Amplitude: with small amplitude (small-range change), with large amplitude (large-range change). Add amplitude and speed only when they are meaningful; medium amplitude and normal speed are usually omitted."
+    },
+    "CAMERA_SPEED_VOCAB": {
+      "guide": "base",
+      "section": "4.3 Camera Motion: Motion Type + Amplitude + Speed",
+      "quote": "Speed: at slow speed (slow movement), at fast speed (fast movement). Add amplitude and speed only when they are meaningful; medium amplitude and normal speed are usually omitted."
+    },
+    "DIALOGUE_TAGS_UNBALANCED": {
+      "guide": "base",
+      "section": "4.4 Speakers, Dialogue, and Singing",
+      "quote": "Inside <d>, include only the language tag and the actual user-provided spoken content."
+    },
+    "DIALOGUE_LANGUAGE_TAG": {
+      "guide": "base",
+      "section": "4.4 Speakers, Dialogue, and Singing",
+      "quote": "The young woman with a quiet, breathy voice (S1) says: <d>[English] I get off at the next station.</d>"
+    },
+    "DIALOGUE_LANGUAGE_UNKNOWN": {
+      "guide": "base",
+      "section": "4.4 Speakers, Dialogue, and Singing",
+      "quote": "Inside <d>, include only the language tag and the actual user-provided spoken content."
+    },
+    "DIALOGUE_ID_INSIDE": {
+      "guide": "base",
+      "section": "4.4 Speakers, Dialogue, and Singing",
+      "quote": "Place the speaker's identifying phrase, ID, action, and delivery outside <d>. Inside <d>, include only the language tag and the actual user-provided spoken content."
+    },
+    "DIALOGUE_WRAPPED_IN_QUOTES": {
+      "guide": "base",
+      "section": "4.5 On-Screen Text",
+      "quote": "Place any banner, sign, label, subtitle, or neon text that is actually visible on screen in English double quotation marks. Inside <d>, include only the language tag and the actual user-provided spoken content."
+    },
+    "DIALOGUE_TEXT_ALTERED": {
+      "guide": "base",
+      "section": "4.4 Speakers, Dialogue, and Singing",
+      "quote": "Preserve every original word and punctuation mark verbatim; do not translate or rewrite them."
+    },
+    "VOICEOVER_LIPS_MISSING": {
+      "guide": "base",
+      "section": "4.4 Speakers, Dialogue, and Singing",
+      "quote": "For voiceover, use the exact phrase says in an off-screen voiceover. Immediately after every voiceover <d> block, state that the corresponding on-screen character's lips remain closed."
+    },
+    "SPEAKER_ID_MISSING": {
+      "guide": "base",
+      "section": "4.4 Speakers, Dialogue, and Singing",
+      "quote": "Subjects who speak, sing, or produce an off-screen human voice use stable IDs such as (S1) and (S2). ... characters who never vocalize receive no speaker ID."
+    },
+    "SPEAKER_ID_SEQUENCE": {
+      "guide": "ref",
+      "section": "5.4 Speakers, Audio Sources, and Dialogue",
+      "quote": "Assign (Sx) once according to the order of actual vocal events in the target video. Reuse the corresponding ID at every actual vocal event in detailed_description."
+    },
+    "LABEL_OUT_OF_RANGE": {
+      "guide": "ref",
+      "section": "2. Reference Labels and Definitions",
+      "quote": "Once a reference label is assigned to a piece of content, it keeps the same meaning across subject_definitions, summary, retention_analysis, detailed_description, and the audio sections."
+    },
+    "SOUNDSCAPE_LENGTH": {
+      "guide": "base",
+      "section": "4.6 overall_soundscape",
+      "quote": "Use 1-4 English sentences in one continuous paragraph to summarize the ambient sound, physical action sounds, and non-verbal human sounds across the full video."
+    },
+    "SOUNDSCAPE_HAS_DIALOGUE": {
+      "guide": "base",
+      "section": "4.6 overall_soundscape",
+      "quote": "Dialogue, singing, and diegetic music already belong in the multimodal description and should not be repeated here."
+    },
+    "MUSIC_LENGTH": {
+      "guide": "base",
+      "section": "4.7 non_diegetic_music",
+      "quote": "Use 1-3 English sentences to describe background music that the characters cannot hear and only the audience can hear."
+    },
+    "MUSIC_HAS_DIALOGUE": {
+      "guide": "ref",
+      "section": "6. overall_soundscape and non_diegetic_music",
+      "quote": "Write complete dialogue and lyrics only inside <d> in detailed_description; do not repeat them in these two sections."
+    },
+    "MUSIC_ABSTRACT_MOOD": {
+      "guide": "base",
+      "section": "4.7 non_diegetic_music",
+      "quote": "Focus on instrumentation, speed, rhythm, and dynamic changes; do not use abstract mood words or explain the emotional function of the score."
+    },
+    "BODY_NOT_ENGLISH": {
+      "guide": "ref",
+      "section": "Preamble",
+      "quote": "Write all six rewrite sections in English. Preserve the original language only for dialogue and lyrics inside <d> and for text visibly present in the scene."
+    },
+    "SUMMARY_PREFIX_MISSING": {
+      "guide": "ref",
+      "section": "3. summary",
+      "quote": "This section uses one short English paragraph to summarize the target video and its reference relationships. It begins with a square-bracketed task-type prefix."
+    },
+    "SUMMARY_TASK_TYPE": {
+      "guide": "ref",
+      "section": "3. summary",
+      "quote": "Choose task types according to the actual role each reference asset plays in the target video: keyframe completion, reference generation, video editing, video continuation, audio reuse, audio reference."
+    },
+    "SUMMARY_TASK_TYPE_REPEATED": {
+      "guide": "ref",
+      "section": "3. summary",
+      "quote": "When a task satisfies multiple relationships, combine the task types with + and do not repeat a type."
+    },
+    "SUMMARY_NEW_LABEL": {
+      "guide": "ref",
+      "section": "3. summary",
+      "quote": "The summary uses the previously defined <Subject N>, <Picture N>, <Video N>, and <Audio N> labels to describe the main subjects, shot flow, and roles of the reference assets. Do not introduce new reference labels in this section."
+    },
+    "RETENTION_NEW_LABEL": {
+      "guide": "ref",
+      "section": "4. retention_analysis",
+      "quote": "Use one line for each reference label and preserve the meaning established in subject_definitions."
+    },
+    "RETENTION_HAS_SPEAKER_ID": {
+      "guide": "ref",
+      "section": "5.4 Speakers, Audio Sources, and Dialogue",
+      "quote": "Do not write (Sx) in retention_analysis."
+    },
+    "RETENTION_MARKER_INVALID": {
+      "guide": "ref",
+      "section": "4. retention_analysis",
+      "quote": "<Subject N>, <Picture N>, and <Video N> use the following relationship markers. These markers are fixed English values in the output format: fully_preserved, partially_preserved, attribute_transfer, weak_reference. <Audio N> uses: fully_copy, partially_copy, reference, weak_reference."
+    },
+    "REF_STYLE_OPENING_MISSING": {
+      "guide": "ref",
+      "section": "5.2 Full-Reference Mode Differences",
+      "quote": "Style opening: established in one or two English sentences before [Shot 1]."
+    },
+    "REF_DESCRIPTION_SHORT": {
+      "guide": "ref",
+      "section": "5.2 Full-Reference Mode Differences",
+      "quote": "For generation tasks, detailed_description is normally 350-500 English words. Dialogue-dense content prioritizes fitting the complete spoken timeline rather than mechanically reaching a word count."
+    },
+    "REF_DESCRIPTION_LONG": {
+      "guide": "ref",
+      "section": "5.2 Full-Reference Mode Differences",
+      "quote": "For generation tasks, detailed_description is normally 350-500 English words. Dialogue-dense content prioritizes fitting the complete spoken timeline rather than mechanically reaching a word count."
+    },
+    "REF_LABEL_UNDEFINED": {
+      "guide": "ref",
+      "section": "2. Reference Labels and Definitions",
+      "quote": "subject_definitions defines each piece of referenced content that must be tracked separately later, such as a person, an environment, a source video's structure, or an audio track. Give each item its own line and explain what its label denotes, its reference role, and the main features to follow."
+    },
+    "TIMESTAMP_WITHOUT_SHOT": {
+      "guide": "base",
+      "section": "4.2 Shots and Cuts",
+      "quote": "Do not add a timestamp to the first shot. Use sequential shot numbers for later shots, and begin each one with a strictly increasing cut time that falls within the video duration:\n\n[Shot 2] At 00:03.500, the camera cuts to..."
+    },
+    "SOUNDSCAPE_REPEATS_MUSIC": {
+      "guide": "base",
+      "section": "4.6 overall_soundscape",
+      "quote": "Dialogue, singing, and diegetic music already belong in the multimodal description and should not be repeated here."
+    },
+    "RETENTION_LABEL_MISSING": {
+      "guide": "ref",
+      "section": "4. retention_analysis",
+      "quote": "This section describes how each piece of referenced content is preserved, transferred, copied, or referenced in the target video. Use one line for each reference label and preserve the meaning established in subject_definitions."
+    }
+  }
+}

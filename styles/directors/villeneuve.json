@@ -1,0 +1,71 @@
+{
+  "id": "villeneuve",
+  "display_name": "Denis Villeneuve",
+  "origin": "director",
+  "attribution": "Denis Villeneuve",
+  "visual_style": "Cinematic, live-action",
+  "era": "2010s-present",
+  "camera": {
+    "moves": [
+      "Push In",
+      "Pedestal Up",
+      "Static Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "extreme wide shots that dwarf the figure",
+    "height": "slightly low, looking up at the structure"
+  },
+  "lens": {
+    "focal_bias": "an anamorphic wide lens",
+    "dof": "deep focus with a soft atmospheric falloff into haze"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": [
+      "a single directional source behind haze",
+      "vast ambient skylight"
+    ],
+    "practicals": "figures read as silhouettes against a brighter field"
+  },
+  "palette": {
+    "dominant": [
+      "dust orange",
+      "concrete grey",
+      "cold slate blue"
+    ],
+    "contrast": "high",
+    "grade": "near-monochrome, one dominant hue per scene"
+  },
+  "composition": {
+    "rules": [
+      "a lone figure against monumental architecture",
+      "a very high horizon or none at all"
+    ],
+    "movement_of_subject": "the subject walks slowly into the depth of the frame"
+  },
+  "editing": {
+    "avg_shot_len_s": 8.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "wind across open space, low infrasonic pressure, sparse distant impacts",
+    "music": {
+      "instrumentation": "A low brass drone with sub-bass swells",
+      "tempo": "a very slow tempo",
+      "dynamics": "building in volume over a long span before cutting to silence"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "haze, dust or fog separates the planes of the image",
+      "the human figure is small against the scale of the space"
+    ],
+    "avoid": [
+      "busy cutting",
+      "warm domestic lighting",
+      "handheld camera"
+    ]
+  },
+  "notes": "Monumental scale, atmospheric haze, single-hue grading. Silence and space do the work."
+}

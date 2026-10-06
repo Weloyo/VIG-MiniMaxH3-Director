@@ -1,0 +1,73 @@
+{
+  "id": "fincher",
+  "display_name": "David Fincher",
+  "origin": "director",
+  "attribution": "David Fincher",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-present",
+  "camera": {
+    "moves": [
+      "Push In",
+      "Static Shot",
+      "Truck Right"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "precise medium shots with generous headroom control",
+    "height": "eye level, locked"
+  },
+  "lens": {
+    "focal_bias": "a 40-75mm lens",
+    "dof": "a moderately shallow focus with a clean falloff"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": [
+      "hard sourced key from one side",
+      "overhead office fluorescents"
+    ],
+    "practicals": "shadows fall deep and stay clean, with no fill bounce"
+  },
+  "palette": {
+    "dominant": [
+      "desaturated green",
+      "sodium amber",
+      "charcoal",
+      "cold black"
+    ],
+    "contrast": "high",
+    "grade": "crushed blacks with a green-amber split"
+  },
+  "composition": {
+    "rules": [
+      "exact centre or exact thirds, never approximate",
+      "clean uncluttered backgrounds"
+    ],
+    "movement_of_subject": "actors move minimally; stillness is the default"
+  },
+  "editing": {
+    "avg_shot_len_s": 4.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "low electrical hum, ventilation, distant traffic behind glass",
+    "music": {
+      "instrumentation": "A low synthesiser drone with a repeating muted pulse",
+      "tempo": "a slow tempo",
+      "dynamics": "rising only in volume, never in tempo"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera holds absolutely steady with no handheld drift",
+      "the background is clean and free of incidental clutter"
+    ],
+    "avoid": [
+      "lens flare",
+      "handheld camera",
+      "warm golden light",
+      "busy backgrounds"
+    ]
+  },
+  "notes": "Locked-off precision and desaturated cold colour. Movement is motivated and slow; nothing in frame is accidental."
+}

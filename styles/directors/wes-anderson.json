@@ -1,0 +1,74 @@
+{
+  "id": "wes-anderson",
+  "display_name": "Wes Anderson",
+  "origin": "director",
+  "attribution": "Wes Anderson",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-present",
+  "camera": {
+    "moves": [
+      "Pan Left",
+      "Pan Right",
+      "Truck Right",
+      "Static Shot"
+    ],
+    "amplitude": "with large amplitude",
+    "speed": "at fast speed",
+    "shot_scale_bias": "flat frontal framing, planimetric",
+    "height": "exact eye level, perpendicular to the wall behind"
+  },
+  "lens": {
+    "focal_bias": "a wide 27-40mm lens",
+    "dof": "deep focus keeping every plane sharp"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "even soft frontal light"
+    ],
+    "practicals": "shadows are minimal so surfaces read as flat colour fields"
+  },
+  "palette": {
+    "dominant": [
+      "mustard yellow",
+      "dusty pink",
+      "pale mint",
+      "cherry red"
+    ],
+    "contrast": "moderate",
+    "grade": "warm pastel, evenly saturated across the frame"
+  },
+  "composition": {
+    "rules": [
+      "perfect bilateral symmetry",
+      "subject dead centre facing the lens",
+      "objects arranged in tidy rows"
+    ],
+    "movement_of_subject": "subjects move in straight lines, parallel or perpendicular to the frame edge"
+  },
+  "editing": {
+    "avg_shot_len_s": 2.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "clean quiet interiors with crisp isolated object sounds",
+    "music": {
+      "instrumentation": "A plucked acoustic guitar with tambourine and a simple bass line",
+      "tempo": "a moderate tempo",
+      "dynamics": "steady and unvarying from start to finish"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the subject is centred and faces the lens directly",
+      "the background wall sits parallel to the frame"
+    ],
+    "avoid": [
+      "handheld camera",
+      "diagonal compositions",
+      "shallow depth of field",
+      "moody shadow"
+    ]
+  },
+  "notes": "Frontal symmetry, flat pastel colour, deliberate whip pans. Every element is squared to the frame."
+}

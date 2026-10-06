@@ -1,0 +1,53 @@
+{
+  "id": "bergman",
+  "display_name": "Ingmar Bergman",
+  "origin": "director",
+  "attribution": "Ingmar Bergman",
+  "visual_style": "Cinematic, live-action",
+  "era": "1950s-1980s",
+  "camera": {
+    "moves": ["Static Shot", "Push In"],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "tight close-ups that fill the frame with a face",
+    "height": "eye level, directly frontal"
+  },
+  "lens": {
+    "focal_bias": "a 75-100mm lens",
+    "dof": "shallow focus that drops the background away entirely"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": ["a soft key from one side", "a plain unlit background"],
+    "practicals": "the face is modelled carefully and everything behind it goes dark"
+  },
+  "palette": {
+    "dominant": ["black", "white", "pale skin", "grey"],
+    "contrast": "high",
+    "grade": "monochrome or near-monochrome"
+  },
+  "composition": {
+    "rules": ["a single face held in close-up for a long time", "two faces overlapping in the same frame"],
+    "movement_of_subject": "the performance is in the eyes and mouth; the body barely moves"
+  },
+  "editing": {
+    "avg_shot_len_s": 10.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "near silence, a ticking clock, wind at a window",
+    "music": {
+      "instrumentation": "A solo cello line",
+      "tempo": "a very slow tempo",
+      "dynamics": "entering only in the gaps between speech"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the face fills the frame and is held without cutting away",
+      "the background is dark and featureless"
+    ],
+    "avoid": ["busy backgrounds", "wide establishing shots", "camera movement"]
+  },
+  "notes": "The face is the location. Long-lens close-ups, dark ground, near silence."
+}

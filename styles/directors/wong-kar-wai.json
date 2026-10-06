@@ -1,0 +1,75 @@
+{
+  "id": "wong-kar-wai",
+  "display_name": "Wong Kar-wai",
+  "origin": "director",
+  "attribution": "Wong Kar-wai",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-2000s",
+  "camera": {
+    "moves": [
+      "Truck Left",
+      "Truck Right",
+      "Shake Slightly",
+      "Static Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "tight framing with the subject pressed to one edge",
+    "height": "just below eye level"
+  },
+  "lens": {
+    "focal_bias": "a long 85-135mm lens",
+    "dof": "very shallow focus, with foreground objects blurring across the lens"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": [
+      "neon signage",
+      "bare tungsten bulbs",
+      "light through slatted blinds"
+    ],
+    "practicals": "coloured practicals sit in frame and smear when the camera moves"
+  },
+  "palette": {
+    "dominant": [
+      "saturated crimson",
+      "acid green",
+      "amber",
+      "deep teal shadow"
+    ],
+    "contrast": "high",
+    "grade": "warm and heavily saturated"
+  },
+  "composition": {
+    "rules": [
+      "obstructed foregrounds",
+      "reflections in glass and mirrors",
+      "frames within frames"
+    ],
+    "movement_of_subject": "figures pass through the frame while the camera stays on what they left behind"
+  },
+  "editing": {
+    "avg_shot_len_s": 3.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "close interior hum, rain on awnings, distant street traffic",
+    "music": {
+      "instrumentation": "A looping lounge waltz on strings and vibraphone",
+      "tempo": "a slow tempo",
+      "dynamics": "repeating without resolving, dropping out abruptly at the cut"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the subject is partly hidden behind a doorway, a pillar or a passing body",
+      "coloured light falls across the face in bands"
+    ],
+    "avoid": [
+      "clean symmetrical framing",
+      "flat daylight",
+      "unobstructed wide shots"
+    ]
+  },
+  "notes": "Long lens, cramped interiors, saturated practical colour. The camera watches from behind something rather than facing the subject squarely."
+}

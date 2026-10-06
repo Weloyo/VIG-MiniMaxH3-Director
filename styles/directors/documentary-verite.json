@@ -1,0 +1,73 @@
+{
+  "id": "documentary-verite",
+  "display_name": "Observational documentary",
+  "origin": "director",
+  "attribution": "",
+  "visual_style": "Cinematic, live-action",
+  "era": "1960s-present",
+  "camera": {
+    "moves": [
+      "Shake Slightly",
+      "Pan Right",
+      "Zoom In",
+      "Tracking Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "medium shots taken from wherever the operator could stand",
+    "height": "shoulder height, handheld"
+  },
+  "lens": {
+    "focal_bias": "a 24-70mm zoom",
+    "dof": "moderate focus, adjusted visibly during the shot"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "whatever light is already in the room",
+      "daylight through windows"
+    ],
+    "practicals": "mixed colour temperatures are left uncorrected"
+  },
+  "palette": {
+    "dominant": [
+      "neutral daylight",
+      "tungsten amber",
+      "fluorescent green"
+    ],
+    "contrast": "low",
+    "grade": "untreated and true to the location"
+  },
+  "composition": {
+    "rules": [
+      "the subject is caught rather than posed",
+      "foreground obstructions are not avoided"
+    ],
+    "movement_of_subject": "the subject ignores the camera and continues what they were doing"
+  },
+  "editing": {
+    "avg_shot_len_s": 6.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "unfiltered location sound with off-camera voices and handling noise",
+    "music": {
+      "instrumentation": "",
+      "tempo": "",
+      "dynamics": ""
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera observes from a distance without the subject acknowledging it",
+      "the light is whatever the location already had"
+    ],
+    "avoid": [
+      "designed lighting",
+      "posed framing",
+      "score",
+      "colour grading"
+    ]
+  },
+  "notes": "Handheld observation with available light and no score. The camera reacts to events rather than staging them."
+}

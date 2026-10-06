@@ -1,0 +1,72 @@
+{
+  "id": "ozu",
+  "display_name": "Yasujiro Ozu",
+  "origin": "director",
+  "attribution": "Yasujiro Ozu",
+  "visual_style": "Cinematic, live-action",
+  "era": "1930s-1960s",
+  "camera": {
+    "moves": [
+      "Static Shot"
+    ],
+    "amplitude": null,
+    "speed": null,
+    "shot_scale_bias": "frontal medium shots at a fixed distance",
+    "height": "very low, roughly a metre from the floor"
+  },
+  "lens": {
+    "focal_bias": "a 50mm lens",
+    "dof": "moderate focus with the room behind still readable"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "flat daylight through paper screens",
+      "domestic ceiling lamps"
+    ],
+    "practicals": "light is even across the whole room with no dramatic modelling"
+  },
+  "palette": {
+    "dominant": [
+      "tatami straw",
+      "warm wood brown",
+      "off-white paper",
+      "muted indigo"
+    ],
+    "contrast": "low",
+    "grade": "gentle and neutral"
+  },
+  "composition": {
+    "rules": [
+      "the camera sits at floor height looking straight down a room",
+      "doorways and corridors frame the shot in receding rectangles",
+      "objects are placed with deliberate empty space around them"
+    ],
+    "movement_of_subject": "people enter, sit, and leave the frame; the camera never follows"
+  },
+  "editing": {
+    "avg_shot_len_s": 9.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "household quiet, a distant train, cicadas, sliding doors",
+    "music": {
+      "instrumentation": "A light plucked string melody",
+      "tempo": "a moderate tempo",
+      "dynamics": "unchanging, entering between scenes rather than under them"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera is fixed at a low height and does not move at all",
+      "the frame looks straight down the room, square to the back wall"
+    ],
+    "avoid": [
+      "camera movement",
+      "high angles",
+      "shallow depth of field",
+      "dramatic shadow"
+    ]
+  },
+  "notes": "A fixed low camera that never moves. Composition is frontal and architectural, and the frame is often held before and after anyone occupies it."
+}

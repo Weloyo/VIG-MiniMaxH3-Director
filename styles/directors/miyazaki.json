@@ -1,0 +1,75 @@
+{
+  "id": "miyazaki",
+  "display_name": "Hayao Miyazaki",
+  "origin": "director",
+  "attribution": "Hayao Miyazaki",
+  "visual_style": "2D-animated",
+  "era": "1980s-present",
+  "camera": {
+    "moves": [
+      "Pan Right",
+      "Tilt Up",
+      "Static Shot",
+      "Truck Left"
+    ],
+    "amplitude": "with large amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "wide establishing shots of landscape",
+    "height": "eye level, occasionally low among grass"
+  },
+  "lens": {
+    "focal_bias": "a flat 2D-animated perspective",
+    "dof": "everything painted equally sharp, with depth carried by layered backgrounds"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "broad daylight",
+      "sunlight filtering through leaves"
+    ],
+    "practicals": "light is painted as soft gradients rather than cast shadows"
+  },
+  "palette": {
+    "dominant": [
+      "sky blue",
+      "grass green",
+      "warm cream",
+      "terracotta"
+    ],
+    "contrast": "moderate",
+    "grade": "clean saturated watercolour tones"
+  },
+  "composition": {
+    "rules": [
+      "wide horizons with tall skies",
+      "hand-painted background detail",
+      "figures placed low in frame"
+    ],
+    "movement_of_subject": "characters run, climb and lean with full-body weight"
+  },
+  "editing": {
+    "avg_shot_len_s": 5.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "wind through grass, birdsong, distant water, rustling cloth",
+    "music": {
+      "instrumentation": "A solo piano melody joined by warm strings",
+      "tempo": "a moderate tempo",
+      "dynamics": "swelling gently as the landscape opens, then thinning back to piano"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "hand-drawn 2D animation with painted backgrounds",
+      "wind visibly moves grass, cloth and hair"
+    ],
+    "avoid": [
+      "photorealism",
+      "3D CG rendering",
+      "harsh contrast",
+      "desaturated colour"
+    ]
+  },
+  "notes": "Hand-drawn 2D with painted backgrounds and generous skies. Wind and weight carry the animation; there are quiet beats with no action at all."
+}

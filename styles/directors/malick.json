@@ -1,0 +1,73 @@
+{
+  "id": "malick",
+  "display_name": "Terrence Malick",
+  "origin": "director",
+  "attribution": "Terrence Malick",
+  "visual_style": "Cinematic, live-action",
+  "era": "1970s-present",
+  "camera": {
+    "moves": [
+      "Truck Left",
+      "Tilt Up",
+      "Tracking Shot",
+      "Shake Slightly"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "close handheld shots that drift around the subject",
+    "height": "low, moving through grass and around bodies"
+  },
+  "lens": {
+    "focal_bias": "a very wide 12-21mm lens held close to the subject",
+    "dof": "deep focus with the sky and horizon always present behind"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "low sun at magic hour",
+      "backlight through leaves and hair"
+    ],
+    "practicals": "the sun sits in or near the frame and flares across the lens"
+  },
+  "palette": {
+    "dominant": [
+      "gold",
+      "wheat",
+      "pale sky blue",
+      "deep green"
+    ],
+    "contrast": "moderate",
+    "grade": "warm and luminous with lifted shadows"
+  },
+  "composition": {
+    "rules": [
+      "a very low horizon with a large sky",
+      "hands and grass in the near foreground"
+    ],
+    "movement_of_subject": "people wander in and out of frame while the camera drifts past them"
+  },
+  "editing": {
+    "avg_shot_len_s": 3.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "wind, insects, water, cloth and grass at close range",
+    "music": {
+      "instrumentation": "Sustained orchestral strings with a slow rising figure",
+      "tempo": "a slow tempo",
+      "dynamics": "swelling continuously without arriving at a resolution"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera drifts continuously and never locks off",
+      "low sun flares directly into the lens"
+    ],
+    "avoid": [
+      "locked-off tripod shots",
+      "hard artificial light",
+      "symmetrical framing"
+    ]
+  },
+  "notes": "Wide lens held close, endless drifting movement, natural low sun. The camera behaves like a wandering observer rather than a stationed one."
+}

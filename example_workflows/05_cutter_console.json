@@ -1,0 +1,710 @@
+{
+ "id": "00000000-0000-0000-0000-000000000000",
+ "revision": 0,
+ "last_node_id": 11,
+ "last_link_id": 9,
+ "nodes": [
+  {
+   "id": 9,
+   "type": "MarkdownNote",
+   "pos": [
+    40,
+    100
+   ],
+   "size": [
+    500,
+    860
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "properties": {},
+   "title": "Read me first",
+   "widgets_values": [
+    "## 05 · The Cutter console\n\nOne node is the whole studio. **VIG H3 Cutter** is a timeline of clips, and\nevery clip is worked on its own: write its *script* in your own words (any\nlanguage), pick a style and a camera, attach references, press **Process with\nagent** — the writer turns the script into a format-valid H3 prompt — then\n**Generate segment**. The film joins itself from the clips, and editing one\nclip re-renders only that clip and the ones that continue it.\n\n**Models.** Pick the files your install has in the loaders: the base H3\ncheckpoint (fl2va) goes to `model` and serves T2VA/I2VA/FL2VA/L2VA; the ref2va\ncheckpoint goes to `ref_model` and serves REF2VA clips. Plus the H3 text encoder\nand the video and audio VAEs.\n\n**Continuing a clip.** A clip can carry the last frames and sound of the clip\nbefore it, so the cut plays as one recording. Drag the gold bands on the clip's\nfilm strip to choose how much is carried and where.\n\n**Projects.** Press **New project** in the header and choose a folder: every\ntake, film, prompt and the board itself are kept there, readable without this\nextension. Without a project the console works from the render cache only.\n\nThe canvas is set by the shape and MP pills over the clip player. Wire an Empty\nLatent Image into `latent_image` and its size takes over (example 06)."
+   ]
+  },
+  {
+   "id": 1,
+   "type": "UNETLoader",
+   "pos": [
+    600,
+    120
+   ],
+   "size": [
+    300,
+    332
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "unet_name",
+     "name": "unet_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "unet_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "weight_dtype",
+     "name": "weight_dtype",
+     "type": "COMBO",
+     "widget": {
+      "name": "weight_dtype"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "MODEL",
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      1
+     ]
+    }
+   ],
+   "properties": {
+    "cnr_id": "comfy-core",
+    "ver": "0.32.0",
+    "Node name for S&R": "UNETLoader",
+    "models": [
+     {
+      "name": "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+      "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+      "directory": "diffusion_models"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+    "default"
+   ]
+  },
+  {
+   "id": 2,
+   "type": "CLIPLoader",
+   "pos": [
+    600,
+    240
+   ],
+   "size": [
+    300,
+    356
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "clip_name",
+     "name": "clip_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "clip_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "type",
+     "name": "type",
+     "type": "COMBO",
+     "widget": {
+      "name": "type"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "device",
+     "name": "device",
+     "shape": 7,
+     "type": "COMBO",
+     "widget": {
+      "name": "device"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "CLIP",
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      2
+     ]
+    }
+   ],
+   "properties": {
+    "cnr_id": "comfy-core",
+    "ver": "0.32.0",
+    "Node name for S&R": "CLIPLoader",
+    "models": [
+     {
+      "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "directory": "text_encoders"
+     }
+    ]
+   },
+   "widgets_values": [
+    "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+    "minimax",
+    "default"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "VAELoader",
+   "pos": [
+    600,
+    380
+   ],
+   "size": [
+    300,
+    308
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae_name",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      3
+     ]
+    }
+   ],
+   "properties": {
+    "cnr_id": "comfy-core",
+    "ver": "0.32.0",
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_video_vae_fp16.safetensors",
+      "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_video_vae_fp16.safetensors"
+   ]
+  },
+  {
+   "id": 4,
+   "type": "VAELoader",
+   "pos": [
+    600,
+    470
+   ],
+   "size": [
+    300,
+    308
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "vae_name",
+     "name": "vae_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "vae_name"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VAE",
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      4
+     ]
+    }
+   ],
+   "properties": {
+    "cnr_id": "comfy-core",
+    "ver": "0.32.0",
+    "Node name for S&R": "VAELoader",
+    "models": [
+     {
+      "name": "minimax_h3_audio_vae_fp32.safetensors",
+      "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors",
+      "directory": "vae"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_audio_vae_fp32.safetensors"
+   ]
+  },
+  {
+   "id": 6,
+   "type": "VigH3Cutter",
+   "pos": [
+    1030,
+    100
+   ],
+   "size": [
+    1040,
+    980
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "model",
+     "name": "model",
+     "type": "MODEL",
+     "link": 1
+    },
+    {
+     "name": "ref_model",
+     "type": "MODEL",
+     "shape": 7,
+     "link": 9
+    },
+    {
+     "localized_name": "clip",
+     "name": "clip",
+     "type": "CLIP",
+     "link": 2,
+     "shape": 7
+    },
+    {
+     "localized_name": "vae",
+     "name": "vae",
+     "type": "VAE",
+     "link": 3,
+     "shape": 7
+    },
+    {
+     "localized_name": "audio_vae",
+     "name": "audio_vae",
+     "shape": 7,
+     "type": "VAE",
+     "link": 4
+    },
+    {
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": null,
+     "shape": 7,
+     "localized_name": "latent_image"
+    },
+    {
+     "localized_name": "board",
+     "name": "board",
+     "type": "STRING",
+     "widget": {
+      "name": "board"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "width",
+     "name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "height",
+     "name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "steps",
+     "name": "steps",
+     "type": "INT",
+     "widget": {
+      "name": "steps"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "sampler_name",
+     "name": "sampler_name",
+     "type": "COMBO",
+     "widget": {
+      "name": "sampler_name"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "scheduler",
+     "name": "scheduler",
+     "type": "COMBO",
+     "widget": {
+      "name": "scheduler"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "join",
+     "name": "join",
+     "type": "BOOLEAN",
+     "widget": {
+      "name": "join"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "images",
+     "name": "images",
+     "type": "IMAGE",
+     "links": [
+      6
+     ]
+    },
+    {
+     "localized_name": "audio",
+     "name": "audio",
+     "type": "AUDIO",
+     "links": [
+      7
+     ]
+    },
+    {
+     "localized_name": "frame_count",
+     "name": "frame_count",
+     "type": "INT",
+     "links": null
+    },
+    {
+     "localized_name": "board",
+     "name": "board",
+     "type": "STRING",
+     "links": null
+    },
+    {
+     "localized_name": "report",
+     "name": "report",
+     "type": "STRING",
+     "links": null
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VigH3Cutter"
+   },
+   "widgets_values": [
+    "{\"version\": 1, \"segments\": [{\"id\": 1, \"seconds\": 8, \"frames\": 192, \"duration\": 8.0, \"mode\": \"t2va\", \"prompt\": \"Dawn over an old-town market square: empty stalls under thin fog, the first traders unfolding crates.\", \"seed\": 482913, \"locked\": false, \"audio\": true, \"status\": \"queued\", \"refs\": [], \"cache_key\": \"\", \"error\": \"\"}, {\"id\": 2, \"seconds\": 8, \"frames\": 192, \"duration\": 8.0, \"mode\": \"i2va\", \"prompt\": \"The same square by midday, the aisles full, a trader weighing apples for a customer.\", \"seed\": 718204, \"locked\": false, \"audio\": true, \"status\": \"queued\", \"refs\": [], \"cache_key\": \"\", \"error\": \"\"}, {\"id\": 3, \"seconds\": 8, \"frames\": 192, \"duration\": 8.0, \"mode\": \"i2va\", \"prompt\": \"Evening: strings of lights come on above the emptying square, the last trader folding a table.\", \"seed\": 305519, \"locked\": false, \"audio\": true, \"status\": \"queued\", \"refs\": [], \"cache_key\": \"\", \"error\": \"\"}], \"audio_clips\": [], \"library\": [], \"target_seconds\": 24.0, \"seed\": 482913, \"selected_id\": 1, \"scenario_digest\": \"\", \"total_frames\": 576, \"total_seconds\": 24.0, \"requested_seconds\": 24, \"scenario\": \"Осенний рынок в старом городе: рассвет и подготовка торговцев, оживление к полудню, крупные планы покупателей, вечер с гирляндами и опустевшая площадь.\"}",
+    832,
+    480,
+    20,
+    "res_multistep",
+    "simple",
+    true
+   ]
+  },
+  {
+   "id": 7,
+   "type": "CreateVideo",
+   "pos": [
+    2120,
+    140
+   ],
+   "size": [
+    270,
+    110
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "images",
+     "name": "images",
+     "type": "IMAGE",
+     "link": 6
+    },
+    {
+     "localized_name": "audio",
+     "name": "audio",
+     "shape": 7,
+     "type": "AUDIO",
+     "link": 7
+    },
+    {
+     "localized_name": "fps",
+     "name": "fps",
+     "type": "FLOAT",
+     "widget": {
+      "name": "fps"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "bit_depth",
+     "name": "bit_depth",
+     "shape": 7,
+     "type": "INT",
+     "widget": {
+      "name": "bit_depth"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "VIDEO",
+     "name": "VIDEO",
+     "type": "VIDEO",
+     "links": [
+      8
+     ]
+    }
+   ],
+   "properties": {
+    "cnr_id": "comfy-core",
+    "ver": "0.32.0",
+    "Node name for S&R": "CreateVideo"
+   },
+   "widgets_values": [
+    24,
+    8
+   ]
+  },
+  {
+   "id": 8,
+   "type": "SaveVideo",
+   "pos": [
+    2120,
+    300
+   ],
+   "size": [
+    270,
+    126
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [
+    {
+     "localized_name": "video",
+     "name": "video",
+     "type": "VIDEO",
+     "link": 8
+    },
+    {
+     "localized_name": "filename_prefix",
+     "name": "filename_prefix",
+     "type": "STRING",
+     "widget": {
+      "name": "filename_prefix"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "format",
+     "name": "format",
+     "type": "COMBO",
+     "widget": {
+      "name": "format"
+     },
+     "link": null
+    },
+    {
+     "localized_name": "codec",
+     "name": "codec",
+     "type": "COMFY_DYNAMICCOMBO_V3",
+     "widget": {
+      "name": "codec"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "localized_name": "video",
+     "name": "video",
+     "type": "VIDEO",
+     "links": null
+    }
+   ],
+   "properties": {
+    "cnr_id": "comfy-core",
+    "ver": "0.32.0",
+    "Node name for S&R": "SaveVideo"
+   },
+   "widgets_values": [
+    "video/VIG_H3_cutter",
+    "auto",
+    "auto"
+   ]
+  },
+  {
+   "id": 10,
+   "type": "UNETLoader",
+   "pos": [
+    600,
+    620
+   ],
+   "size": [
+    300,
+    82
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      9
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "UNETLoader",
+    "models": [
+     {
+      "name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "directory": "diffusion_models"
+     }
+    ]
+   },
+   "widgets_values": [
+    "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+    "default"
+   ]
+  },
+  {
+   "id": 11,
+   "type": "MarkdownNote",
+   "pos": [
+    -520,
+    100
+   ],
+   "size": [
+    520,
+    820
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "title": "Models",
+   "properties": {},
+   "widgets_values": [
+    "## Models for this workflow\n\nDownload each file into the folder named above it, inside `ComfyUI/models/` (ComfyUI Desktop: its shared `models` folder). If a file is missing when the workflow opens, ComfyUI offers to download it for you.\n\n**models/diffusion_models/**\n\n- [minimax_h3_fl2va_pruned_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors) — 21 GB\n  base checkpoint → `model` (T2VA, I2VA, FL2VA, L2VA)\n- [minimax_h3_ref2va_pruned_int8_convrot.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors) — 21 GB\n  ref2va checkpoint → `ref_model` (REF2VA)\n\n**models/text_encoders/**\n\n- [qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors) — 15.7 GB\n  text encoder → `clip`\n\n**models/vae/**\n\n- [minimax_h3_video_vae_fp16.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors) — 5.2 GB\n  video VAE → `vae`\n- [minimax_h3_audio_vae_fp32.safetensors](https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors) — 0.6 GB\n  audio VAE → `audio_vae`\n\n**Less memory?** All from [Comfy-Org/MiniMax-H3](https://huggingface.co/Comfy-Org/MiniMax-H3): `…_pruned_w6a8` checkpoints (16 GB each) instead of `int8_convrot`, and `minimax_h3_video_vae_int8_convrot` (2.8 GB) instead of the fp16 video VAE. Pick them in the loaders after downloading.\n\n**Also used by the console (optional):**\n\n- *Prompt writer* — a GGUF model and llama.cpp's `llama-server` in `models/llama.cpp/` — see the extension's README.\n- *Reference editor* — SAM 3 from [facebook/sam3](https://huggingface.co/facebook/sam3) (gated: request access first) into `models/sam3/`."
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  }
+ ],
+ "links": [
+  [
+   1,
+   1,
+   0,
+   6,
+   0,
+   "MODEL"
+  ],
+  [
+   2,
+   2,
+   0,
+   6,
+   2,
+   "CLIP"
+  ],
+  [
+   3,
+   3,
+   0,
+   6,
+   3,
+   "VAE"
+  ],
+  [
+   4,
+   4,
+   0,
+   6,
+   4,
+   "VAE"
+  ],
+  [
+   6,
+   6,
+   0,
+   7,
+   0,
+   "IMAGE"
+  ],
+  [
+   7,
+   6,
+   1,
+   7,
+   1,
+   "AUDIO"
+  ],
+  [
+   8,
+   7,
+   0,
+   8,
+   0,
+   "VIDEO"
+  ],
+  [
+   9,
+   10,
+   0,
+   6,
+   1,
+   "MODEL"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {
+  "ds": {
+   "scale": 0.55,
+   "offset": [
+    40,
+    60
+   ]
+  }
+ },
+ "version": 0.4
+}

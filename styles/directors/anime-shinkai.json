@@ -1,0 +1,74 @@
+{
+  "id": "anime-shinkai",
+  "display_name": "Modern anime, photoreal backgrounds",
+  "origin": "director",
+  "attribution": "Makoto Shinkai",
+  "visual_style": "2D-animated",
+  "era": "2010s-present",
+  "camera": {
+    "moves": [
+      "Tilt Up",
+      "Push In",
+      "Pan Right",
+      "Static Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "wide skies cut against tight character close-ups",
+    "height": "low, looking up past the subject into the sky"
+  },
+  "lens": {
+    "focal_bias": "a flat animated perspective with rendered lens effects",
+    "dof": "shallow focus painted in, with bokeh circles on distant lights"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "late afternoon sun",
+      "streetlights at dusk",
+      "light through clouds"
+    ],
+    "practicals": "visible lens flare, light shafts and dust motes are painted into the frame"
+  },
+  "palette": {
+    "dominant": [
+      "saturated sky blue",
+      "sunset orange",
+      "deep violet",
+      "clean white cloud"
+    ],
+    "contrast": "moderate",
+    "grade": "highly saturated with luminous highlights"
+  },
+  "composition": {
+    "rules": [
+      "photoreal painted backgrounds behind flat cel characters",
+      "vast skies filling most of the frame"
+    ],
+    "movement_of_subject": "characters are still while the environment moves around them"
+  },
+  "editing": {
+    "avg_shot_len_s": 3.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "cicadas, train crossings, wind, distant town noise",
+    "music": {
+      "instrumentation": "Piano and layered strings with a soft rock rhythm section",
+      "tempo": "a moderate tempo",
+      "dynamics": "building steadily toward a full-band arrival"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "flat cel-shaded characters against highly detailed painted backgrounds",
+      "a large sky with volumetric clouds and visible light shafts"
+    ],
+    "avoid": [
+      "3D CG characters",
+      "muted desaturated colour",
+      "live-action photography"
+    ]
+  },
+  "notes": "Flat cel characters against near-photoreal painted skies. The environment carries the movement and the light does the emotional work."
+}

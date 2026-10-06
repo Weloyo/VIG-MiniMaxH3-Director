@@ -1,0 +1,72 @@
+{
+  "id": "nolan",
+  "display_name": "Christopher Nolan",
+  "origin": "director",
+  "attribution": "Christopher Nolan",
+  "visual_style": "Cinematic, live-action",
+  "era": "2000s-present",
+  "camera": {
+    "moves": [
+      "Tracking Shot",
+      "Push In",
+      "Arc Shot",
+      "Shake Slightly"
+    ],
+    "amplitude": "with large amplitude",
+    "speed": "at fast speed",
+    "shot_scale_bias": "large-format wide shots cut against tight faces",
+    "height": "eye level, moving with the action"
+  },
+  "lens": {
+    "focal_bias": "a large-format wide lens",
+    "dof": "deep focus so the scale of the location stays legible"
+  },
+  "lighting": {
+    "key_ratio": "moderate",
+    "sources": [
+      "overcast daylight",
+      "hard practical sources built into the set"
+    ],
+    "practicals": "everything looks physically lit on location rather than added later"
+  },
+  "palette": {
+    "dominant": [
+      "steel blue",
+      "concrete grey",
+      "muted khaki"
+    ],
+    "contrast": "moderate",
+    "grade": "cool and naturalistic"
+  },
+  "composition": {
+    "rules": [
+      "real locations at full scale",
+      "horizon lines kept level even in motion"
+    ],
+    "movement_of_subject": "the subject moves with urgency through a physically real space"
+  },
+  "editing": {
+    "avg_shot_len_s": 2.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "wind, engines, structural groans and heavy physical impacts",
+    "music": {
+      "instrumentation": "A rising brass ostinato over a ticking percussive pulse",
+      "tempo": "a fast tempo",
+      "dynamics": "accelerating and layering continuously without release"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the location is real and at full physical scale",
+      "the camera moves with the action rather than observing it from outside"
+    ],
+    "avoid": [
+      "obvious digital compositing",
+      "warm stylised grading",
+      "static talky framing"
+    ]
+  },
+  "notes": "Practical locations at scale, cool naturalistic light, relentless forward momentum in both camera and cutting."
+}

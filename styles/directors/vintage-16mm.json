@@ -1,0 +1,72 @@
+{
+  "id": "vintage-16mm",
+  "display_name": "Vintage 16mm film",
+  "origin": "director",
+  "attribution": "",
+  "visual_style": "vintage film",
+  "era": "1960s-1970s",
+  "camera": {
+    "moves": [
+      "Shake Slightly",
+      "Pan Right",
+      "Zoom In",
+      "Static Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "loose medium shots with imperfect framing",
+    "height": "eye level, handheld"
+  },
+  "lens": {
+    "focal_bias": "a vintage zoom lens with soft corners",
+    "dof": "moderate focus that breathes slightly during the zoom"
+  },
+  "lighting": {
+    "key_ratio": "moderate",
+    "sources": [
+      "available daylight",
+      "window light with no fill"
+    ],
+    "practicals": "highlights bloom and clip the way film stock does"
+  },
+  "palette": {
+    "dominant": [
+      "faded orange",
+      "washed cyan",
+      "cream highlights"
+    ],
+    "contrast": "moderate",
+    "grade": "warm and faded, with lifted milky blacks"
+  },
+  "composition": {
+    "rules": [
+      "visible film grain across the whole frame",
+      "occasional dust, hair and gate weave"
+    ],
+    "movement_of_subject": "movement carries a slight strobing from the shutter"
+  },
+  "editing": {
+    "avg_shot_len_s": 5.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "thin location sound with tape hiss and limited high frequencies",
+    "music": {
+      "instrumentation": "A warm analogue organ with brushed drums",
+      "tempo": "a moderate tempo",
+      "dynamics": "slightly wavering in pitch, as if from tape"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "heavy 16mm film grain and slight gate weave",
+      "highlights bloom softly and blacks sit milky rather than pure"
+    ],
+    "avoid": [
+      "clean digital sharpness",
+      "deep pure blacks",
+      "modern colour grading"
+    ]
+  },
+  "notes": "Grain, gate weave and faded stock. The imperfections of the medium are the style."
+}

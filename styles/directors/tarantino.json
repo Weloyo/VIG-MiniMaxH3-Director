@@ -1,0 +1,53 @@
+{
+  "id": "tarantino",
+  "display_name": "Quentin Tarantino",
+  "origin": "director",
+  "attribution": "Quentin Tarantino",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-present",
+  "camera": {
+    "moves": ["Truck Right", "Push In", "Static Shot", "Arc Shot"],
+    "amplitude": "with large amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "low-angle shots looking up, cut against long held two-shots",
+    "height": "very low, from floor level"
+  },
+  "lens": {
+    "focal_bias": "an anamorphic 40mm lens",
+    "dof": "moderate focus that keeps both faces in a two-shot readable"
+  },
+  "lighting": {
+    "key_ratio": "moderate",
+    "sources": ["hard sunlight through blinds", "warm diner and bar practicals"],
+    "practicals": "light is motivated and slightly overexposed on skin"
+  },
+  "palette": {
+    "dominant": ["saturated yellow", "deep red", "chrome", "denim blue"],
+    "contrast": "high",
+    "grade": "warm and richly saturated"
+  },
+  "composition": {
+    "rules": ["a long unbroken two-shot across a table", "an insert of feet, a boot, a car boot from below"],
+    "movement_of_subject": "people sit and talk at length before anything happens"
+  },
+  "editing": {
+    "avg_shot_len_s": 7.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "diner clatter, traffic, a jukebox in another room",
+    "music": {
+      "instrumentation": "A surf-rock guitar with driving drums",
+      "tempo": "a fast tempo",
+      "dynamics": "entering mid-phrase at full level"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera looks up at the subject from near floor level",
+      "the conversation runs long before the action arrives"
+    ],
+    "avoid": ["desaturated colour", "shaky handheld", "constant cutting"]
+  },
+  "notes": "Low angles, long talky two-shots, saturated warm colour. Stillness is held until it breaks."
+}

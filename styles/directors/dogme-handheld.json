@@ -1,0 +1,73 @@
+{
+  "id": "dogme-handheld",
+  "display_name": "Dogme-style handheld realism",
+  "origin": "director",
+  "attribution": "",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-present",
+  "camera": {
+    "moves": [
+      "Shake Slightly",
+      "Tracking Shot",
+      "Pan Right"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at fast speed",
+    "shot_scale_bias": "close handheld shots that reframe constantly",
+    "height": "shoulder height, unsteady"
+  },
+  "lens": {
+    "focal_bias": "a 24-35mm lens",
+    "dof": "moderate focus that hunts slightly as the subject moves"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "available daylight",
+      "whatever room lights are already on"
+    ],
+    "practicals": "no added lighting, so windows blow out and corners go muddy"
+  },
+  "palette": {
+    "dominant": [
+      "flat daylight neutrals",
+      "dull greens",
+      "washed skin tones"
+    ],
+    "contrast": "low",
+    "grade": "unglamorous and untreated"
+  },
+  "composition": {
+    "rules": [
+      "loose imperfect framing",
+      "heads cropped by the frame edge",
+      "focus corrected on the fly"
+    ],
+    "movement_of_subject": "the subject moves unpredictably and the camera scrambles to keep up"
+  },
+  "editing": {
+    "avg_shot_len_s": 2.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "raw location sound with room echo, clothing rustle and off-camera noise",
+    "music": {
+      "instrumentation": "",
+      "tempo": "",
+      "dynamics": ""
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the camera is handheld and visibly unsteady",
+      "the framing is imperfect and corrects itself during the shot"
+    ],
+    "avoid": [
+      "tripod stability",
+      "designed lighting",
+      "polished colour grading",
+      "score"
+    ]
+  },
+  "notes": "Available light, handheld camera, no score. Imperfection is the point; the music fields resolve to N/A unless the user asks otherwise."
+}

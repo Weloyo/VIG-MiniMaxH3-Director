@@ -1,0 +1,72 @@
+{
+  "id": "claymation-aardman",
+  "display_name": "Stop-motion claymation",
+  "origin": "director",
+  "attribution": "Aardman Animations",
+  "visual_style": "claymation",
+  "era": "1990s-present",
+  "camera": {
+    "moves": [
+      "Static Shot",
+      "Push In",
+      "Pan Right"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "medium shots on a small practical set",
+    "height": "eye level with the puppets"
+  },
+  "lens": {
+    "focal_bias": "a 50mm lens on a miniature set",
+    "dof": "shallow, betraying the small scale of the build"
+  },
+  "lighting": {
+    "key_ratio": "moderate",
+    "sources": [
+      "small tungsten studio lamps",
+      "a warm key with soft fill"
+    ],
+    "practicals": "lighting is stable frame to frame, as a stop-motion stage requires"
+  },
+  "palette": {
+    "dominant": [
+      "warm plasticine tones",
+      "moss green",
+      "cream",
+      "brick red"
+    ],
+    "contrast": "moderate",
+    "grade": "warm and slightly toy-like"
+  },
+  "composition": {
+    "rules": [
+      "visible fingerprints and tool marks in the clay",
+      "handmade set dressing with fabric and card"
+    ],
+    "movement_of_subject": "movement steps forward in small increments with a faint frame-to-frame judder"
+  },
+  "editing": {
+    "avg_shot_len_s": 3.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "close quiet studio room tone with small handled-object sounds",
+    "music": {
+      "instrumentation": "A light woodwind and pizzicato string melody",
+      "tempo": "a moderate tempo",
+      "dynamics": "bouncing along with small accents on the action"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "characters are modelled in plasticine with visible fingerprints",
+      "motion advances in small stop-motion increments rather than smoothly"
+    ],
+    "avoid": [
+      "photorealism",
+      "smooth continuous motion",
+      "CG rendering"
+    ]
+  },
+  "notes": "Handmade plasticine puppets on a miniature practical set, with the frame-stepped motion of real stop-motion."
+}

@@ -1,0 +1,17 @@
+[project]
+name = "vig-minimax-h3-director"
+description = "Turns a plain-language story into a format-valid MiniMax H3 video prompt: storyboard, exact timings, synchronized audio and dialogue, director style profiles."
+version = "1.0.0"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+classifiers = ["Operating System :: OS Independent"]
+dependencies = ["opencv-python-headless"]
+[project.urls]
+Repository = "https://github.com/Weloyo/VIG-MiniMaxH3-Director"
+"Bug Tracker" = "https://github.com/Weloyo/VIG-MiniMaxH3-Director/issues"
+Funding = "https://ko-fi.com/vigpay"
+[tool.comfy]
+PublisherId = "weloyo"
+DisplayName = "(VIG) MiniMax H3 Director"
+requires-comfyui = ">=0.32.0"
+includes = []

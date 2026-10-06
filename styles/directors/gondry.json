@@ -1,0 +1,53 @@
+{
+  "id": "gondry",
+  "display_name": "Michel Gondry",
+  "origin": "director",
+  "attribution": "Michel Gondry",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-present",
+  "camera": {
+    "moves": ["Shake Slightly", "Push In", "Pan Left", "Tracking Shot"],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "handheld medium shots inside handmade sets",
+    "height": "eye level, slightly unsteady"
+  },
+  "lens": {
+    "focal_bias": "a 28-40mm lens",
+    "dof": "moderate focus that keeps the handmade construction visible"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": ["soft daylight", "visible work lamps in the set"],
+    "practicals": "lighting is plain and does not hide how anything was built"
+  },
+  "palette": {
+    "dominant": ["cardboard brown", "felt red", "sky blue", "kraft paper"],
+    "contrast": "low",
+    "grade": "warm and slightly faded"
+  },
+  "composition": {
+    "rules": ["sets visibly made from cardboard, felt, tape and paint", "in-camera effects with seams left showing"],
+    "movement_of_subject": "objects transform in-shot by simple practical means rather than by edit"
+  },
+  "editing": {
+    "avg_shot_len_s": 4.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "close handled-material sounds, paper, tape, fabric, small motors",
+    "music": {
+      "instrumentation": "A toy piano and brushed drums with a simple bass line",
+      "tempo": "a moderate tempo",
+      "dynamics": "looping without building"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the set is visibly handmade from cardboard, felt and paper with the seams showing",
+      "transformations happen physically in shot rather than by cutting"
+    ],
+    "avoid": ["photorealistic CG", "polished production design", "invisible effects"]
+  },
+  "notes": "Handmade in-camera invention. The construction is meant to be visible; the charm is that nothing hides how it was done."
+}

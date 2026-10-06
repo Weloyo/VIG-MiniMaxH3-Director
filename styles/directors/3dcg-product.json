@@ -1,0 +1,71 @@
+{
+  "id": "3dcg-product",
+  "display_name": "3D CG product film",
+  "origin": "director",
+  "attribution": "",
+  "visual_style": "3D CG",
+  "era": "2010s-present",
+  "camera": {
+    "moves": [
+      "Arc Shot",
+      "Push In",
+      "Truck Left"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "tight macro framing on the object",
+    "height": "just above the object, angled down"
+  },
+  "lens": {
+    "focal_bias": "a 90mm macro lens",
+    "dof": "very shallow focus that isolates one edge of the object"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "large soft studio panels",
+      "a rim light along the top edge"
+    ],
+    "practicals": "gradients travel smoothly across every surface with no visible fixture"
+  },
+  "palette": {
+    "dominant": [
+      "seamless white",
+      "brushed metal grey",
+      "one saturated accent"
+    ],
+    "contrast": "moderate",
+    "grade": "clean and neutral with a single colour accent"
+  },
+  "composition": {
+    "rules": [
+      "the object floats against a seamless infinite background",
+      "generous negative space around the subject"
+    ],
+    "movement_of_subject": "the object rotates slowly and continuously on its own axis"
+  },
+  "editing": {
+    "avg_shot_len_s": 3.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "near silence with precise close mechanical clicks and soft air movement",
+    "music": {
+      "instrumentation": "A clean electronic pulse with soft synth pads",
+      "tempo": "a moderate tempo",
+      "dynamics": "building in even steps, each landing on a cut"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "photorealistic 3D CG rendering with physically accurate materials",
+      "a seamless studio background with no visible horizon"
+    ],
+    "avoid": [
+      "handheld camera",
+      "real-world clutter",
+      "harsh directional shadow"
+    ]
+  },
+  "notes": "Studio-rendered CG with soft panel lighting and slow orbital moves. Surfaces and edges are the subject."
+}

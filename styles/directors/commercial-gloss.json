@@ -1,0 +1,73 @@
+{
+ "id": "commercial-gloss",
+ "display_name": "Commercial gloss",
+ "origin": "director",
+ "attribution": "",
+ "visual_style": "Cinematic, live-action",
+ "era": "contemporary high-end spot",
+ "camera": {
+  "moves": [
+   "Push In",
+   "Arc Shot",
+   "Tracking Shot",
+   "Pedestal Up"
+  ],
+  "amplitude": "with small amplitude",
+  "speed": "at slow speed",
+  "shot_scale_bias": "hero close-ups of the product and beauty mediums of hands using it",
+  "height": "tabletop height, gliding on rails"
+ },
+ "lens": {
+  "focal_bias": "a 85mm macro",
+  "dof": "razor shallow, one edge in focus"
+ },
+ "lighting": {
+  "key_ratio": "medium",
+  "sources": [
+   "a giant soft overhead book light",
+   "a hard specular kick along the edge"
+  ],
+  "practicals": "controlled reflections shaped on every surface"
+ },
+ "palette": {
+  "dominant": [
+   "pearl white",
+   "brushed steel",
+   "one brand accent colour"
+  ],
+  "contrast": "medium",
+  "grade": "clean, bright, retouched-looking"
+ },
+ "composition": {
+  "rules": [
+   "negative space left for copy",
+   "the product enters last and lands centred"
+  ],
+  "movement_of_subject": "slow deliberate handling; droplets and pours in half speed"
+ },
+ "editing": {
+  "avg_shot_len_s": 2.5,
+  "transition_pref": "soft cut on motion"
+ },
+ "sound": {
+  "ambience_bias": "hushed foley close-ups: a click, a pour, a fabric brush",
+  "music": {
+   "instrumentation": "A bright felt piano over subtle electronic pulses",
+   "tempo": "a moderate tempo",
+   "dynamics": "even and confident, resolving on the final frame"
+  }
+ },
+ "prompt_bias": {
+  "must_include": [
+   "every surface is clean and deliberately lit",
+   "the product is the hero of the frame"
+  ],
+  "avoid": [
+   "clutter",
+   "grain",
+   "accidental reflections",
+   "handheld energy"
+  ]
+ },
+ "notes": "Nothing in frame by accident."
+}

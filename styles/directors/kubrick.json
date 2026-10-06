@@ -1,0 +1,72 @@
+{
+  "id": "kubrick",
+  "display_name": "Stanley Kubrick",
+  "origin": "director",
+  "attribution": "Stanley Kubrick",
+  "visual_style": "Cinematic, live-action",
+  "era": "1960s-1990s",
+  "camera": {
+    "moves": [
+      "Push In",
+      "Tracking Shot",
+      "Static Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "wide symmetrical framing",
+    "height": "eye level, dead centre"
+  },
+  "lens": {
+    "focal_bias": "a wide 18-28mm lens",
+    "dof": "deep focus holding foreground and background equally sharp"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": [
+      "hard toplight",
+      "visible practical fixtures"
+    ],
+    "practicals": "the light sources sit inside the frame and read as part of the set"
+  },
+  "palette": {
+    "dominant": [
+      "cold whites",
+      "deep reds",
+      "flat greys"
+    ],
+    "contrast": "high",
+    "grade": "cool and clinical"
+  },
+  "composition": {
+    "rules": [
+      "one-point perspective",
+      "central framing",
+      "rigid horizontal symmetry"
+    ],
+    "movement_of_subject": "subjects move along the perspective axis, toward or away from the lens"
+  },
+  "editing": {
+    "avg_shot_len_s": 6.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "sparse room tone with a low mechanical hum",
+    "music": {
+      "instrumentation": "Sustained strings in close intervals",
+      "tempo": "a very slow tempo",
+      "dynamics": "holding one unbroken level with no swell"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "corridors and rooms recede to a single vanishing point",
+      "the subject is placed exactly on the centre line of the frame"
+    ],
+    "avoid": [
+      "handheld wobble",
+      "shallow portrait bokeh",
+      "warm golden-hour light"
+    ]
+  },
+  "notes": "Symmetry, deep focus and unhurried forward movement. Composition is architectural: the room is as much the subject as the person in it."
+}

@@ -1,0 +1,72 @@
+{
+ "id": "slow-cinema",
+ "display_name": "Slow cinema",
+ "origin": "director",
+ "attribution": "",
+ "visual_style": "Cinematic, live-action",
+ "era": "contemporary festival minimalism",
+ "camera": {
+  "moves": [
+   "Static Shot",
+   "Push In",
+   "Pan Right"
+  ],
+  "amplitude": "with small amplitude",
+  "speed": "at slow speed",
+  "shot_scale_bias": "long-held wides; the person is small inside the place",
+  "height": "chest height, locked off"
+ },
+ "lens": {
+  "focal_bias": "a 40mm prime",
+  "dof": "deep focus, the whole room equally present"
+ },
+ "lighting": {
+  "key_ratio": "low",
+  "sources": [
+   "one window",
+   "the fading sky"
+  ],
+  "practicals": "a single lamp allowed to be the only warm thing"
+ },
+ "palette": {
+  "dominant": [
+   "slate blue",
+   "damp plaster",
+   "dim amber"
+  ],
+  "contrast": "low",
+  "grade": "muted and patient, nothing pushed"
+ },
+ "composition": {
+  "rules": [
+   "frames held long after the action leaves them",
+   "doorways and windows frame the frame"
+  ],
+  "movement_of_subject": "a person crosses the space in real time, unhurried"
+ },
+ "editing": {
+  "avg_shot_len_s": 10.0,
+  "transition_pref": "hard cut, rare"
+ },
+ "sound": {
+  "ambience_bias": "room tone, wind under the door, a tap somewhere else in the house",
+  "music": {
+   "instrumentation": "",
+   "tempo": "",
+   "dynamics": ""
+  }
+ },
+ "prompt_bias": {
+  "must_include": [
+   "the shot is held without a cut",
+   "time is allowed to pass on screen"
+  ],
+  "avoid": [
+   "coverage",
+   "score",
+   "fast cutting",
+   "camera shake"
+  ]
+ },
+ "notes": "Duration is the drama."
+}

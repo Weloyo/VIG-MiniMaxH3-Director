@@ -1,0 +1,72 @@
+{
+  "id": "tarkovsky",
+  "display_name": "Andrei Tarkovsky",
+  "origin": "director",
+  "attribution": "Andrei Tarkovsky",
+  "visual_style": "Cinematic, live-action",
+  "era": "1960s-1980s",
+  "camera": {
+    "moves": [
+      "Truck Left",
+      "Push In",
+      "Static Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "wide shots held far longer than the action requires",
+    "height": "low, close to the ground"
+  },
+  "lens": {
+    "focal_bias": "a 35-50mm lens",
+    "dof": "deep focus that keeps the far background legible"
+  },
+  "lighting": {
+    "key_ratio": "moderate",
+    "sources": [
+      "overcast daylight through windows",
+      "a single interior lamp"
+    ],
+    "practicals": "light is even and sourceless, as if the sky itself were the fixture"
+  },
+  "palette": {
+    "dominant": [
+      "wet earth brown",
+      "moss green",
+      "grey-blue",
+      "rust"
+    ],
+    "contrast": "moderate",
+    "grade": "desaturated toward monochrome, with damp surfaces catching the only highlights"
+  },
+  "composition": {
+    "rules": [
+      "figures small within a large landscape",
+      "water, mist and standing puddles in frame"
+    ],
+    "movement_of_subject": "the subject walks slowly across the frame while the camera drifts at a different pace"
+  },
+  "editing": {
+    "avg_shot_len_s": 12.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "dripping water, wind through grass, distant unidentifiable machinery",
+    "music": {
+      "instrumentation": "A single sustained organ note under sparse electronic tones",
+      "tempo": "a very slow tempo",
+      "dynamics": "barely changing across the whole passage"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "water is present as rain, mist, puddles or a running surface",
+      "the shot continues past the end of the action"
+    ],
+    "avoid": [
+      "fast cutting",
+      "saturated colour",
+      "bright direct sunlight"
+    ]
+  },
+  "notes": "Long unhurried takes, damp landscapes, deep focus. The camera moves independently of the subject rather than following it."
+}

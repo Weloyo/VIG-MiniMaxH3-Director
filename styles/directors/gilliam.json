@@ -1,0 +1,74 @@
+{
+  "id": "gilliam",
+  "display_name": "Terry Gilliam",
+  "origin": "director",
+  "attribution": "Terry Gilliam",
+  "visual_style": "Cinematic, live-action",
+  "era": "1980s-2000s",
+  "camera": {
+    "moves": [
+      "Roll Clockwise",
+      "Push In",
+      "Tilt Up",
+      "Shake Slightly"
+    ],
+    "amplitude": "with large amplitude",
+    "speed": "at fast speed",
+    "shot_scale_bias": "distorted close-ups shot from below",
+    "height": "very low or very high, rarely level"
+  },
+  "lens": {
+    "focal_bias": "an extreme 9-14mm wide lens held close to the face",
+    "dof": "deep focus with heavy barrel distortion at the frame edges"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": [
+      "hard raking light",
+      "cluttered practical bulbs and screens"
+    ],
+    "practicals": "light comes from many small competing sources at once"
+  },
+  "palette": {
+    "dominant": [
+      "sickly green",
+      "bureaucratic beige",
+      "rust",
+      "cold blue"
+    ],
+    "contrast": "high",
+    "grade": "grubby and slightly jaundiced"
+  },
+  "composition": {
+    "rules": [
+      "dutch angles",
+      "frames crammed with pipework, paper and machinery",
+      "converging vertical lines"
+    ],
+    "movement_of_subject": "the subject is crowded and jostled by the set itself"
+  },
+  "editing": {
+    "avg_shot_len_s": 2.5,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "clattering machinery, hissing pipes, overlapping tannoy announcements",
+    "music": {
+      "instrumentation": "A jaunty brass band arrangement",
+      "tempo": "a moderate tempo",
+      "dynamics": "cheerfully steady, indifferent to what is happening on screen"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the frame is tilted off the horizontal",
+      "the wide lens distorts whatever sits closest to it"
+    ],
+    "avoid": [
+      "level symmetrical framing",
+      "clean empty sets",
+      "long lenses"
+    ]
+  },
+  "notes": "Extreme wide lenses, tilted frames and sets crammed with clutter. The environment presses in on the subject."
+}

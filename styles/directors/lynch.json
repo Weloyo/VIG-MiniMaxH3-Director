@@ -1,0 +1,72 @@
+{
+  "id": "lynch",
+  "display_name": "David Lynch",
+  "origin": "director",
+  "attribution": "David Lynch",
+  "visual_style": "Cinematic, live-action",
+  "era": "1970s-2000s",
+  "camera": {
+    "moves": [
+      "Push In",
+      "Static Shot",
+      "Truck Left"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "held medium shots that sit a beat too long",
+    "height": "eye level, slightly too close"
+  },
+  "lens": {
+    "focal_bias": "a 35-50mm lens",
+    "dof": "shallow, with the surrounding room falling into darkness"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": [
+      "a single hard practical lamp",
+      "flickering fluorescent tubes"
+    ],
+    "practicals": "large areas of the frame fall to complete black with no fill"
+  },
+  "palette": {
+    "dominant": [
+      "deep red",
+      "black",
+      "sodium yellow",
+      "pale flesh"
+    ],
+    "contrast": "high",
+    "grade": "heavy blacks with saturated red accents"
+  },
+  "composition": {
+    "rules": [
+      "curtains, corridors and doorways receding into darkness",
+      "a face isolated in a pool of light"
+    ],
+    "movement_of_subject": "movement is slower than natural and pauses at odd moments"
+  },
+  "editing": {
+    "avg_shot_len_s": 7.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "a continuous low industrial hum, distant machinery, crackling electricity",
+    "music": {
+      "instrumentation": "A detuned synthesiser drone under a slow reverberant guitar figure",
+      "tempo": "a very slow tempo",
+      "dynamics": "holding steady with an unsettled low-frequency pulse underneath"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "large parts of the frame fall into complete darkness",
+      "the shot holds after the action stops"
+    ],
+    "avoid": [
+      "even daylight",
+      "fast cutting",
+      "clean bright interiors"
+    ]
+  },
+  "notes": "Deep black surrounding a hard pool of light, an unbroken industrial hum, and shots held past comfort."
+}

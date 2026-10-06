@@ -1,0 +1,53 @@
+{
+  "id": "refn",
+  "display_name": "Nicolas Winding Refn",
+  "origin": "director",
+  "attribution": "Nicolas Winding Refn",
+  "visual_style": "Cinematic, live-action",
+  "era": "2010s-present",
+  "camera": {
+    "moves": ["Static Shot", "Push In", "Truck Right"],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "symmetrical frontal compositions held far too long",
+    "height": "eye level, centred"
+  },
+  "lens": {
+    "focal_bias": "a 50mm lens",
+    "dof": "moderate focus with a hard separation between subject and ground"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": ["saturated coloured gels", "neon tubes and signage in frame"],
+    "practicals": "single-colour light floods the whole frame and shifts between shots"
+  },
+  "palette": {
+    "dominant": ["hot magenta", "electric blue", "blood red", "black"],
+    "contrast": "high",
+    "grade": "one saturated colour dominating each shot"
+  },
+  "composition": {
+    "rules": ["rigid central symmetry", "a figure standing motionless in a corridor of light"],
+    "movement_of_subject": "the subject stands still and stares; motion is minimal and deliberate"
+  },
+  "editing": {
+    "avg_shot_len_s": 9.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "a deep room tone with no incidental detail",
+    "music": {
+      "instrumentation": "An analogue synthesiser arpeggio over a slow drum machine",
+      "tempo": "a slow tempo",
+      "dynamics": "building by adding layers rather than volume"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "a single saturated colour floods the entire frame",
+      "the subject stands still and the shot holds"
+    ],
+    "avoid": ["naturalistic white light", "handheld camera", "fast cutting"]
+  },
+  "notes": "Single-hue floods of neon, rigid symmetry, motionless figures. Held long past comfort."
+}

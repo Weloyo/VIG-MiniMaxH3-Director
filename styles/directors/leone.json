@@ -1,0 +1,73 @@
+{
+  "id": "leone",
+  "display_name": "Sergio Leone",
+  "origin": "director",
+  "attribution": "Sergio Leone",
+  "visual_style": "Cinematic, live-action",
+  "era": "1960s-1980s",
+  "camera": {
+    "moves": [
+      "Zoom In",
+      "Push In",
+      "Static Shot",
+      "Truck Right"
+    ],
+    "amplitude": "with large amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "extreme close-ups of eyes cut against extreme wide landscapes",
+    "height": "low, looking up at the standing figure"
+  },
+  "lens": {
+    "focal_bias": "a wide anamorphic lens for the landscapes and a long lens for the faces",
+    "dof": "deep in the wides, shallow on the close-ups"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": [
+      "harsh overhead sun",
+      "hard shadow under hat brims"
+    ],
+    "practicals": "midday sun with no fill, so eyes sit in deep shadow"
+  },
+  "palette": {
+    "dominant": [
+      "bleached sand",
+      "sun-faded ochre",
+      "dust brown",
+      "hard blue sky"
+    ],
+    "contrast": "high",
+    "grade": "warm and dusty with blown highlights"
+  },
+  "composition": {
+    "rules": [
+      "a face fills the entire frame with the eyes on the centre line",
+      "a single figure stands tiny against an empty horizon"
+    ],
+    "movement_of_subject": "almost nothing moves; tension is carried by stillness and the wait"
+  },
+  "editing": {
+    "avg_shot_len_s": 4.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "wind across open ground, creaking wood, buzzing flies, a distant bell",
+    "music": {
+      "instrumentation": "A twanging electric guitar over sparse percussion, with a whistled line",
+      "tempo": "a slow tempo",
+      "dynamics": "holding back for a long stretch before a sudden full-orchestra entry"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the shot alternates between an extreme close-up of a face and an extreme wide of empty land",
+      "dust hangs in the hot air"
+    ],
+    "avoid": [
+      "soft diffused light",
+      "busy backgrounds",
+      "fast camera movement"
+    ]
+  },
+  "notes": "The scale gap is the style: eyes filling the frame against a horizon that swallows the figure. Long waits, hard sun, sudden action."
+}

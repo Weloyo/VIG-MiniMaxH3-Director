@@ -1,0 +1,53 @@
+{
+  "id": "jeunet",
+  "display_name": "Jean-Pierre Jeunet",
+  "origin": "director",
+  "attribution": "Jean-Pierre Jeunet",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-present",
+  "camera": {
+    "moves": ["Push In", "Arc Shot", "Truck Left", "Tilt Down"],
+    "amplitude": "with large amplitude",
+    "speed": "at fast speed",
+    "shot_scale_bias": "wide-lens close-ups that bend the face outward",
+    "height": "low, tilted slightly up"
+  },
+  "lens": {
+    "focal_bias": "an 18-24mm wide lens held close",
+    "dof": "deep focus with visible edge distortion"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": ["warm soft key", "practical lamps in every corner of the set"],
+    "practicals": "everything is softly lit with no true black anywhere"
+  },
+  "palette": {
+    "dominant": ["golden amber", "deep green", "warm red"],
+    "contrast": "moderate",
+    "grade": "heavily pushed toward green and gold"
+  },
+  "composition": {
+    "rules": ["densely dressed sets with objects filling every corner", "objects placed in the extreme foreground"],
+    "movement_of_subject": "small precise actions are given their own emphatic shot"
+  },
+  "editing": {
+    "avg_shot_len_s": 2.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "exaggerated close object sounds, ticking, creaking, clinking",
+    "music": {
+      "instrumentation": "An accordion and pizzicato strings with a tack piano",
+      "tempo": "a moderate tempo",
+      "dynamics": "skipping along with playful accents on each cut"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "the wide lens is held close and curves the edges of the frame",
+      "the set is dressed densely with warm-coloured objects"
+    ],
+    "avoid": ["cool desaturated colour", "empty minimal sets", "long lenses"]
+  },
+  "notes": "Wide lenses close to the face, gold-green grade, densely dressed frames and quick emphatic cutting."
+}

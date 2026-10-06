@@ -1,0 +1,71 @@
+{
+  "id": "watercolor-storybook",
+  "display_name": "Watercolour storybook",
+  "origin": "director",
+  "attribution": "",
+  "visual_style": "watercolor",
+  "era": "timeless",
+  "camera": {
+    "moves": [
+      "Pan Right",
+      "Push In",
+      "Static Shot"
+    ],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "wide illustrative compositions with generous empty paper",
+    "height": "eye level, flat to the page"
+  },
+  "lens": {
+    "focal_bias": "a flat illustrated perspective",
+    "dof": "everything equally in focus, with depth carried by wash density"
+  },
+  "lighting": {
+    "key_ratio": "low",
+    "sources": [
+      "diffuse light with no single source"
+    ],
+    "practicals": "shadow is painted as a cooler wash rather than an absence of light"
+  },
+  "palette": {
+    "dominant": [
+      "pale washes of blue",
+      "ochre",
+      "rose",
+      "sap green"
+    ],
+    "contrast": "low",
+    "grade": "soft translucent layers on visible paper texture"
+  },
+  "composition": {
+    "rules": [
+      "visible paper grain and pigment pooling at the edges of strokes",
+      "loose ink outlines that overshoot the fill"
+    ],
+    "movement_of_subject": "movement is gentle and rounded, without sharp accelerations"
+  },
+  "editing": {
+    "avg_shot_len_s": 5.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "quiet room tone with soft natural detail",
+    "music": {
+      "instrumentation": "A solo celesta with light harp arpeggios",
+      "tempo": "a slow tempo",
+      "dynamics": "gentle and even, thinning to a single line at the end"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "hand-painted watercolour with visible paper texture and pigment pooling",
+      "loose ink linework that does not perfectly follow the colour fill"
+    ],
+    "avoid": [
+      "photorealism",
+      "hard digital edges",
+      "saturated flat vector colour"
+    ]
+  },
+  "notes": "Translucent washes on textured paper with loose ink lines. Depth comes from layering pigment, not from focus."
+}

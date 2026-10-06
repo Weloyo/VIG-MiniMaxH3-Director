@@ -1,0 +1,53 @@
+{
+  "id": "deakins",
+  "display_name": "Roger Deakins",
+  "origin": "director",
+  "attribution": "Roger Deakins",
+  "visual_style": "Cinematic, live-action",
+  "era": "1990s-present",
+  "camera": {
+    "moves": ["Static Shot", "Truck Left", "Push In"],
+    "amplitude": "with small amplitude",
+    "speed": "at slow speed",
+    "shot_scale_bias": "clean wide compositions with a single clear subject",
+    "height": "eye level, precisely level"
+  },
+  "lens": {
+    "focal_bias": "a 32-50mm lens",
+    "dof": "moderate focus with a natural falloff"
+  },
+  "lighting": {
+    "key_ratio": "high",
+    "sources": ["a single motivated source", "window light with deep unfilled shadow"],
+    "practicals": "one source does all the work and the shadow side is allowed to go black"
+  },
+  "palette": {
+    "dominant": ["cool grey", "warm lamplight", "deep shadow"],
+    "contrast": "high",
+    "grade": "restrained, with one warm accent against a cool field"
+  },
+  "composition": {
+    "rules": ["a silhouette against a bright background", "strong horizon and architectural lines"],
+    "movement_of_subject": "the subject moves through pools of light and back into darkness"
+  },
+  "editing": {
+    "avg_shot_len_s": 6.0,
+    "transition_pref": "hard cut"
+  },
+  "sound": {
+    "ambience_bias": "spare natural ambience with clear spatial depth",
+    "music": {
+      "instrumentation": "A low sustained string bed",
+      "tempo": "a slow tempo",
+      "dynamics": "rising almost imperceptibly and never resolving"
+    }
+  },
+  "prompt_bias": {
+    "must_include": [
+      "a single motivated light source with the shadow side left unfilled",
+      "the subject reads as a silhouette against the brighter background"
+    ],
+    "avoid": ["flat even lighting", "multiple competing sources", "handheld camera"]
+  },
+  "notes": "One light source, honest shadow, level horizons. Restraint in both camera and grade."
+}
