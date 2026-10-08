@@ -1,5 +1,7 @@
 # (VIG) MiniMax H3 Director
 
+![(VIG) MiniMax H3 Director](docs/images/banner.jpg)
+
 **A video editing studio for MiniMax H3, inside one ComfyUI node.**
 
 Write a film the way you would describe it — clip by clip, in your own words and
@@ -88,7 +90,9 @@ This extension does it for you:
 
 ## Installation
 
-- **ComfyUI Manager** — search for *(VIG) MiniMax H3 Director* and install.
+- **ComfyUI Manager** — search for **VIG** (or `vig-minimax-h3-director`) and
+  press Install. Search for "MiniMax H3 Director" alone and other packs with
+  similar names come first.
 - **Comfy CLI** — `comfy node install vig-minimax-h3-director`
 - **By hand** — clone into `ComfyUI/custom_nodes/` and install its one
   requirement (OpenCV) with the Python that runs ComfyUI:
@@ -104,6 +108,11 @@ This extension does it for you:
 
   (That is the portable build's Python; for ComfyUI Desktop use
   `ComfyUI\.venv\Scripts\python.exe`.)
+- **Manager → Install via Git URL** with
+  `https://github.com/Weloyo/VIG-MiniMaxH3-Director` works too, but ComfyUI
+  Manager 4.x turns that button off by default: set
+  `allow_git_url_install = True` in the `[default]` section of
+  `ComfyUI/user/__manager/config.ini` and restart first.
 
 Restart ComfyUI. On the first start the extension downloads MiniMax's own H3
 prompt-writing and style skills (~400 KB) from MiniMax's GitHub — see

@@ -15,7 +15,7 @@ jobs:
     if: ${{ github.repository_owner == 'Weloyo' }}
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Publish Custom Node
         uses: Comfy-Org/publish-node-action@v1
         with:
