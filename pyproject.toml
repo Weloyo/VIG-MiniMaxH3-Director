@@ -1,7 +1,7 @@
 [project]
 name = "vig-minimax-h3-director"
 description = "A video editing studio for MiniMax H3 in one ComfyUI node: write clips in plain language, get format-valid prompts, render picture and sound, carry motion from clip to clip, join a film."
-version = "1.0.1"
+version = "1.0.2"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
 classifiers = ["Operating System :: OS Independent"]

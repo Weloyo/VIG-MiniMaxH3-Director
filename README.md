@@ -193,16 +193,24 @@ on your CUDA and torch versions. Without it KJNodes stops with
 `No module named 'sageattention'` (or, for its MiniMax H3 patch,
 "sageattention is not new enough version").
 
-**The extension ships an installer that works this out for you.**
+**This repository has an installer that works this out for you.** It lives
+on GitHub only: the Comfy Registry does not allow an extension to install
+packages itself, so an install through ComfyUI Manager does not include it.
 
 1. Install KJNodes (ComfyUI Manager → *ComfyUI-KJNodes*).
 2. **Close ComfyUI.**
-3. Double-click
+3. Get the installer. If you cloned this repository it is already in
+   `tools\`. Otherwise download
+   [install_sageattention.bat](https://raw.githubusercontent.com/Weloyo/VIG-MiniMaxH3-Director/main/tools/install_sageattention.bat) and
+   [install_sageattention.py](https://raw.githubusercontent.com/Weloyo/VIG-MiniMaxH3-Director/main/tools/install_sageattention.py) into
+   `ComfyUI\custom_nodes\VIG-MiniMaxH3-Director\tools\` (create the
+   `tools` folder if it is not there).
+4. Double-click
    `ComfyUI\custom_nodes\VIG-MiniMaxH3-Director\tools\install_sageattention.bat`.
    It finds ComfyUI's own Python next to the extension — `python_embeded` for
    the portable build, `ComfyUI\.venv` for ComfyUI Desktop, `venv` for a manual
    install — and runs the installer with it.
-4. The installer prints your Python, torch, CUDA and GPU, then installs:
+5. The installer prints your Python, torch, CUDA and GPU, then installs:
    - **`triton-windows`** — the release matching your torch, from PyPI;
    - **SageAttention** — the prebuilt wheel for your CUDA and torch, from
      [woct0rdho/SageAttention](https://github.com/woct0rdho/SageAttention/releases);
@@ -210,7 +218,7 @@ on your CUDA and torch versions. Without it KJNodes stops with
 
    It finishes by running SageAttention on your GPU against PyTorch's own
    attention. **"Done"** means it works.
-5. Start ComfyUI, open `07_quality_sage`, and set the Sage patch node's mode to
+6. Start ComfyUI, open `07_quality_sage`, and set the Sage patch node's mode to
    **auto**. (`sageattn3` is for RTX 50xx Blackwell cards only.)
 
 **From a terminal** — the same script, with options:
