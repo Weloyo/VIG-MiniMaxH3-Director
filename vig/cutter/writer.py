@@ -7,6 +7,7 @@ from ..llm.base import (
     EnrichRequest,
     TranslateRequest,
 )
+from ..prompt import ref_sections
 from ..types import RefBundle, RefLabel
 from .state import (
     MAX_SEGMENT_SECONDS,
@@ -124,6 +125,9 @@ def camera_from_script(script: str) -> str:
         if any(word in text for word in words):
             return motion
     return ""
+def is_blocking_source(source) -> bool:
+    name = re.split(r"[\\/]", str(source or ""))[-1]
+    return bool(re.match(r"blocking", name, re.IGNORECASE)) and name.lower().endswith(".mp4")
 def reference_bundle(refs: list) -> RefBundle:
     bundle = RefBundle()
     counts = {"Picture": 0, "Video": 0, "Audio": 0}
@@ -141,6 +145,9 @@ def reference_bundle(refs: list) -> RefBundle:
         tag = str(ref.get("tag") or "").strip()
         described = _keyframe_role(ref) or ("" if _is_caption(label) else label)
         description = described or f"the {kind.lower()} the director attached"
+        blocking = kind == "Video" and is_blocking_source(ref.get("source"))
+        if blocking:
+            description, described = ref_sections.BLOCKING_ROLE, True
         bundle.labels.append(
             RefLabel(
                 kind=kind,
@@ -148,6 +155,7 @@ def reference_bundle(refs: list) -> RefBundle:
                 description=description,
                 cite=tag,
                 described=bool(described),
+                facts={"blocking": True} if blocking else {},
             )
         )
     if bundle.labels:
@@ -199,6 +207,17 @@ def cite_labels(story: str, bundle: RefBundle) -> tuple[str, list[str]]:
             "Define each in subject_definitions and cite it where it appears, by "
             "that exact tag. Write no other label and no file name."
         )
+        if any(label.kind == "Picture" for label in bundle.labels):
+            lines.append(
+                "A subject drawn from a reference picture is defined by WHAT it is and "
+                "nothing more -- '<Subject 1> is the rally car, taken from <Picture 1>.' "
+                "Its colours, livery, markings, materials, clothing and hair come from "
+                "the picture; words about them compete with the picture and win, so "
+                "write none, here or in detailed_description -- UNLESS the idea above "
+                "names a colour itself. Then that is the director's own word: write "
+                "exactly those colours, in the definition and in the description, and "
+                "no others. Describe what it DOES."
+            )
         lines.append(
             "Every subject_definitions line must name the picture it comes from, "
             'like "<Subject 1> is the young woman in <Picture 1>, with long blonde '
@@ -233,6 +252,22 @@ def _names_this(word: str, entry) -> bool:
         if len(name) >= _STEM_FLOOR and low.startswith(name) and len(low) - len(name) <= 3:
             return True
     return False
+def _same_word(written: str, name: str) -> bool:
+    if written == name:
+        return True
+    if min(len(written), len(name)) < _STEM_FLOOR:
+        return False
+    shared = len(os.path.commonprefix([written, name]))
+    return shared >= _STEM_FLOOR and shared >= max(len(written), len(name)) - 3
+def _phrase_before(words_before: list, entry) -> bool:
+    for name in [entry.name, *entry.aliases]:
+        parts = [w.lower() for w in _WORD.findall(str(name or ""))]
+        if len([w for w in parts if len(w) >= _STEM_FLOOR]) < 2 or len(parts) > len(words_before):
+            continue
+        tail = [w.lower() for w in words_before[-len(parts):]]
+        if all(_same_word(w, n) for w, n in zip(tail, parts)):
+            return True
+    return False
 def cast_pictures(script: str, bundle, cast) -> dict:
     text = str(script or "")
     if not text or not cast:
@@ -242,6 +277,13 @@ def cast_pictures(script: str, bundle, cast) -> dict:
         if not label.cite:
             continue
         for match in re.finditer(rf"@{re.escape(label.cite)}\b", text, re.IGNORECASE):
+            whole = [entry for entry in cast if _phrase_before(_WORD.findall(text[:match.start()]), entry)]
+            if whole:
+                claims.setdefault(label.tag, [])
+                for entry in whole:
+                    if entry not in claims[label.tag]:
+                        claims[label.tag].append(entry)
+                continue
             before = _WORD.findall(text[:match.start()])[-_CITE_WORDS:][::-1]
             for word in before:
                 found = [entry for entry in cast if _names_this(word, entry)]
@@ -259,6 +301,113 @@ def cast_pictures(script: str, bundle, cast) -> dict:
     return {
         tag: entry for tag, entry in mapped.items() if len(taken[id(entry)]) == 1
     }
+_PAINT_WORDS = (
+    "white", "black", "red", "blue", "green", "yellow", "orange", "purple", "violet",
+    "pink", "brown", "grey", "gray", "silver", "gold", "golden", "beige", "cream",
+    "crimson", "scarlet", "navy", "teal", "turquoise", "cyan", "magenta", "maroon",
+    "olive", "tan", "ivory", "bright", "dark", "light", "pale", "deep", "matte",
+    "glossy", "chrome", "metallic", "colorful", "colourful", "multicoloured",
+    "multicolored", "two-tone", "painted",
+)
+_PAINT_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(w) for w in _PAINT_WORDS + ("coloured", "colored", "toned", "tone"))
+    + r")\b",
+    re.IGNORECASE,
+)
+_LOOKS_START = re.compile(
+    r",|:|;|\s[-\u2013\u2014]\s|\s(?:with|in|from|taken|painted|wearing|featuring|"
+    r"dressed|covered|showing|characterized|characterised)\s",
+    re.IGNORECASE,
+)
+_RU_HUES = (
+    ("жёлт", "yellow"), ("желт", "yellow"), ("голуб", "light blue"), ("син", "blue"),
+    ("красн", "red"), ("бел", "white"), ("чёрн", "black"), ("черн", "black"),
+    ("зелён", "green"), ("зелен", "green"), ("оранжев", "orange"), ("фиолетов", "purple"),
+    ("розов", "pink"), ("коричнев", "brown"), ("сер", "grey"), ("серебрист", "silver"),
+    ("золотист", "gold"), ("золот", "gold"), ("бирюзов", "turquoise"), ("бордов", "maroon"),
+    ("бежев", "beige"), ("сиренев", "lilac"), ("алый", "scarlet"),
+)
+_RU_ENDING = r"(?:ый|ий|ой|ая|яя|ое|ее|ые|ие|ого|его|ому|ему|ую|юю|ым|им|ыми|ими|ых|их|ом|ем|ей|о|е)?"
+_RU_TONE = {"тёмн": "dark", "темн": "dark", "светл": "light", "ярк": "bright"}
+_EN_HUES = (
+    "white", "black", "red", "blue", "green", "yellow", "orange", "purple", "violet",
+    "pink", "brown", "grey", "gray", "silver", "gold", "golden", "beige", "crimson",
+    "scarlet", "navy", "teal", "turquoise", "cyan", "magenta", "maroon", "lilac",
+)
+_EN_TONE = ("dark", "light", "bright", "pale", "deep")
+def _ru_colour(word: str, table) -> str:
+    low = word.lower()
+    for stem, colour in sorted(table, key=lambda pair: len(pair[0]), reverse=True):
+        if re.fullmatch(re.escape(stem) + _RU_ENDING, low):
+            return colour
+    return ""
+def script_colours(script: str) -> list:
+    words = _WORD.findall(str(script or "").replace("-", " "))
+    found: list = []
+    tone = ""
+    for word in words:
+        low = word.lower()
+        hue = _ru_colour(word, _RU_HUES)
+        if not hue and low in _EN_HUES:
+            hue = "grey" if low == "gray" else ("gold" if low == "golden" else low)
+        if hue:
+            colour = f"{tone} {hue}".strip() if tone and not hue.startswith(("light ", "dark ")) else hue
+            if colour not in found:
+                found.append(colour)
+            tone = ""
+            continue
+        tone = _ru_colour(word, tuple(_RU_TONE.items())) or (low if low in _EN_TONE else "")
+    return found
+def _colour_phrase(colours) -> str:
+    colours = list(colours)
+    if len(colours) <= 1:
+        return "".join(colours)
+    return ", ".join(colours[:-1]) + " and " + colours[-1]
+def plain_picture_definitions(prompt: str, colours=()) -> tuple:
+    from ..prompt.validator import split_fields
+    _, bodies = split_fields(prompt, spec.REF2VA)
+    written = bodies.get("subject_definitions", "")
+    if not written.strip() or written not in prompt:
+        return prompt, 0
+    lines = written.splitlines()
+    changed = 0
+    colours = list(colours or ())
+    drawn = [
+        i for i, line in enumerate(lines)
+        if re.match(r"\s*<Subject\s+\d+>\s+is\s", line) and re.search(r"<Picture\s+\d+>", line)
+    ]
+    painted = [
+        i for i in drawn
+        if any(re.search(rf"\b{re.escape(c.split()[-1])}\b", lines[i], re.IGNORECASE) for c in colours)
+    ]
+    owners = set(painted or (drawn if len(drawn) == 1 else []))
+    for i, line in enumerate(lines):
+        head = re.match(r"\s*(<Subject\s+\d+>)\s+is\s+(.*)$", line)
+        picture = re.search(r"<Picture\s+\d+>", line)
+        if not head or not picture:
+            continue
+        rest = head.group(2)
+        text = _PAINT_RE.sub("", re.sub(r"<[^>]+>", "", rest).replace("-", " "))
+        text = re.sub(r"\s+", " ", text)
+        text = re.sub(r"\b(a|an|the)\s*(?:(?:,|and|&|two)\s*)+", r"\1 ", text, flags=re.IGNORECASE)
+        text = re.sub(r"^\s*(?:(?:,|and|&|two)\s*)+", "", text, flags=re.IGNORECASE)
+        cut = _LOOKS_START.search(text)
+        noun = (text[:cut.start()] if cut else text).strip(" ,.;:")
+        noun = re.sub(r"^(a|an)\s+(?=[aeiou])", "an ", noun, flags=re.IGNORECASE)
+        noun = re.sub(r"^an\s+(?=[^aeiou\s])", "a ", noun, flags=re.IGNORECASE)
+        if not noun or noun.lower() in ("a", "an", "the"):
+            noun = "the subject"
+        if colours and i in owners:
+            if noun.lower().startswith("the content carried over"):
+                noun = "the subject"
+            noun = f"{noun} in {_colour_phrase(colours)}"
+        plain = f"{head.group(1)} is {noun}, taken from {picture.group(0)}."
+        if plain != line.strip():
+            lines[i] = plain
+            changed += 1
+    if not changed:
+        return prompt, 0
+    return prompt.replace(written, "\n".join(lines), 1), changed
 def describe_refs_from_cast(bundle, mapping: dict) -> int:
     told = 0
     for label in getattr(bundle, "labels", []) or []:
@@ -605,28 +754,44 @@ def _own_soundscape(prompt: str, settings, story: str, mode: str, backend) -> tu
         return None, "", ""
     from ..llm.base import SoundRequest
     from ..styles import library
+    from ..styles.schema import DEFAULT_STYLE
     style = library.get((getattr(settings, "style_id", "") or "").strip() or "neutral")
     bias = (style.sound.ambience_bias or "").strip()
     field = "overall_soundscape"
     _, bodies = _split_prompt_fields(prompt, mode)
-    if not bias or not _same_line(bodies.get(field, ""), bias):
+    allow_music = bool(getattr(settings, "allow_music", True))
+    music = bodies.get("non_diegetic_music", "")
+    canned = [line for line in (style.score_habit(), DEFAULT_STYLE.music_sentence())
+              if line and line != spec.NA_VALUE]
+    sound_copied = bool(bias) and _same_line(bodies.get(field, ""), bias)
+    music_copied = allow_music and any(_same_line(music, line) for line in canned)
+    if not (sound_copied or music_copied):
         return None, "", ""
-    said = (
-        "overall_soundscape came back as the style's own ambience line word for word "
-        f"(\"{bias}\") -- the brief copied, not the place the script is set in."
-    )
+    saids = []
+    if sound_copied:
+        saids.append(
+            "overall_soundscape came back as the style's own ambience line word for word "
+            f"(\"{bias}\") -- the brief copied, not the place the script is set in."
+        )
+    if music_copied:
+        saids.append(
+            f"non_diegetic_music came back as a canned score word for word (\"{music.strip()}\") "
+            "-- copied from the brief, not chosen for what happens in this clip."
+        )
+    said = " ".join(saids)
+    by_hand = "the sound of the place" if sound_copied else "the score"
     stage = getattr(backend, "write_sound", None)
     if _is_offline(backend) or not callable(stage):
         return None, "", (
-            f"WARNING: {said} No model was there to ask again: write the sound of the "
-            "place by hand, or run the writer again."
+            f"WARNING: {said} No model was there to ask again: write {by_hand} by hand, "
+            "or run the writer again."
         )
     try:
-        fresh, _score = stage(SoundRequest(
+        fresh, score = stage(SoundRequest(
             beats=[story],
             style_ambience=bias,
-            style_music=style.music_sentence(),
-            allow_music=bool(getattr(settings, "allow_music", True)),
+            style_music=style.score_habit(),
+            allow_music=allow_music,
             duration_seconds=float(getattr(settings, "duration_seconds", 0) or 5.0),
         ))
     except Exception as exc:
@@ -635,19 +800,24 @@ def _own_soundscape(prompt: str, settings, story: str, mode: str, backend) -> tu
             f"({type(exc).__name__}: {exc})."
         )
     fresh = " ".join(str(fresh or "").split())
-    if not fresh or _same_line(fresh, bias):
+    score = " ".join(str(score or "").split())
+    notes = []
+    if sound_copied and fresh and not _same_line(fresh, bias):
+        bodies[field] = fresh
+        notes.append(f"Asked the sound stage for the place in the script; it wrote: \"{fresh}\"")
+    if music_copied and score and score != spec.NA_VALUE and not any(_same_line(score, line) for line in canned):
+        bodies["non_diegetic_music"] = score
+        notes.append(f"Asked the sound stage for this clip's score; it wrote: \"{score}\"")
+    if not notes:
         return None, "", (
-            f"WARNING: {said} Asked again and got the same line back: write the sound "
-            "of the place by hand."
+            f"WARNING: {said} Asked again and got the same line back: write {by_hand} by hand."
         )
-    bodies[field] = fresh
     blocks = [
         f"{name}:\n{bodies[name].strip()}"
         for name in spec.fields_for(mode)
         if bodies.get(name, "").strip()
     ]
-    note = f"{said} Asked the sound stage for the place in the script; it wrote: \"{fresh}\""
-    return "\n\n".join(blocks), note, ""
+    return "\n\n".join(blocks), f"{said} {' '.join(notes)}", ""
 def _compose(
     settings, segment: dict, story: str, progress=None, previous: dict | None = None,
     backend=None,
@@ -988,6 +1158,14 @@ def _compose(
             )
             report = f"{report}\n{note}".strip() if report else note
         prompt, rebuilt, why = enforce_reference_sections(prompt, settings.refs, 1)
+        prompt, plained = plain_picture_definitions(prompt, script_colours(tagged_script))
+        if plained:
+            note = (
+                f"{plained} subject definition(s) drawn from a picture were cut back to what "
+                "the subject is: its looks come from the picture, and words about them "
+                "compete with it."
+            )
+            report = f"{report}\n{note}".strip() if report else note
         prompt, named = name_the_subjects(prompt, settings.refs, mapping)
         if named:
             note = (

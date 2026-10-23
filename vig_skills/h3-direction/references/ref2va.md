@@ -49,6 +49,31 @@ visual track and the audio track separately — they are two references doing tw
 speaker maps to a defined subject, write the ID beside it in the definition as `<Subject 2>
 (S1)`; otherwise give a stable voice description followed by the ID.
 
+### A subject drawn from a picture is named, not painted
+
+The director's rule (23 Oct 2026): in ref2va the picture describes the subject, so its
+definition says WHAT it is and nothing more --
+
+```text
+<Subject 1> is the rally car, taken from <Picture 1>.
+```
+
+-- never its colours, livery, markings, materials, clothing or hair, and neither does
+`detailed_description`. Words about the looks compete with the picture and win: a white
+Martini-liveried Lancia defined "painted in bright red and white" was rendered red and
+white, and rendered right the moment the colour was taken out. The console cuts such a
+definition back after the pass in any case. Describe what the subject DOES.
+
+**Unless the script names the colour itself.** Then it is the director's own word, not a
+guess: write exactly those colours, in the definition and in `detailed_description`, and
+no others. "Автомобиль раскрашен в желто-голубые цвета" gives
+
+```text
+<Subject 1> is the rally car in yellow and light blue, taken from <Picture 1>.
+```
+
+and the console keeps the colours the script names when it cuts the definition back.
+
 ## summary
 
 Opens with a square-bracketed task type, then two or three sentences on what the target video is
@@ -69,7 +94,9 @@ No label may make its first appearance here.
 
 ## retention_analysis
 
-One line per reference, saying where it appears and how much of it survives. Visual entries use
+One line per reference that has its own line in `subject_definitions`, saying where it appears and how
+much of it survives. A picture cited only as the source of a subject ("<Subject 1> is the plane in
+<Picture 1>") has no line of its own in either field -- the subject carries its retention. Visual entries use
 `fully_preserved`, `partially_preserved`, `attribute_transfer` or `weak_reference`; audio
 entries use `fully_copy`, `partially_copy`, `reference` or `weak_reference`. A line without one
 of its kind's markers is a rejection, and so is a speaker ID anywhere in this field.
@@ -109,6 +136,33 @@ later shots opening `At MM:SS.mmm,`. Cite labels by their exact tag at the momen
 content appears, and pair each first citation with the few features that must carry: `<Subject
 2> (S1), the young woman with long blonde hair and a light-pink button-down shirt, sits ...`.
 Re-citing the label in later shots is enough; the full description is not repeated.
+
+### When a video reference carries the camera
+
+The description still names the camera move -- every shot states its camera -- but when a
+`<Video N>` sets the camera path (a blocking from the console's 3D editor, a reference shot),
+the move is written by its TYPE and handed to the reference for everything else (the director's
+rule, 22 Oct 2026):
+
+```text
+The camera arcs around the climbing plane, its path, height and pacing following the camera
+movement of <Video 1>: it swings from the front of the wings to the far side, tilting up as
+the plane rises above it.
+```
+
+- No `with small/large amplitude` and no `at slow/fast speed` of your own: the reference
+  holds them, and a number in the text that disagrees with the video is two instructions.
+- Describe what the move REVEALS (the wings turning edge-on, the cloud dropping out of frame),
+  never a different move.
+- One continuous move in the reference is one shot in the text: a cut in the description
+  would cut the reference's camera path in two.
+- A blocking from the 3D editor is NEVER a `<Subject N>`: its grey shapes are stand-ins, and
+  a subject "carried over from <Video 1>" orders H3 to put them in the film. It gets one line
+  of its own in `subject_definitions` -- "<Video 1> is a grey 3D blocking of the shot: the
+  target video follows its camera movement, its framing and the path and timing of its
+  stand-in shapes, and never shows its grey shapes, floor or flat light." -- and a
+  `partially_preserved` line in `retention_analysis` (its camera path and motion are kept
+  closely, its look not at all). The console writes both itself after the pass.
 
 ## The Two Sound Fields
 

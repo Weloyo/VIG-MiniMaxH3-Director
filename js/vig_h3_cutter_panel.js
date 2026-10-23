@@ -11,6 +11,7 @@ import { SCHEMES, SCHEME_CLASS, applyScheme, ensureSchemeStyles, readScheme } fr
 import { openTakesGallery, ensureTakesStyles } from "./vig_h3_cutter_takes.js";
 import { openFilmsGallery } from "./vig_h3_cutter_films.js";
 import { openReferenceEditor, refEditKey } from "./vig_h3_cutter_refedit.js";
+import { openBlockingEditor } from "./vig_h3_blocking.js";
 const STYLE_ID = "vig-h3-cutter-styles";
 const SUPPORT_URL = "https://ko-fi.com/vigpay";
 const CSS = `
@@ -374,18 +375,18 @@ const CSS = `
 .vig-cutter-split {
   display: inline-flex;
   align-items: stretch;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
   flex: 0 0 auto;
 }
 .vig-cutter-split > .vig-cutter-primary {
-  border-radius: 0;
+  border-radius: 5px 0 0 5px;
   border-right: none;
 }
 .vig-cutter-takes {
   border: 1px solid var(--cut-accent);
   border-left: 1px solid rgba(28, 23, 16, 0.45);
-  border-radius: 0;
+  border-radius: 0 5px 5px 0;
   background: var(--cut-accent-lit);
   color: var(--cut-on-accent);
   font: inherit;
@@ -897,9 +898,11 @@ const CSS = `
   background: #000;
 }
 .vig-cutter-lightbox {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: 70;
+  z-index: 10000;
+  font-family: ${UI_FONT};
+  font-size: 12px;
   background: rgba(6, 5, 4, 0.86);
   display: flex;
   align-items: center;
@@ -927,6 +930,7 @@ const CSS = `
   padding: 4px 2px 2px;
 }
 .vig-cutter-popsettings .vig-cutter-group { flex: 0 0 auto; }
+.vig-cutter-lightbox button { font-family: inherit; }
 .vig-cutter-lightbar {
   display: flex;
   align-items: center;
@@ -2207,15 +2211,15 @@ function dot(left, colour, glyph, title, onClick) {
   holder.appendChild(button);
   return holder;
 }
-function seedModeIcons(current, spentBy, onPick, roll) {
+function seedModeIcons(current, spentBy, onPick, roll, bump) {
   const group = el("span", "vig-cutter-seedmodes");
   const buttons = [];
   for (const [mode, icon, caption, why] of [
     ["random", ICONS.dice, "randomize",
       `A new seed every time ${spentBy} — and this press rolls one now.`],
     ["increment", ICONS.plusone, "increment",
-      `One more every time ${spentBy} — a sweep that reads back in the order `
-      + "it was made: 100, 101, 102."],
+      `One more every time ${spentBy} — and this press adds one now: a sweep `
+      + "that reads back in the order it was made, 100, 101, 102."],
     ["fixed", ICONS.locked, "fixed",
       `The seed stays where it is when ${spentBy}. The way to see what a CHANGE `
       + "did on its own: move one thing, press again, and the seed is not what "
@@ -2228,8 +2232,9 @@ function seedModeIcons(current, spentBy, onPick, roll) {
     if (mode === current) button.classList.add("on");
     button.addEventListener("click", () => {
       for (const other of buttons) other.classList.toggle("on", other === button);
-      onPick(mode);
       if (mode === "random" && roll) roll();
+      if (mode === "increment" && bump) bump();
+      onPick(mode);
     });
     buttons.push(button);
     group.appendChild(button);
@@ -2237,7 +2242,7 @@ function seedModeIcons(current, spentBy, onPick, roll) {
   return group;
 }
 function seedLabel(text, modes) {
-  const label = el("label", "vig-cutter-label");
+  const label = el("div", "vig-cutter-label");
   label.style.cssText = "display:flex;align-items:center;gap:4px";
   label.appendChild(el("span", "", text));
   label.appendChild(modes);
@@ -2267,6 +2272,7 @@ const STRIP_ROUTE = "/vig/h3/cutter/strip";
 const TAKE_ADOPT_ROUTE = "/vig/h3/cutter/take_adopt";
 const REVEAL_ROUTE = "/vig/h3/cutter/reveal";
 const VALIDATE_ROUTE = "/vig/h3/cutter/validate";
+const BLOCKING_SCENE_ROUTE = "/vig/h3/cutter/blocking/scene";
 const PROJECT_SIZE_ROUTE = "/vig/h3/cutter/project_size";
 const ENVELOPES_ROUTE = "/vig/h3/cutter/envelopes";
 export function buildCutterPanel(options = {}) {
@@ -2562,7 +2568,42 @@ export function buildCutterPanel(options = {}) {
   });
   takesGroup.fields.appendChild(newTakeLabel);
   parts.paintNewTake = () => { newTakeBox.checked = !!state.board.new_take_to_timeline; };
-  settingsBox.append(agentGroup.wrap, previewGroup.wrap, takesGroup.wrap);
+  const renderLangGroup = paramGroup("render · prompt language");
+  const renderLangStrip = el("div");
+  renderLangStrip.style.cssText =
+    "display:flex;align-items:stretch;gap:1px;background:var(--cut-edge);border:1px solid var(--cut-edge);" +
+    "border-radius:5px;overflow:hidden;height:var(--cut-ctl)";
+  const renderLangButtons = [];
+  for (const [code, label, title] of [
+    ["en", "EN", "English — the prompt format MiniMax documents. The default."],
+    ["zh", "中文", "Chinese — an experiment: the prompt is translated to Chinese before every render, its format markers kept English."],
+    ["ru", "RU", "Russian — an experiment: the prompt is translated to Russian before every render, its format markers kept English."],
+  ]) {
+    const button = el("button", "", label);
+    button.title = title;
+    button.dataset.log = `render language ${code}`;
+    button.addEventListener("click", () => {
+      if (state.board.render_language === code) return;
+      state.board.render_language = code;
+      commit();
+      parts.paintRenderLang();
+    });
+    renderLangButtons.push([button, code]);
+    renderLangStrip.appendChild(button);
+  }
+  renderLangGroup.fields.appendChild(renderLangStrip);
+  parts.paintRenderLang = () => {
+    const on = model.renderLanguage(state.board.render_language);
+    for (const [button, code] of renderLangButtons) {
+      const active = code === on;
+      button.style.cssText =
+        `background:${active ? "rgba(var(--cut-accent-rgb),.28)" : "var(--cut-menu)"};border:none;` +
+        `color:${active ? "var(--cut-bright)" : "var(--cut-dim)"};font-size:11px;padding:0 11px;` +
+        "display:flex;align-items:center;cursor:pointer;white-space:nowrap";
+    }
+  };
+  parts.paintRenderLang();
+  settingsBox.append(agentGroup.wrap, previewGroup.wrap, takesGroup.wrap, renderLangGroup.wrap);
   function openSettings() {
     if (state.settingsOpen) {
       state.settingsOpen();
@@ -2591,6 +2632,7 @@ export function buildCutterPanel(options = {}) {
     renderAgentRow();
     renderPreviewRow();
     parts.paintNewTake();
+    parts.paintRenderLang();
   }
   function renderProjectTotals() {
     const node = parts.projectTotals;
@@ -4933,6 +4975,72 @@ The board on screen will be replaced.`,
     state.refEditorKey = key;
     if (waiting && waiting.ended) state.refJob = null;
   }
+  async function openBlocking(seg, ref = null) {
+    if (typeof options.callRoute !== "function") return;
+    const size = canvas();
+    const index = state.board.segments.indexOf(seg);
+    let scene = null;
+    if (ref && ref.source) {
+      try {
+        scene = (await options.callRoute(BLOCKING_SCENE_ROUTE, { source: ref.source })).scene || null;
+      } catch {
+        scene = null;
+      }
+    }
+    await openBlockingEditor({
+      mount: document.body,
+      title: `Blocking — clip ${index + 1}`,
+      name: `blocking_clip${index + 1}`,
+      frames: model.sampleFrames(seg),
+      fps: model.FPS,
+      width: size.width,
+      height: size.height,
+      scene,
+      draftKey: ref ? "" : `clip${seg.id}`,
+      callRoute: options.callRoute,
+      onRendered: ({ source, label }) => {
+        if (ref) {
+          const tag = ref.tag || "";
+          for (const other of state.board.segments) {
+            for (const held of other.refs) {
+              if (held === ref || (tag && held.tag === tag)) {
+                held.source = source;
+                held.label = label;
+                held.frame = "";
+                markStale(other);
+              }
+            }
+          }
+          const entry = tag && state.board.library.find((item) => item.tag === tag);
+          if (entry) {
+            entry.source = source;
+            entry.label = label;
+          }
+        } else {
+          const fresh = {
+            uid: `video-${Date.now().toString(36)}`,
+            kind: "video",
+            label,
+            source,
+            tag: "",
+            frame: "",
+          };
+          const entry = adoptIntoPool({ source, label }, "segment", "video");
+          fresh.tag = entry ? entry.tag : "";
+          seg.refs.push(fresh);
+          markStale(seg);
+          fileReference(seg, fresh);
+        }
+        commit();
+        renderTimeline();
+        renderDetail();
+      },
+    });
+  }
+  function isBlocking(ref) {
+    const name = String((ref && ref.source) || "").split("/").pop() || "";
+    return /^blocking/i.test(name) && /\.mp4$/i.test(name);
+  }
   async function openTakes(seg, index) {
     if (!(state.board.project_dir || "").trim()
         && !(await offerProject("Takes are kept in a project folder, and this cut has none — "
@@ -7003,7 +7111,7 @@ The board on screen will be replaced.`,
     knobs.append(knobsSample, knobsWriter, knobsLook);
     function knobField(labelText, controls, { badge = null, row = null } = {}) {
       const field = el("div", "vig-cutter-field");
-      const label = el("label", "vig-cutter-label");
+      const label = el(badge ? "div" : "label", "vig-cutter-label");
       label.style.cssText = "display:flex;align-items:center;gap:4px";
       label.appendChild(el("span", "", labelText));
       if (badge) label.appendChild(badge);
@@ -7055,6 +7163,13 @@ The board on screen will be replaced.`,
         renderTimeline();
         renderDetail();
       },
+      () => {
+        seg.seed = (Number(seg.seed) || 0) + 1;
+        if (seg.status === "ready") seg.status = "stale";
+        commit();
+        renderTimeline();
+        renderDetail();
+      },
     );
     knobField("video seed", seedBox, { badge: seedModes, row: knobsSample });
     const writerSeed = document.createElement("input");
@@ -7100,6 +7215,13 @@ The board on screen will be replaced.`,
       },
       () => {
         state.board.writer.seed = randomSeed();
+        writerSeed.value = String(state.board.writer.seed);
+        writerClear.disabled = false;
+        commit();
+        renderAgentRow();
+      },
+      () => {
+        state.board.writer.seed = (Number(state.board.writer.seed) || 0) + 1;
         writerSeed.value = String(state.board.writer.seed);
         writerClear.disabled = false;
         commit();
@@ -7467,7 +7589,7 @@ The board on screen will be replaced.`,
         return;
       }
       const ready = pressWrites(seg)
-        ? await processSegment(seg, { askWhenCurrent: false, press: "writeRun" })
+        ? await processSegment(seg, { askWhenCurrent: false, press: "writeRun", force: true })
         : true;
       if (ready) {
         await renderThisClip(seg, index, "writeRun");
@@ -7617,9 +7739,9 @@ The board on screen will be replaced.`,
       "border-radius:5px;overflow:hidden;flex-shrink:0;height:var(--cut-ctl)";
     const langButtons = [];
     for (const [code, label, title] of [
-      ["EN", "EN", "English — the language the model reads"],
-      ["ZH", "中文", "Chinese — the language the model reads"],
-      ["RU", "RU", "Russian — read and edit in your own language"],
+      ["EN", "EN", "English — the format MiniMax documents"],
+      ["ZH", "中文", "Chinese — read and edit; rendered in Chinese when the render language (under the gear) is 中文"],
+      ["RU", "RU", "Russian — read and edit; rendered in Russian when the render language (under the gear) is RU"],
     ]) {
       const active = (seg.prompt_lang || "EN") === code;
       const button = el("button", "", label);
@@ -7987,7 +8109,7 @@ The board on screen will be replaced.`,
     if (source === target || !(seg.prompt || "").trim()) return;
     const callRoute = options.callRoute;
     if (typeof callRoute !== "function") return;
-    if (source === "RU" && !seg.prompt_edited && seg.lang_pre === target && seg.prompt_pre) {
+    if (source !== "EN" && !seg.prompt_edited && seg.lang_pre === target && seg.prompt_pre) {
       seg.prompt = seg.prompt_pre;
       seg.prompt_lang = target;
       seg.prompt_pre = "";
@@ -8117,9 +8239,17 @@ The board on screen will be replaced.`,
       : {};
     const mode = seedModeOf({ seed_mode: state.board.writer_seed_mode });
     if (mode !== "fixed") {
+      const was = model.writerInputs(state.board).writer_seed;
       state.board.writer.seed = model.nextSeed(
         Number(state.board.writer.seed) || 0, mode, randomSeed,
       );
+      const now = model.writerInputs(state.board).writer_seed;
+      for (const other of state.board.segments) {
+        const from = other.prompt_from;
+        if (from && typeof from === "object" && String(from.writer_seed_next) === String(was)) {
+          from.writer_seed_next = now;
+        }
+      }
     }
     commit();
   }
@@ -8402,12 +8532,16 @@ The board on screen will be replaced.`,
       : null;
   }
   function pressWrites(seg) {
-    return !String(seg.prompt || "").trim();
+    return model.writerPressWrites(seg, state.board);
   }
   function processTitle(seg) {
     if (pressWrites(seg)) {
-      return "This clip has no prompt yet, so this writes one with the agent and then " +
-        "renders on it without stopping. Nothing renders if the agent fails or you stop it.";
+      return (String(seg.prompt || "").trim()
+        ? "The script or the writer's seed has changed since this prompt was written, so this " +
+          "writes it again with the agent and then renders on it without stopping."
+        : "This clip has no prompt yet, so this writes one with the agent and then " +
+          "renders on it without stopping.") +
+        " Nothing renders if the agent fails or you stop it.";
     }
     const drift = model.promptDrift(seg, state.board);
     return "Renders the clip on its prompt as it stands — the writer is not called. " +
@@ -8416,9 +8550,9 @@ The board on screen will be replaced.`,
           "if you want it rewritten for them."
         : "Press Process with agent for another wording.");
   }
-  async function processSegment(seg, { askWhenCurrent = true, press = "write" } = {}) {
+  async function processSegment(seg, { askWhenCurrent = true, press = "write", force = false } = {}) {
     if (state.procBusy) return false;
-    if (model.promptIsCurrent(seg, state.board)) {
+    if (!force && model.promptIsCurrent(seg, state.board)) {
       if (!askWhenCurrent) {
         noteAgent(
           seg,
@@ -8490,7 +8624,11 @@ The board on screen will be replaced.`,
               : "agent pass done — the prompt below is what will render.",
         );
       }
-      seg.prompt_from = { ...model.promptInputs(seg, state.board), ...askedWriter };
+      seg.prompt_from = {
+        ...model.promptInputs(seg, state.board),
+        ...askedWriter,
+        writer_seed_next: model.writerInputs(state.board).writer_seed,
+      };
       wrote = true;
     } catch (error) {
       if (isAbort(error)) {
@@ -8511,6 +8649,7 @@ The board on screen will be replaced.`,
       renderTimeline();
       renderAgentRow();
     }
+    if (wrote === true) await toRenderLanguage([seg]);
     return wrote;
   }
   async function pullStoryboard() {
@@ -9325,7 +9464,7 @@ The board on screen will be replaced.`,
   }
   function watchMedia(ref) {
     if (!ref || !ref.source) return;
-    const layer = el("div", "vig-cutter-lightbox");
+    const layer = el("div", `vig-cutter-lightbox ${SCHEME_CLASS}`);
     const frame = el("div", "vig-cutter-lightframe");
     const video = document.createElement("video");
     video.src = viewUrl(ref.source);
@@ -9355,7 +9494,7 @@ The board on screen will be replaced.`,
       if (event.target === layer) shut();
     });
     document.addEventListener("keydown", onKey, true);
-    root.appendChild(layer);
+    document.body.appendChild(layer);
   }
   function tileDots(...buttons) {
     const row = el("div", "vig-tile-dots");
@@ -9589,6 +9728,11 @@ The board on screen will be replaced.`,
       "Cancel",
     );
     if (!yes) return;
+    const unconverted = await toRenderLanguage(rest.clips);
+    if (unconverted) {
+      flashOver(parts.filmPlayer, unconverted, "error");
+      return;
+    }
     const broken = await formatErrors(rest.clips);
     if (broken) {
       flashOver(parts.filmPlayer, broken, "error");
@@ -9670,7 +9814,14 @@ The board on screen will be replaced.`,
         if (!yes) return;
         ids.unshift(...missing.map((s) => s.id));
       }
-      const broken = await formatErrors(ids.map((id) => all.find((s) => s.id === id)).filter(Boolean));
+      const queued = ids.map((id) => all.find((s) => s.id === id)).filter(Boolean);
+      const unconverted = await toRenderLanguage(queued);
+      if (unconverted) {
+        noteAgent(seg, "error", unconverted);
+        renderDetail();
+        return;
+      }
+      const broken = await formatErrors(queued);
       if (broken) {
         noteAgent(seg, "error", broken);
         renderDetail();
@@ -9678,12 +9829,29 @@ The board on screen will be replaced.`,
       }
       request({ only: ids, force: [seg.id] });
   }
+  async function toRenderLanguage(segs) {
+    const target = model.renderLanguage(state.board.render_language).toUpperCase();
+    for (const seg of segs) {
+      if (!seg || !(seg.prompt || "").trim()) continue;
+      if ((seg.prompt_lang || "EN") === target) continue;
+      await switchLanguage(seg, target);
+      if ((seg.prompt_lang || "EN") !== target) {
+        const n = (state.board.segments || []).indexOf(seg) + 1;
+        return (
+          `clip ${n}'s prompt could not be put into ${target} for the render` +
+          `${seg.error ? `: ${seg.error}` : ""} — nothing was queued.`
+        );
+      }
+    }
+    return "";
+  }
   async function formatErrors(segs) {
     if (typeof options.callRoute !== "function" || !segs.length) return "";
     let data;
     try {
       data = await options.callRoute(VALIDATE_ROUTE, {
         clips: segs.map((s) => ({ id: s.id, prompt: s.prompt || "", mode: s.mode, seconds: s.seconds })),
+        language: model.renderLanguage(state.board.render_language),
       });
     } catch {
       return "";
@@ -9928,6 +10096,9 @@ The board on screen will be replaced.`,
             renderDetail();
           }, true),
           tileDot("#4a9b6e", ICONS.play, "Watch this reference", () => watchMedia(ref), true),
+          ...(isBlocking(ref)
+            ? [tileDot("#8e6bbf", ICONS.cube, "Edit this blocking in the 3D editor", () => openBlocking(seg, ref), true)]
+            : []),
         ));
         gallery.appendChild(tile);
       } else {
@@ -10003,6 +10174,19 @@ The board on screen will be replaced.`,
         fileReference(seg, ref);
       };
       add.addEventListener("click", fromDisk);
+      let blockTile = null;
+      if (kind === "video") {
+        const block = el("button", "vig-cutter-frame-slot empty");
+        block.style.aspectRatio = String(ratio);
+        block.style.width = "132px";
+        block.dataset.log = "blocking";
+        block.title = "Stage the shot with stand-ins in a 3D editor -- people, walls, boxes, lights, "
+          + "their paths and the camera move -- and attach it as this clip's video reference";
+        block.appendChild(svg(ICONS.cube, 18, 1.6));
+        block.appendChild(el("span", "slot-label", "blocking"));
+        block.addEventListener("click", () => openBlocking(seg));
+        blockTile = block;
+      }
       if (kind === "image" || kind === "video") {
         refPopover(add, {
           onPick: (item) => {
@@ -10024,6 +10208,7 @@ The board on screen will be replaced.`,
         });
       }
       gallery.appendChild(add);
+      if (blockTile) gallery.appendChild(blockTile);
     }
     return gallery;
   }

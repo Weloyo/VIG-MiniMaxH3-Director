@@ -20,6 +20,7 @@ function post(route, body) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
+    timeoutMs: null,
   }).then((response) => response.json());
 }
 function filmUrl(root, name) {

@@ -177,6 +177,10 @@ class DirectorStyle:
             return None, None, None
         move = self.camera.moves[(shot_index - 1) % len(self.camera.moves)]
         return move, self.camera.amplitude, self.camera.speed
+    def score_habit(self) -> str:
+        if self.id == "neutral":
+            return ""
+        return self.music_sentence()
     def music_sentence(self) -> str:
         music = self.sound.music
         if not (music.instrumentation or music.tempo):

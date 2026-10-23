@@ -225,7 +225,7 @@ STAGE_GUIDANCE: dict[str, tuple[tuple[str, str], ...]] = {
     "cast": (("control.md", "Lock Identity By Feature"),),
     "places": (("control.md", "Lock Identity By Feature"),),
     "plan": (("control.md", "Budget The Clip"),),
-    "expand": (("control.md", "Budget The Clip"),),
+    "expand": (("control.md", "Budget The Clip"), ("density.md", "Write The Physics, Not The Verb")),
     "sound": (("camera-and-sound.md", "overall_soundscape"),),
 }
 REF_STAGE_GUIDANCE: dict[str, tuple[tuple[str, str], ...]] = {

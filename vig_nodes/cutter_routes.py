@@ -12,7 +12,7 @@ from ..vig.cutter import motion
 from ..vig.cutter import project as project_folder
 from ..vig.cutter import seam
 from ..vig.cutter import writer as film_writer
-from . import refseg
+from . import blocking, refseg
 from .cutter import PROGRESS_EVENT, _resolve_media
 WRITE_ROUTE = "/vig/h3/cutter/write"
 ENRICH_ROUTE = "/vig/h3/cutter/enrich"
@@ -540,6 +540,7 @@ def handle_validate(payload: dict) -> tuple[int, dict]:
     if not isinstance(payload, dict):
         return 400, {"ok": False, "error": "The request body must be a JSON object."}
     from ..vig.prompt.validator import validate
+    language = str(payload.get("language") or "en")
     out = []
     for clip in payload.get("clips") or []:
         if not isinstance(clip, dict):
@@ -553,7 +554,7 @@ def handle_validate(payload: dict) -> tuple[int, dict]:
         errors = []
         if prompt.strip():
             try:
-                result = validate(prompt, mode, duration=seconds)
+                result = validate(prompt, mode, duration=seconds, language=language)
             except Exception as exc:
                 return 500, {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
             errors = [{"code": v.code, "message": v.message} for v in result.errors]
@@ -1542,6 +1543,10 @@ def register_routes() -> bool:
     _register(refseg.REFERENCE_WRITE_ROUTE, refseg.handle_reference_write)
     _register(refseg.SEGMENT_METHODS_ROUTE, refseg.handle_segment_methods)
     _register(refseg.SEGMENT_WARM_ROUTE, refseg.handle_segment_warm)
+    _register(blocking.BEGIN_ROUTE, blocking.handle_begin)
+    _register(blocking.FRAMES_ROUTE, blocking.handle_frames)
+    _register(blocking.FINISH_ROUTE, blocking.handle_finish)
+    _register(blocking.SCENE_ROUTE, blocking.handle_scene)
     _register(usage.USAGE_ROUTE, usage.handle_usage)
     _register(usage.USAGE_READ_ROUTE, usage.handle_usage_read)
     _register(usage.JOURNAL_ROUTE, usage.handle_usage_journal)

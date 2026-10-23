@@ -33,10 +33,6 @@ export function ensureRefEditStyles() {
 .vig-refedit-head { display: flex; align-items: center; gap: 8px; }
 .vig-refedit-head b { font-size: 13px; }
 .vig-refedit-head .spacer { flex: 1; }
-.vig-refedit-close {
-  background: none; border: 1px solid var(--cut-border); color: inherit;
-  border-radius: 5px; width: 22px; height: 22px; cursor: pointer;
-}
 .vig-refedit-pair { display: flex; gap: 12px; align-items: stretch; }
 .vig-refedit-pane { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .vig-refedit-stage {
@@ -523,7 +519,7 @@ export function openReferenceEditor(options) {
   const head = make("div", "vig-refedit-head");
   head.appendChild(make("b", "", `Appearance editor — ${entry.tag ? `@${entry.tag}` : entry.label || "reference"}`));
   head.appendChild(make("span", "spacer"));
-  const closeButton = make("button", "vig-refedit-close", "×");
+  const closeButton = make("button", "vig-cutter-ghost", "✕ Close");
   closeButton.title = "Close (Esc)";
   closeButton.addEventListener("click", close);
   head.appendChild(closeButton);

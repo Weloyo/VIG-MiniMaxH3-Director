@@ -338,10 +338,14 @@ def trespass_user(sentences: list[str], later_beats: list[str]) -> str:
 def sound_system(allow_music: bool) -> str:
     music_rule = (
         f"""non_diegetic_music: {spec.MUSIC_MIN_SENTENCES} to {spec.MUSIC_MAX_SENTENCES} sentences on
-the score only the audience hears. Write only instrumentation, tempo, rhythm and how the dynamics
-change. Never write what the music makes anyone feel, and never name a mood. "A restrained
-solo-piano score at a slow tempo, with sustained low cello underneath and no swell" is correct.
-"A melancholic theme that underscores her loneliness" is wrong and will be rejected."""
+the score only the audience hears, CHOSEN FOR THESE BEATS: their action, pace and setting decide
+the genre, the tempo (a BPM where there is a beat), the instruments, how the hits meet the cuts and
+how it ends. A style's habitual score, if one is given, is instruments to borrow where they fit --
+never a line to copy. Write only what plays: instruments, tempo, rhythm, dynamics. Never write what
+the music makes anyone feel, and never name a mood. Correct: "A driving electronic track at 140 BPM,
+a punchy kick and distorted bass, hitting on each cut and stopping dead on the last frame." Correct:
+"A solo cello at a slow tempo, entering after the first line and fading under the last."
+Wrong, and rejected: "A melancholic theme that underscores her loneliness"."""
         if allow_music
         else 'non_diegetic_music: return exactly "N/A". The user has switched music off.'
     )
@@ -508,7 +512,8 @@ def sound_user(beats: list[str], style_ambience: str, style_music: str, duration
     if style_ambience:
         parts.append(f"AMBIENCE THIS STYLE FAVOURS:\n{style_ambience}")
     if style_music and style_music != spec.NA_VALUE:
-        parts.append(f"SCORE THIS STYLE FAVOURS:\n{style_music}")
+        parts.append("THIS STYLE'S HABITUAL SCORE (instruments to borrow where they fit the beats; "
+                     f"the beats decide the genre, tempo and energy -- never copy it as it stands):\n{style_music}")
     return "\n\n".join(parts)
 def repair_user(text: str, violations: list[dict], quotes: str) -> str:
     listed = "\n".join(

@@ -636,7 +636,7 @@ def _sound(request, timing, style, shots, backend, fallback, notes) -> tuple[str
     sound_request = SoundRequest(
         beats=[s.beat for s in shots],
         style_ambience=style.sound.ambience_bias,
-        style_music=style.music_sentence(),
+        style_music=style.score_habit(),
         allow_music=request.allow_music,
         duration_seconds=timing.duration,
     )

@@ -264,6 +264,7 @@ function setCanvasOf(node, width, height, aim = 0) {
 }
 function conceal(widget) {
   if (!widget) return;
+  widget.hidden = true;
   widget.type = "hidden";
   widget.computeSize = () => [0, -4];
   if (widget.inputEl) widget.inputEl.style.display = "none";
@@ -281,7 +282,7 @@ async function uploadFile(file, kind) {
   body.append("image", file, file.name);
   body.append("type", "input");
   body.append("subfolder", "vig_h3_cutter");
-  const response = await api.fetchApi(UPLOAD_ROUTE, { method: "POST", body });
+  const response = await api.fetchApi(UPLOAD_ROUTE, { method: "POST", body, timeoutMs: null });
   if (response.status !== 200) {
     throw new Error(`upload failed: ${response.status} ${response.statusText}`);
   }
@@ -453,6 +454,11 @@ function attachPanel(node) {
     hideOnZoom: false,
     getMinHeight: () => MIN_PANEL_HEIGHT,
   });
+  Object.defineProperty(widget, "width", {
+    configurable: true,
+    get: () => undefined,
+    set: () => {},
+  });
   let seenCanvas = "";
   const watchCanvas = () => {
     const now = canvasOf(node);
@@ -597,6 +603,7 @@ async function callRoute(route, payload, init) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload || {}),
+    timeoutMs: null,
     ...(init || {}),
   });
   let data = null;

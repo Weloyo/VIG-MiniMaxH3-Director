@@ -87,9 +87,15 @@ list of negations reads as a list of nouns, and nouns get rendered.
 
 Five to fifteen seconds at 24 frames a second. Inside that:
 
-- One main action and one reaction per shot. Three actions in four seconds renders as none.
-- One or two camera decisions for the whole clip, not per shot.
-- About three seconds a shot, so a cut roughly every three seconds and no more.
+- One CHAIN of beats per shot: an action, what it physically causes, and the reaction to it.
+  The beats must follow from each other -- "the boot descends and strikes the pavement, then he
+  raises both hands to his cap" is one chain; three unrelated actions in four seconds render as
+  none.
+- One camera move per shot, chosen for what that shot's action does. Two moves in ONE shot is
+  the smear; a different move in each shot is ordinary cutting.
+- About three seconds a shot for drama and dialogue. A promo, a music video or an action piece
+  cuts every 0.6–1.5 s -- MiniMax's own Max Turbo template is six shots in under four and a half
+  seconds -- and it works only because every one of those cuts brings a new beat.
 - About 2.5 words of speech a second. Ten words is a four-second shot.
 - Prepare a first and last frame at the same aspect ratio as the output; mismatched ratios get
   cropped somewhere nobody chose.
@@ -123,7 +129,7 @@ neither modifier.
 | the ambience is missing | soundscape left at `N/A` | write the room tone; `N/A` means silence |
 | a sound is heard but not seen to happen | sound only in `overall_soundscape` | put the synchronised sound beside the action in the description |
 | cuts land in the wrong places | timestamps invented rather than read | take every cut time from `get_timing` |
-| the clip feels rushed | too many actions, cuts or words | one action, one reaction, one camera idea |
+| the clip feels rushed | unrelated actions, two moves in one shot, or more speech than the shot holds | one causal chain and one move per shot; 2.5 words a second |
 | the movement looks like slow motion | a state described where an action belongs, so the model fills the frames itself | give the action a start and an end; drop `holds`/`remains`/`slowly`, and `at slow speed` from the camera |
 | the style drifts partway through | style stated once and then contradicted | establish it in the opening clause and do not restate it differently |
 

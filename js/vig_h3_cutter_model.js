@@ -471,6 +471,7 @@ const FIELD_HEAD_RE = new RegExp(
   "g",
 );
 const SHOT_MARKER_RE = /\[Shot\s+\d+\]/g;
+const SHOT_HEADING_FIELDS = new Set(["integrated_multimodal_description", "detailed_description"]);
 function breakShotHeadings(line) {
   SHOT_MARKER_RE.lastIndex = 0;
   let out = "";
@@ -502,9 +503,22 @@ export function formatPrompt(text) {
   out = out.replace(FIELD_HEAD_RE, (match, before, field) =>
     before === "" ? field + ":" : before + "\n\n" + field + ":",
   );
-  out = out.split("\n").map(breakShotHeadings).join("\n");
+  let field = "";
+  out = out
+    .split("\n")
+    .map((line) => {
+      const head = /^\s*([a-z_]+)\s*:/.exec(line);
+      if (head && PROMPT_FIELDS.includes(head[1])) field = head[1];
+      return field === "" || SHOT_HEADING_FIELDS.has(field) ? breakShotHeadings(line) : line;
+    })
+    .join("\n");
   out = out.replace(TRAILING_SPACE_RE, "\n").replace(EXTRA_BLANKS_RE, "\n\n");
   return out.trim();
+}
+export const RENDER_LANGUAGES = ["en", "zh", "ru"];
+export function renderLanguage(value) {
+  const v = String(value || "").trim().toLowerCase();
+  return RENDER_LANGUAGES.includes(v) ? v : "en";
 }
 export function readBoard(value) {
   let data = value;
@@ -543,6 +557,7 @@ export function readBoard(value) {
     preview_every: everyOf(data.preview_every),
     batch_takes: Math.max(1, Math.min(4, asInt(data.batch_takes, 1))),
     new_take_to_timeline: !!data.new_take_to_timeline,
+    render_language: renderLanguage(data.render_language),
     seed_mode: SEED_MODES.includes(data.seed_mode) ? data.seed_mode : DEFAULT_SEED_MODE,
     writer_seed_mode: SEED_MODES.includes(data.writer_seed_mode)
       ? data.writer_seed_mode : "fixed",
@@ -593,6 +608,7 @@ export function emptyBoard() {
     preview_every: 1,
     batch_takes: 1,
     new_take_to_timeline: false,
+    render_language: "en",
     seed_mode: DEFAULT_SEED_MODE,
     writer_seed_mode: "fixed",
     tiny_vae: TINY_VAE_AUTO,
@@ -740,6 +756,7 @@ export function writeBoard(board) {
     preview_every: board.preview_every ?? 1,
     batch_takes: board.batch_takes || 1,
     new_take_to_timeline: !!board.new_take_to_timeline,
+    render_language: renderLanguage(board.render_language),
     seed_mode: SEED_MODES.includes(board.seed_mode) ? board.seed_mode : DEFAULT_SEED_MODE,
     writer_seed_mode: SEED_MODES.includes(board.writer_seed_mode)
       ? board.writer_seed_mode : "fixed",
@@ -1390,6 +1407,16 @@ export function keepMyWords(segments, held, base, kept) {
     if (!Object.keys(fresh).length) delete kept[seg.id];
   }
   return kept;
+}
+export function writerSeedMovedByHand(seg, board) {
+  const from = seg.prompt_from;
+  if (!board || !from || typeof from !== "object" || !("writer_seed_next" in from)) return false;
+  return String(writerInputs(board).writer_seed) !== String(from.writer_seed_next);
+}
+export function writerPressWrites(seg, board) {
+  if (!String(seg.prompt || "").trim()) return true;
+  const drift = promptDrift(seg, board);
+  return drift.includes("script") || drift.includes("writer_seed") || writerSeedMovedByHand(seg, board);
 }
 export function promptIsCurrent(seg, board) {
   if (!String(seg.prompt || "").trim()) return false;

@@ -13,11 +13,13 @@ is cured in `control.md`.
 
 ## Procedure
 
-1. Read this document. For Ref2VA read `references/ref2va.md` too, before writing anything.
+1. Read this document and `references/density.md`. For Ref2VA read `references/ref2va.md`
+   too, before writing anything.
 2. Call `get_timing` and `get_refs`. The duration snaps to a frame grid and the reference
    numbers come from the tokenizer — neither is yours to work out, and a guess is a rejection.
-3. Plan before prose: one line a shot — subject, one action, one camera idea, the sound it
-   makes. Speech runs about 2.5 words a second; check each line fits its shot.
+3. Plan before prose: one line a shot — its framing and its one camera move, the subject, the
+   chain of beats (action, what it causes, the reaction), the sound each beat makes, and how the
+   last shot ends. Speech runs about 2.5 words a second; check each line fits its shot.
 4. Write the prompt in full, field names verbatim, in the order given below.
 5. Run the eight preflight checks over your own text.
 6. Call `validate`. Fix exactly what it names; leave what it did not name alone.
@@ -37,6 +39,11 @@ non_diegetic_music: ...
 
 Ref2VA takes six fields and no alignment line: `subject_definitions`, `summary`,
 `retention_analysis`, `detailed_description`, `overall_soundscape`, `non_diegetic_music`.
+
+`<style>` is the whole look, said once: the style and what makes it this style — palette (as
+colours against each other), light, texture or medium. Later shots inherit it and never
+restate it. A subject defined in one shot is pointed back to in the next — "the man from Shot
+1" — with only what has changed; a second description is a second person.
 
 Field names go in lower case, in that order, one blank line apart. The body is English: only
 words inside `<d>` and text in double quotes keep their original language, and one non-Latin
@@ -59,7 +66,10 @@ decimals; `N` is the last shot's index.
 inside the duration; numbers run 1, 2, 3 with no gaps.
 
 A cut must bring new information about subject, space, state, viewpoint or time; if only the
-distance or angle changes, move the camera instead. Allow about three seconds a shot.
+distance or angle changes, move the camera instead. About three seconds a shot for drama and
+dialogue; a promo, a music video or an action piece may cut every 0.6–1.5 s, when every cut
+brings a new beat. The cut phrase is followed at once by the new shot's framing and move —
+`the camera cuts to a medium shot from a slightly elevated low angle`.
 
 ## Camera
 
@@ -68,7 +78,8 @@ camera pushes in with small amplitude at slow speed toward the letter in her han
 
 Amplitude is `with small amplitude` or `with large amplitude`, speed `at slow speed` or `at
 fast speed`; no other wording is accepted, and both are omitted for medium and normal. `Static
-Shot` and `POV` take neither. One camera idea per shot. The twenty moves and the five cut
+Shot` and `POV` take neither. One camera idea per shot, and say what it is for — `tracking his rotation`,
+`keeping a constant distance just ahead of his boots`. The twenty moves and the five cut
 phrases are in `camera-and-sound.md`.
 
 ## Speech
@@ -90,12 +101,15 @@ Text visible on screen goes in double quotes, in its own language: `a sign readi
 ## Sound
 
 `overall_soundscape` is 1–4 sentences of ambience, physical action sounds and non-verbal human
-sounds across the clip. No `<d>`, dialogue, singing or diegetic music — those belong in the
+sounds across the clip, in time order: the continuous bed first, then the foreground events as
+the picture makes them, each with a timbre and a place, then how the sound ends. No `<d>`, dialogue, singing or diegetic music — those belong in the
 description. `N/A` only when silence was asked for.
 
-`non_diegetic_music` is 1–3 sentences on instrumentation, tempo, rhythm and dynamics. Mood
+`non_diegetic_music` is 1–3 sentences on genre, instrumentation, tempo (a BPM where there is
+one), rhythm and dynamics — and, where it matters, hits landing on the cuts and how it ends. Mood
 words (`melancholic`, `tense`, `epic`) and any account of what the score does to the viewer
-(`evokes`, `sets the mood`) are rejections. `N/A` when there is no score. Music a character can
+(`evokes`, `sets the mood`) are flagged -- a warning, since MiniMax's own templates slip one in,
+but every one is a word that does not play. `N/A` when there is no score. Music a character can
 hear is diegetic and goes in the description instead.
 
 ## Preflight
@@ -107,12 +121,15 @@ hear is diegetic and goes in the description instead.
 5. Every `<d>` closes, opens with a language tag, holds no ID and no quotation marks; every
    supplied line appears once, verbatim.
 6. Every voiceover is followed by the closed-lips statement.
-7. Soundscape 1–4 sentences, music 1–3 or `N/A`, no mood word in the music.
+7. Soundscape 1–4 sentences (a fifth is a warning, not a rejection), music 1–3 or `N/A`, no
+   mood word in the music.
 8. No non-English letters outside `<d>` and quoted text; every cited label came from
    `get_refs`, with its number, and was given a job.
 
 ## Where The Detail Is
 
+- `density.md` — what MiniMax's own template prompts carry: the look, materials, physics,
+  light, on-screen text as a designed layer, the final beat, sound in picture order.
 - `base-modes.md` — keyframe handling and a worked example per mode.
 - `ref2va.md` — the six full-reference fields, task types, retention markers, budget.
 - `camera-and-sound.md` — camera table, cut and continuity phrasing, sound detail.

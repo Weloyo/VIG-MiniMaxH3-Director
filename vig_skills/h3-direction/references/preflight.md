@@ -74,12 +74,12 @@ shot and the alignment line changes with it.
 
 | Code | Trips when | Repair |
 |-|-|-|
-| `SOUNDSCAPE_LENGTH` | `overall_soundscape` is not 1–4 sentences | trim or extend; `N/A` counts as zero and is allowed |
+| `SOUNDSCAPE_LENGTH` | `overall_soundscape` is empty (an error), or over 4 sentences (a *warning*: MiniMax's own templates run to five) | write the room; past four, check every sentence is a sound the picture makes. `N/A` counts as zero and is allowed |
 | `SOUNDSCAPE_HAS_DIALOGUE` | a `<d>` block appears in the soundscape | move it to the description |
 | `SOUNDSCAPE_REPEATS_MUSIC` | a sentence of the score is copied into the soundscape | the score lives in `non_diegetic_music` only; the soundscape carries ambience and action sounds |
 | `MUSIC_LENGTH` | `non_diegetic_music` is not 1–3 sentences | trim, or write `N/A` |
 | `MUSIC_HAS_DIALOGUE` | lyrics appear in the music field | lyrics are sung dialogue and go in the description inside `<d>` |
-| `MUSIC_ABSTRACT_MOOD` | a mood word or a claim about emotional effect | name instrumentation, tempo, rhythm and dynamics instead |
+| `MUSIC_ABSTRACT_MOOD` *(warning)* | a mood word or a claim about emotional effect | name instrumentation, tempo, rhythm and dynamics instead |
 
 ## References And Ref2VA
 

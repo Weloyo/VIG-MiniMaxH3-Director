@@ -1873,7 +1873,7 @@ class VigH3Cutter:
                     previous_last = None
                 continue
             if not job.cached and not job.external and (seg.prompt or "").strip():
-                broken = _prompt_errors(seg)
+                broken = _prompt_errors(seg, state.render_language)
                 if broken:
                     seg.status = "error"
                     seg.error = (
@@ -2073,7 +2073,7 @@ class VigH3Cutter:
                     context=context,
                 )
                 chain_repeats[seg.id] = opened_on_chain
-                run_notes.extend(_prompt_findings(seg, job.index))
+                run_notes.extend(_prompt_findings(seg, job.index, state.render_language))
                 drift = seg.prompt_drift(state)
                 if drift:
                     readable = {
@@ -2434,10 +2434,11 @@ def _clip_ranges(numbers) -> str:
     return ", ".join(
         str(a) if a == b else f"{a}–{b}" if b > a + 1 else f"{a}, {b}" for a, b in runs
     )
-def _prompt_errors(segment) -> str:
+def _prompt_errors(segment, language: str = "en") -> str:
     try:
         from ..vig.prompt.validator import validate
-        result = validate(segment.prompt, segment.effective_mode, duration=segment.duration)
+        result = validate(segment.prompt, segment.effective_mode, duration=segment.duration,
+                          language=language)
     except Exception:
         return ""
     errors = list(result.errors)
@@ -2445,11 +2446,12 @@ def _prompt_errors(segment) -> str:
         return ""
     said = "; ".join(f"[{v.code}] {v.message}" for v in errors[:3])
     return said + (f" (+{len(errors) - 3} more)" if len(errors) > 3 else "")
-def _prompt_findings(segment, index: int) -> list[str]:
+def _prompt_findings(segment, index: int, language: str = "en") -> list[str]:
     out: list[str] = []
     try:
         from ..vig.prompt.validator import validate
-        result = validate(segment.prompt, segment.effective_mode, duration=segment.duration)
+        result = validate(segment.prompt, segment.effective_mode, duration=segment.duration,
+                          language=language)
         for violation in result.violations[:3]:
             out.append(
                 f"Clip {index + 1} prompt: [{violation.code}] {violation.message}"

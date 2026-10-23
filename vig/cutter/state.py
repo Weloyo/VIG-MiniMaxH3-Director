@@ -4,6 +4,7 @@ import json
 from dataclasses import dataclass, field, replace
 from .. import h3_spec as spec
 from .motion import RUN_GRID, snap_to_grid
+from ..prompt.validator import render_language as _render_language
 from ..timing import (
     FPS,
     TRAINED_MAX_FRAMES,
@@ -354,7 +355,7 @@ class Segment:
             prompt_lang=_lang_of(data.get("prompt_lang")),
             prompt_from=(
                 {k: v for k, v in (data.get("prompt_from") or {}).items()
-                 if k in PROMPT_INPUTS}
+                 if k in PROMPT_INPUTS or k == "writer_seed_next"}
                 if isinstance(data.get("prompt_from"), dict) else {}
             ),
             written_by=(
@@ -704,6 +705,7 @@ class Board:
     preview_every: int = 1
     batch_takes: int = 1
     new_take_to_timeline: bool = False
+    render_language: str = "en"
     seed_mode: str = DEFAULT_SEED_MODE
     film_seed_mode: str = "fixed"
     writer_seed_mode: str = "fixed"
@@ -758,6 +760,7 @@ class Board:
             preview_every=_every_of(data.get("preview_every")),
             batch_takes=max(1, min(MAX_BATCH_TAKES, _as_int(data.get("batch_takes"), 1))),
             new_take_to_timeline=bool(data.get("new_take_to_timeline")),
+            render_language=_render_language(data.get("render_language")),
             seed_mode=(_as_str(data.get("seed_mode")) if _as_str(data.get("seed_mode"))
                        in SEED_MODES else DEFAULT_SEED_MODE),
             writer_seed_mode=(_as_str(data.get("writer_seed_mode"))
@@ -808,6 +811,7 @@ class Board:
             "preview_every": self.preview_every,
             "batch_takes": self.batch_takes,
             "new_take_to_timeline": self.new_take_to_timeline,
+            "render_language": self.render_language,
             "seed_mode": self.seed_mode,
             "writer_seed_mode": self.writer_seed_mode,
             "tiny_vae": self.tiny_vae,

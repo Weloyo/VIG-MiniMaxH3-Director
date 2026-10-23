@@ -110,6 +110,7 @@ async function post(route, payload) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload || {}),
+    timeoutMs: null,
   });
   const data = await response.json().catch(() => null);
   if (!response.ok || !data || data.ok === false) {

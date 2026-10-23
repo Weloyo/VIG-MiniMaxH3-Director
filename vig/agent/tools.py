@@ -313,7 +313,7 @@ class ToolBox:
             "speed": style.camera.speed,
             "average_shot_seconds": style.editing.avg_shot_len_s,
             "ambience": style.sound.ambience_bias,
-            "music": style.music_sentence(),
+            "music": style.score_habit() or "none of its own -- choose the score for the clip's story",
             "avoid": style.prompt_bias.avoid,
             "note": (
                 "Describe the craft, never the name of a person or studio. The guide rejects "
@@ -450,6 +450,17 @@ write. If nobody in the story speaks, write no <d> tags at all.
             "never in front of it.\n"
         )
     style = context.style
+    habit = style.score_habit()
+    choose = ("chosen for THIS clip: what happens, its pace and its setting decide the genre, "
+              "the tempo (a BPM where there is a beat), the instruments, how it meets the cuts "
+              "and how it ends -- a rally stage wants a driving beat, a quiet kitchen a sparse one")
+    if habit == spec.NA_VALUE:
+        score_line = "this style carries no score: N/A, unless the script asks for music"
+    elif habit:
+        score_line = (f"{choose}. This style's habitual score is a palette to borrow instruments "
+                      f"from where they fit the story, never a line to copy: {habit}")
+    else:
+        score_line = f"{choose}. This style has no score of its own."
     style_block = f"""
 SHOOT IT THIS WAY:
 - opening style sentence, and it opens [Shot 1] as it stands -- do not extend it, the rest of
@@ -460,7 +471,7 @@ SHOOT IT THIS WAY:
   the room tone, never the soundscape itself. overall_soundscape names what THIS location
   sounds like (the script's place: its machines, weather, crowd, footsteps, fabric, voices
   without words); the tint only colours it, and copying this line into the field is wrong.
-- score: {style.music_sentence()}
+- score: {score_line}
 - avoid: {", ".join(style.prompt_bias.avoid) or "nothing in particular"}
 Describe the craft, never the name of a person or studio.
 """

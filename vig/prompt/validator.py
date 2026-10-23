@@ -69,7 +69,8 @@ _TIMESTAMP_RE = re.compile(r"\[Shot (\d+)\]\s*At\s+(\d{2}):(\d{2})\.(\d{3})")
 _ANY_TIME_RE = re.compile(r"\bAt\s+([0-9:.]+)\s*,")
 _D_OPEN_RE = re.compile(r"<d>\s*\[([^\]]+)\]")
 _LABEL_RE = re.compile(r"<(Subject|Picture|Video|Audio)\s+(\d+)>")
-_SENTENCE_SPLIT_RE = re.compile(r"[.!?]+(?:\s|$)")
+_HEADED_LABEL_RE = re.compile(r"^\s*<(Subject|Picture|Video|Audio)\s+(\d+)>", re.MULTILINE)
+_SENTENCE_SPLIT_RE = re.compile(r"[.!?]+(?:\s|$)|[\u3002\uff01\uff1f]+")
 def split_fields(prompt: str, mode: str) -> tuple[str | None, dict[str, str]]:
     names = spec.fields_for(mode)
     positions: list[tuple[int, str]] = []
@@ -103,6 +104,11 @@ def _without_verbatim_spans(text: str) -> str:
 def _is_probably_english(text: str) -> bool:
     stripped = _without_verbatim_spans(text)
     return not any(ord(ch) > 0x024F and ch.isalpha() for ch in stripped)
+RENDER_LANGUAGES = ("en", "zh", "ru")
+LANGUAGE_BOUND = frozenset({"BODY_NOT_ENGLISH", "REF_DESCRIPTION_SHORT", "REF_DESCRIPTION_LONG"})
+def render_language(value) -> str:
+    value = str(value or "").strip().lower()
+    return value if value in RENDER_LANGUAGES else "en"
 def validate(
     prompt: str,
     mode: str,
@@ -110,6 +116,7 @@ def validate(
     frame_count: int | None = None,
     available_labels: dict[str, int] | None = None,
     expected_dialogue: list[str] | None = None,
+    language: str = "en",
 ) -> ValidationResult:
     result = ValidationResult()
     mode = mode.lower()
@@ -136,6 +143,8 @@ def validate(
     _check_language(result, bodies)
     if mode == spec.REF2VA:
         _check_ref_sections(result, bodies, available_labels)
+    if render_language(language) != "en":
+        result.violations = [v for v in result.violations if v.code not in LANGUAGE_BOUND]
     return result
 def _check_fields(result: ValidationResult, prompt: str, mode: str) -> None:
     names = spec.fields_for(mode)
@@ -528,7 +537,7 @@ def _check_sound_fields(result: ValidationResult, bodies: dict[str, str]) -> Non
         if not (spec.SOUNDSCAPE_MIN_SENTENCES <= count <= spec.SOUNDSCAPE_MAX_SENTENCES):
             result.add(
                 "SOUNDSCAPE_LENGTH",
-                ERROR,
+                ERROR if count < spec.SOUNDSCAPE_MIN_SENTENCES else WARNING,
                 f"overall_soundscape must be {spec.SOUNDSCAPE_MIN_SENTENCES}-"
                 f"{spec.SOUNDSCAPE_MAX_SENTENCES} sentences, got {count}",
                 field="overall_soundscape",
@@ -575,7 +584,7 @@ def _check_sound_fields(result: ValidationResult, bodies: dict[str, str]) -> Non
             if re.search(rf"\b{re.escape(word)}\b", lowered):
                 result.add(
                     "MUSIC_ABSTRACT_MOOD",
-                    ERROR,
+                    WARNING,
                     f"non_diegetic_music must not use abstract mood words or explain the "
                     f"score's emotional function; found {word!r}. Describe instrumentation, "
                     "speed, rhythm and dynamic changes instead",
@@ -610,6 +619,7 @@ def _check_ref_sections(
     retention = bodies.get("retention_analysis", "")
     description = bodies.get("detailed_description", "")
     defined = {f"{k} {n}" for k, n in _LABEL_RE.findall(definitions)}
+    tracked = {f"{k} {n}" for k, n in _HEADED_LABEL_RE.findall(definitions)}
     if summary:
         prefix = re.match(r"\s*\[([^\]]+)\]", summary)
         if prefix is None:
@@ -680,7 +690,7 @@ def _check_ref_sections(
                     field="retention_analysis",
                     excerpt=line[:100],
                 )
-    for label in sorted(defined):
+    for label in sorted(tracked):
         kind = label.split()[0]
         markers = (
             spec.AUDIO_RETENTION_MARKERS

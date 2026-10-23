@@ -188,7 +188,11 @@ class OfflineBackend:
         soundscape = _limit_sentences(soundscape, spec.SOUNDSCAPE_MAX_SENTENCES)
         if not request.allow_music:
             return soundscape, spec.NA_VALUE
-        if not _has_words(request.style_music):
+        style_music = request.style_music
+        if not (style_music or "").strip():
+            from ..styles.schema import DEFAULT_STYLE
+            style_music = DEFAULT_STYLE.music_sentence()
+        if not _has_words(style_music):
             return soundscape, spec.NA_VALUE
-        music = _limit_sentences(request.style_music, spec.MUSIC_MAX_SENTENCES)
+        music = _limit_sentences(style_music, spec.MUSIC_MAX_SENTENCES)
         return soundscape, music or spec.NA_VALUE

@@ -26,6 +26,7 @@ If it saves you time, you can support its development on **[Ko-fi](https://ko-fi
 - [Quick start](#quick-start)
 - [The console](#the-console)
 - [The reference editor](#the-reference-editor)
+- [The 3D blocking editor](#the-3d-blocking-editor)
 - [The takes and films galleries](#the-takes-and-films-galleries)
 - [Whole films: Film Director and storyboard JSON](#whole-films-film-director-and-storyboard-json)
 - [Projects](#projects)
@@ -266,7 +267,10 @@ workshop for the selected clip.
 the name to open it in Explorer). On the right: **♥** support, the **colour
 scheme** (six themes, light included), the **gear** with the machine settings
 — the writing model and its folder, temperature, the live preview's resolution
-and decoder — **refresh** and **collapse**.
+and decoder, and the **prompt language** H3 is given (English by default;
+Chinese or Russian as an experiment — the writer still writes English and the
+prompt is translated before the render, its format markers kept) —
+**refresh** and **collapse**.
 
 ### 1 · Video & timeline
 
@@ -318,7 +322,9 @@ Everything about one clip:
   galleries for REF2VA. On a reference tile: remove, replace, **✦ edit
   appearance** (the reference editor) and take the video's shape from the
   picture. A small reference is enlarged before H3 sees it, so its detail is
-  not lost.
+  not lost. The **blocking** tile in the video gallery opens the
+  [3D blocking editor](#the-3d-blocking-editor); ▶ on a video reference plays
+  it full size.
 - **Clip prompt** — the finished H3 prompt, editable. Its language switch
   (EN / 中文 / RU) translates it while protecting every format marker, so you
   can read and edit it in Russian and go back without a rewrite.
@@ -357,6 +363,31 @@ Segmentation runs on **SAM 3** — download `facebook/sam3` from Hugging Face
 (a gated repository: request access with your account first) into
 `ComfyUI/models/sam3`. SAM 2 is used for single clicks when both its checkpoint and
 the `sam2` package are installed.
+
+## The 3D blocking editor
+
+Stage the shot before you render it. The **blocking** tile in a REF2VA clip's
+video gallery opens a small 3D scene on the clip's own timeline, and its render
+becomes the clip's video reference: H3 takes the **camera movement, the framing
+and the path and timing** of what moves from it — never its grey look.
+
+- **Stand-ins** — person, box, wall, cylinder, sphere, floor, light; each with
+  a name, a colour and a size.
+- **Keys** — move an object and it is keyed at the current frame; the ticks on
+  the timeline can be dragged to retime a key.
+- **Line** draws on the floor (a kerb, a road edge, a marking) and **Path**
+  draws a trajectory; their points are handles. An object or the camera can
+  **ride a path**: drag it along the path by hand and key where it is, and the
+  spacing of those keys sets its speed. Rotate turns it on the path.
+- **Camera** — frame the shot in Free view and press **Camera = this view**, or
+  move and turn the camera itself (pan, tilt and roll about the lens). Lens in
+  millimetres, as in Blender.
+- **Undo** / **Redo** (Ctrl+Z, Ctrl+Y) and **Reset scene**.
+- **Render to reference** renders it at the clip's length and shape and attaches
+  it; the scene is kept beside the video, so it reopens for editing.
+
+The writer is told what the blocking is for: it describes the camera move by
+its type and leaves the path and pacing to the reference.
 
 ## The takes and films galleries
 
@@ -484,6 +515,11 @@ audibly worse. Render the takes you will listen to on 07, 08 or 12.
 | File | Shows | Needs |
 |---|---|---|
 | `13_rtx_upscale.json` | A finished clip upscaled with NVIDIA Video Super Resolution, sound kept | [NVIDIA RTX Nodes](https://github.com/Comfy-Org/Nvidia_RTX_Nodes_ComfyUI), [VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) |
+| `14_face_refine.json` | Small faces in a finished take redrawn by H3 as close-ups and stitched back, lips kept on the sound — for group and wide shots | [ComfyUI-H3-FaceRefine](https://github.com/Carasibana/ComfyUI-H3-FaceRefine), [ComfyUI-H3-NativeAudioLock](https://github.com/Shrek3OnVH5/MiniMax-H3-NativeAudio-MusicVideo-Workflow), [Impact Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack) + Subpack, VideoHelperSuite |
+
+A refined take saves to `output/vig_h3_face_refine/`; copy it into the clip's
+`video/` folder and the takes gallery shows it beside the original, ready for
+A/B.
 
 Every example carries a note on the canvas explaining it.
 
@@ -552,6 +588,8 @@ written against, into ComfyUI's user directory.
 
 Carrying motion and sound across a cut follows the method and grid arithmetic of
 [ComfyUI-H3-Motion-Context](https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context).
+The 3D blocking editor runs on [three.js](https://threejs.org) (MIT, included in
+`js/vendor/three` with its licence).
 The live preview's tiny VAE loader is borrowed from
 [KJNodes](https://github.com/kijai/ComfyUI-KJNodes). Segmentation in the
 reference editor is Meta's [SAM 3](https://huggingface.co/facebook/sam3) and

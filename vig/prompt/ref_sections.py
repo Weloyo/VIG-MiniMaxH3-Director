@@ -11,6 +11,13 @@ _TRAILING_JOIN = re.compile(r"[\s,;.]+(?:and|then)?[\s,;.]*$", re.IGNORECASE)
 DEFAULT_VISUAL_MARKER = "fully_preserved"
 VIDEO_STRUCTURE_MARKER = "weak_reference"
 DEFAULT_AUDIO_MARKER = "reference"
+BLOCKING_ROLE = (
+    "a grey 3D blocking of the shot -- it gives the camera movement, the framing "
+    "and the path and timing of each moving thing, never their grey look"
+)
+BLOCKING_MARKER = "partially_preserved"
+def is_blocking(label) -> bool:
+    return label.kind == "Video" and bool((label.facts or {}).get("blocking"))
 def task_types(bundle: RefBundle) -> list[str]:
     types: list[str] = []
     if bundle.images or bundle.videos:
@@ -22,7 +29,7 @@ def _subject_entries(bundle: RefBundle) -> list[tuple[str, str, str]]:
     entries = []
     number = 0
     for label in bundle.labels:
-        if label.kind not in ("Picture", "Video"):
+        if label.kind not in ("Picture", "Video") or is_blocking(label):
             continue
         facts = label.facts or {}
         told = label.description if getattr(label, "described", True) else ""
@@ -192,6 +199,13 @@ def subject_definitions(bundle: RefBundle, definitions: str = "") -> str:
     for label in bundle.labels:
         if label.kind != "Video":
             continue
+        if is_blocking(label):
+            lines.append(
+                f"{label.tag} is a grey 3D blocking of the shot: the target video follows its "
+                "camera movement, its framing and the path and timing of its stand-in shapes, "
+                "and never shows its grey shapes, floor or flat light."
+            )
+            continue
         lines.append(
             f"{label.tag} is the reference video {_video_structure_clause(label)} the "
             "target video follows."
@@ -211,7 +225,8 @@ def summary(bundle: RefBundle, shot_count: int, definitions: str = "") -> str:
     subjects = [tag for tag, _, _ in _entries(bundle, definitions)[0]]
     audio_tags = [l.tag for l in bundle.labels if l.kind == "Audio"]
     if subjects:
-        body = f"The target video is generated using {_listed(subjects)} as visual references."
+        role = "a visual reference" if len(subjects) == 1 else "visual references"
+        body = f"The target video is generated using {_listed(subjects)} as {role}."
     else:
         body = "The target video is generated from the written brief alone."
     shots = max(1, int(shot_count))
@@ -223,6 +238,12 @@ def summary(bundle: RefBundle, shot_count: int, definitions: str = "") -> str:
         body += (
             " Each referenced subject keeps the appearance defined above in every shot "
             "where it appears."
+        )
+    blocking = [l.tag for l in bundle.labels if is_blocking(l)]
+    if blocking:
+        body += (
+            f" {_listed(blocking)} sets the camera movement and the motion paths, and "
+            "nothing of its look."
         )
     if audio_tags:
         body += f" {_listed(audio_tags)} guides the target video's sound without being copied."
@@ -242,7 +263,13 @@ def retention_analysis(
             f"established in {source_tag} is carried into the target video unchanged."
         )
     for label in bundle.labels:
-        if label.kind == "Video":
+        if is_blocking(label):
+            lines.append(
+                f"{label.tag} (camera movement, framing and motion paths): {BLOCKING_MARKER} - "
+                "its camera path, framing and the stand-ins' movement and timing carry into the "
+                "target video; its grey shapes, floor and flat lighting do not."
+            )
+        elif label.kind == "Video":
             motion = (label.facts or {}).get("camera_motion")
             detail = (
                 f"its measured camera movement ({motion}) informs the target video's pacing"

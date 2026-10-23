@@ -1,5 +1,6 @@
 export const ICONS = {
   plus: '<path d="M12 5v14M5 12h14"></path>',
+  cube: '<path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z"></path><path d="M12 21.5V12M3.5 7.25L12 12l8.5-4.75"></path>',
   dice:
     '<rect x="3" y="3" width="18" height="18" rx="3"></rect>' +
     '<circle cx="8" cy="8" r="1" fill="currentColor"></circle>' +

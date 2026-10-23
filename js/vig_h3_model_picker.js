@@ -16,6 +16,7 @@ export async function pickFolder(start, purpose = "models") {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ start: start || "", purpose }),
       cache: "no-store",
+      timeoutMs: null,
     });
   } catch (err) {
     return {
@@ -41,6 +42,7 @@ export async function folderDialog(action) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action }),
       cache: "no-store",
+      timeoutMs: null,
     });
     return (await readJson(response)) || { ok: false };
   } catch (err) {

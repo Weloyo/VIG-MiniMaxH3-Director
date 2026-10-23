@@ -88,6 +88,13 @@ A cut earns its place by bringing new information about subject, space, state, v
 time. A slightly different distance or angle is camera motion, not a cut, and writing it as one
 buys a jump the model has to invent continuity across.
 
+Name the new shot's framing and move straight after the cut phrase, before what is in it --
+`the camera cuts to a close-up as the camera zooms in at fast speed on the rider`. A shot that
+announces how it is filmed first is filmed that way; a framing left for the end of the shot is
+often lost to the action before it. And give the move its reason in the subject's motion
+(`tracking his rotation`, `matching the rider's climb`): a move tied to what the subject does
+renders as cinematography, a move with no reason renders as drift.
+
 ## Speakers In Detail
 
 An ID is given to anyone who speaks, sings or produces an off-screen human voice, in order of
@@ -126,6 +133,13 @@ One paragraph, 1–4 English sentences, covering the whole clip: ambience and ro
 sounds physical actions make, and non-verbal human sounds — wind, rain, traffic, footsteps,
 fabric, impacts, breathing, laughter, panting.
 
+Write it in TIME ORDER, which is the shape every one of MiniMax's own template prompts uses
+(`density.md`): the continuous bed first ("a continuous heavy rainstorm provides a dense
+acoustic bed"), then the foreground events in the order the picture makes them, each with a
+timbre and a place ("a loud, resonant thud in the foreground as the boot strikes the
+concrete"), then how the sound ends. Link the events inside a sentence -- "followed by", "as",
+"when the shot changes" -- so all of it fits in four.
+
 What must not be here: dialogue, singing, and any music a character can hear. Those are events
 on the timeline and belong in the description. A `<d>` tag in this field is a rejection.
 
@@ -143,7 +157,12 @@ One to three English sentences on score the characters cannot hear. Instrumentat
 rhythm, and how the dynamics change — `Sparse piano notes at a slow tempo, joined by sustained
 low strings that gradually increase in volume before fading out.`
 
-Rejected on sight: `melancholic`, `melancholy`, `nostalgic`, `nostalgia`, `uplifting`,
+Where there is a beat, give its tempo as a number (`160 BPM`) and say how the hits meet the
+cuts and how the score ends: `booming 808 bass drops that hit in sync with the visual cuts,
+before abruptly cutting to silence on the final accent.` Every one of those plays.
+
+Flagged on sight (a warning, not a rejection -- MiniMax's own Max r2v template writes "tense
+strings" -- but each one is a word the model cannot play): `melancholic`, `melancholy`, `nostalgic`, `nostalgia`, `uplifting`,
 `haunting`, `emotional`, `poignant`, `bittersweet`, `hopeful`, `ominous`, `triumphant`,
 `wistful`, `somber`, `eerie`, `dreamy`, `epic`, `romantic`, `tense`, `suspenseful`, `joyful`,
 `sorrowful`, `evokes`, `evoking`, `conveys`, `underscores the emotion`, `reinforces the mood`,
