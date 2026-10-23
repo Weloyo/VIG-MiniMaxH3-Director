@@ -152,6 +152,12 @@ the plane rises above it.
 
 - No `with small/large amplitude` and no `at slow/fast speed` of your own: the reference
   holds them, and a number in the text that disagrees with the video is two instructions.
+- Never place the camera yourself: no "ahead of", "behind", "beside", "low", "high",
+  "close", "at a constant distance". A placed camera wins over the video -- three takes of
+  one blocked rally bend kept "a constant distance just ahead of the car" and lost the
+  blocking's arc, while the take whose text said only "from a high-angle quadcopter
+  perspective" flew it. The console replaces such a clause with the blocking's move after
+  the pass in any case.
 - Describe what the move REVEALS (the wings turning edge-on, the cloud dropping out of frame),
   never a different move.
 - One continuous move in the reference is one shot in the text: a cut in the description

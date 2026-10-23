@@ -69,6 +69,9 @@ This extension does it for you:
 - **A reference editor.** Crop a reference, carry a hairstyle or a costume from
   another photo onto it, re-shoot it from a named angle — with SAM 3 finding
   and naming the parts for you.
+- **A 3D blocking editor.** Stage the shot with stand-ins, a road and a route,
+  drive the car and the camera along their paths by hand, and render it as the
+  clip's reference: H3 follows its camera and its timing.
 - **Whole films.** The Film Director node plans a film from one script with its
   cast and places fixed once; or hand the console a finished storyboard as JSON.
 - **36 director style profiles** — from Kubrick, Wong Kar-wai and Miyazaki to
@@ -366,28 +369,57 @@ the `sam2` package are installed.
 
 ## The 3D blocking editor
 
-Stage the shot before you render it. The **blocking** tile in a REF2VA clip's
-video gallery opens a small 3D scene on the clip's own timeline, and its render
-becomes the clip's video reference: H3 takes the **camera movement, the framing
-and the path and timing** of what moves from it — never its grey look.
+![The 3D blocking editor](docs/images/blocking-editor.png)
 
-- **Stand-ins** — person, box, wall, cylinder, sphere, floor, light; each with
-  a name, a colour and a size.
-- **Keys** — move an object and it is keyed at the current frame; the ticks on
-  the timeline can be dragged to retime a key.
-- **Line** draws on the floor (a kerb, a road edge, a marking) and **Path**
-  draws a trajectory; their points are handles. An object or the camera can
-  **ride a path**: drag it along the path by hand and key where it is, and the
-  spacing of those keys sets its speed. Rotate turns it on the path.
-- **Camera** — frame the shot in Free view and press **Camera = this view**, or
-  move and turn the camera itself (pan, tilt and roll about the lens). Lens in
-  millimetres, as in Blender.
-- **Undo** / **Redo** (Ctrl+Z, Ctrl+Y) and **Reset scene**.
-- **Render to reference** renders it at the clip's length and shape and attaches
-  it; the scene is kept beside the video, so it reopens for editing.
+A camera path is the one thing words cannot hold. "The camera follows the car
+into the bend" leaves H3 to guess the height, the distance, where the bend is
+and when the car gets there. So stage the shot in 3D first: grey stand-ins on
+the clip's own timeline, rendered as the clip's video reference. H3 takes the
+**camera movement, the framing and the path and timing** of what moves from
+it — never its grey look; how things look comes from your picture references
+and the prompt.
 
-The writer is told what the blocking is for: it describes the camera move by
-its type and leaves the path and pacing to the reference.
+![The blocking, and the clip H3 rendered from it with a photo of the car as its subject](docs/images/blocking-vs-render.png)
+
+*Top: the blocking — a box riding a path through the bend, and a camera keyed to
+follow it from above. Bottom: the clip H3 rendered from it, with a photo of the
+rally car as the subject reference, on an 8-step distilled checkpoint. The
+prompt says only "a quadcopter tracking shot follows the car as it enters a
+curve" — the height, the arc and the timing are the blocking's.*
+
+**Staging a shot**
+
+1. In a REF2VA clip, press the **blocking** tile among the video references.
+   The editor opens at the clip's length and shape.
+2. **Add stand-ins** — person, box, wall, cylinder, sphere, floor, light; each
+   with a name, a colour and a size.
+3. **Draw the set and the route.** **Line** draws on the floor — a kerb, a road
+   edge, a marking. **Path** draws a trajectory over the floor or any surface
+   in the scene. Their points are handles you can drag.
+4. **Move things in time.** Moving an object keys it at the current frame. An
+   object on a path **rides** it: drag it along the path by hand at each moment
+   you want to fix, and the spacing of those keys is its speed. Rotate turns it
+   on the path. The key ticks on the timeline can be dragged to retime a key.
+5. **Place the camera.** Frame the shot in Free view and press **Camera = this
+   view** at each key — or put the camera on a path of its own and drive it the
+   same way, turning it by hand (pan, tilt, and roll about the lens). The lens
+   is in millimetres, as in Blender; **Camera view** shows exactly what will be
+   rendered.
+6. **Render to reference.** The scene is kept beside the video, so the tile
+   reopens it for another pass.
+
+![The rendered clip on the console](docs/images/blocking-result.png)
+
+**Undo** / **Redo** (Ctrl+Z, Ctrl+Y) and **Reset scene** are in the header.
+
+**Let the blocking own the camera.** Words that place the camera win over the
+video, so with a blocking wired in the writer names the move by its type only
+and hands the rest to it: the prompt says the camera's path, height, distance
+and pacing follow `<Video 1>`, and anything that would contradict it — a
+framing, an angle such as "at eye level", "with small amplitude at slow speed",
+"a constant distance just ahead of the car" — is taken out after the writer has
+written. The blocking is never declared a subject, so its grey shapes are not
+carried into the clip.
 
 ## The takes and films galleries
 

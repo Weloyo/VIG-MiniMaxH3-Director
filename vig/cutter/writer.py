@@ -218,6 +218,18 @@ def cite_labels(story: str, bundle: RefBundle) -> tuple[str, list[str]]:
                 "exactly those colours, in the definition and in the description, and "
                 "no others. Describe what it DOES."
             )
+        for label in bundle.labels:
+            if not ref_sections.is_blocking(label):
+                continue
+            lines.append(
+                f"{label.tag} is a 3D blocking of this shot and it OWNS THE CAMERA. Name "
+                "each shot's camera move by its type only (the camera tracks / arcs around "
+                f"/ follows) and say its path, height, distance and pacing follow the camera "
+                f"movement of {label.tag}. Never place the camera yourself -- no 'ahead of', "
+                "'behind', 'beside', 'low', 'high', 'close', 'at a constant distance': words "
+                "that place the camera win over the video. It is not a subject: never cite it "
+                "as one and never take 'the action' from it."
+            )
         lines.append(
             "Every subject_definitions line must name the picture it comes from, "
             'like "<Subject 1> is the young woman in <Picture 1>, with long blonde '
@@ -529,6 +541,62 @@ def _error_codes(prompt: str, bundle) -> set[str]:
     except Exception:
         return set()
     return {v.code for v in result.errors}
+_PLACED_CAMERA = re.compile(
+    r"\b(keeps|keep|keeping|maintains|maintain|maintaining|holds|hold|holding|stays|stay|staying)\s+"
+    r"(?:a\s+)?(?:constant|close|steady|fixed|safe|short|long)?\s*distance\s+"
+    r"(?:just\s+)?(?:ahead\s+of|in\s+front\s+of|behind|beside|alongside|from)\b[^.,;]*",
+    re.IGNORECASE,
+)
+_BLOCKING_DECIDES = (
+    re.compile(r",\s*(?:extreme\s+)?(?:medium[- ])?(?:close-up|close|wide|medium|full|long)\s+framing\b",
+               re.IGNORECASE),
+    re.compile(r",\s*(?:at\s+eye\s+level|from\s+(?:a\s+)?(?:low|high)(?:[- ]angle)?)\b(?!\s+\w+\s+(?:perspective|view))",
+               re.IGNORECASE),
+    re.compile(r"\s+with\s+(?:small|medium|large|big)\s+amplitude\b", re.IGNORECASE),
+    re.compile(r"\s+at\s+(?:slow|medium|fast)\s+speed\b", re.IGNORECASE),
+)
+def defer_camera_to_blocking(prompt: str, bundle) -> tuple[str, int]:
+    blocking = [l.tag for l in getattr(bundle, "labels", []) or [] if ref_sections.is_blocking(l)]
+    if not blocking:
+        return prompt, 0
+    from ..prompt.validator import split_fields
+    _, bodies = split_fields(prompt, spec.REF2VA)
+    body = bodies.get("detailed_description", "")
+    if not body.strip() or body not in prompt:
+        return prompt, 0
+    tag = blocking[0]
+    parts = re.split(r"(?=\[Shot\s+\d+\])", body)
+    changed = 0
+    for i, part in enumerate(parts):
+        trimmed = part
+        for pattern in _BLOCKING_DECIDES:
+            trimmed = pattern.sub("", trimmed)
+        if not re.match(r"\[Shot\s+\d+\]", part):
+            if trimmed != part:
+                parts[i] = trimmed
+                changed += 1
+            continue
+        part_in = part
+        part = trimmed
+        text = _PLACED_CAMERA.sub(
+            lambda m: ("following" if m.group(1).lower().endswith("ing") else
+                       "follow" if m.group(1).lower() in ("keep", "maintain", "hold", "stay") else
+                       "follows") + f" the camera movement of {tag}",
+            part,
+        )
+        if tag not in text:
+            text = (
+                text.rstrip()
+                + ("" if text.rstrip().endswith((".", "!", "?")) else ".")
+                + f" Its camera path, height, distance and pacing follow the camera movement of {tag}."
+                + ("\n" if part.endswith("\n") else (" " if part.endswith(" ") else ""))
+            )
+        if text != part_in:
+            parts[i] = text
+            changed += 1
+    if not changed:
+        return prompt, 0
+    return prompt.replace(body, "".join(parts), 1), changed
 def ensure_shot_marker(prompt: str, mode: str) -> tuple[str, bool]:
     field = spec.body_field_for(mode)
     _, bodies = _split_prompt_fields(prompt, mode)
@@ -1175,6 +1243,13 @@ def _compose(
             report = f"{report}\n{note}".strip() if report else note
         rebuilt = rebuilt or named
         prompt, marked = ensure_shot_marker(prompt, mode)
+        prompt, deferred = defer_camera_to_blocking(prompt, settings.refs)
+        if deferred:
+            note = (
+                f"{deferred} shot(s) handed their camera to the 3D blocking: a camera the "
+                "writer placed was cut, and the shot now says it follows the blocking's move."
+            )
+            report = f"{report}\n{note}".strip() if report else note
         prompt, opened = ensure_style_opening(
             prompt, mode, str(segment.get("style") or ""), float(segment.get("seconds") or 0) or 4.0
         )
