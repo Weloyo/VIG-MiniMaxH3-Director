@@ -1543,12 +1543,17 @@ class VigH3Cutter:
         state.selected_id = state.selected_id or (state.segments[0].id if state.segments else 0)
         payload = state.to_json()
         payload["cache_root"] = root
-        if not (film_path and os.path.isfile(film_path)):
+        written_film = bool(film_path and os.path.isfile(film_path))
+        if not written_film:
             carried = str(directives.get("film") or "")
             film_path = carried if os.path.isfile(carried) else ""
         payload["film"] = film_path
-        if film_path and os.path.isfile(film_path):
+        if written_film:
             payload["film_of"] = state.film_signature
+        film_is_this_cut = written_film or (
+            bool(film_path) and str(payload.get("film_of") or "") == state.film_signature
+        )
+        project_film = film_path if film_is_this_cut else ""
         report += (
             "\n"
             + f"Phases: conditioning {_PHASES['cond']:.1f} s, sampling {_PHASES['sample']:.1f} s, "
@@ -1565,7 +1570,7 @@ class VigH3Cutter:
             )
         )
         project_note = project_folder.export(
-            state, film_path, payload, report, _resolve_media, _copy_current,
+            state, project_film, payload, report, _resolve_media, _copy_current,
             steps=settings.steps,
             filed=len(_FILED_TAKES),
             settings=dict(settings.__dict__),
