@@ -4047,6 +4047,14 @@ The board on screen will be replaced.`,
     if (!String(seg.script || "").trim() && String(logged.script || "").trim()) {
       seg.script = logged.script;
     }
+    seg.prompt_from = {
+      ...model.promptInputs(seg, state.board),
+      script: String(logged.script || ""),
+      ...(logged.style !== undefined ? { style: String(logged.style || "") } : {}),
+      ...(logged.camera !== undefined ? { camera: String(logged.camera || "") } : {}),
+      mode: String(logged.mode || seg.mode || ""),
+      writer_seed_next: model.writerInputs(state.board).writer_seed,
+    };
     if (seg.status === "ready") seg.status = "stale";
     noteAgent(
       seg,
@@ -8164,14 +8172,7 @@ The board on screen will be replaced.`,
     }
   }
   function openingDescriptor(seg) {
-    if (model.carriedRun(seg) > 0) {
-      const index = state.board.segments.indexOf(seg);
-      const before = index > 0 ? state.board.segments[index - 1] : null;
-      return {
-        origin: "run",
-        previous: before ? (before.script || before.name || "").trim() : "",
-      };
-    }
+    if (model.carriedRun(seg) > 0) return { origin: "run" };
     if (!model.MODE_FIRST_FRAME.has(seg.mode)) return { origin: "none" };
     const slot = seg.refs.find(
       (r) => r.kind === "image" && r.source && (r.uid || "").startsWith("first"),
@@ -8537,8 +8538,11 @@ The board on screen will be replaced.`,
   function processTitle(seg) {
     if (pressWrites(seg)) {
       return (String(seg.prompt || "").trim()
-        ? "The script or the writer's seed has changed since this prompt was written, so this " +
-          "writes it again with the agent and then renders on it without stopping."
+        ? (state.board.writer_seed_mode === "random"
+          ? "The writer's seed is on random, so every press writes a new prompt with the " +
+            "agent and then renders on it without stopping."
+          : "The script or the writer's seed has changed since this prompt was written, so this " +
+            "writes it again with the agent and then renders on it without stopping.")
         : "This clip has no prompt yet, so this writes one with the agent and then " +
           "renders on it without stopping.") +
         " Nothing renders if the agent fails or you stop it.";

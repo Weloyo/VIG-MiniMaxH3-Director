@@ -1415,6 +1415,7 @@ export function writerSeedMovedByHand(seg, board) {
 }
 export function writerPressWrites(seg, board) {
   if (!String(seg.prompt || "").trim()) return true;
+  if (board && board.writer_seed_mode === "random") return true;
   const drift = promptDrift(seg, board);
   return drift.includes("script") || drift.includes("writer_seed") || writerSeedMovedByHand(seg, board);
 }

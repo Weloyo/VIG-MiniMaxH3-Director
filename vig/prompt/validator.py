@@ -71,6 +71,36 @@ _D_OPEN_RE = re.compile(r"<d>\s*\[([^\]]+)\]")
 _LABEL_RE = re.compile(r"<(Subject|Picture|Video|Audio)\s+(\d+)>")
 _HEADED_LABEL_RE = re.compile(r"^\s*<(Subject|Picture|Video|Audio)\s+(\d+)>", re.MULTILINE)
 _SENTENCE_SPLIT_RE = re.compile(r"[.!?]+(?:\s|$)|[\u3002\uff01\uff1f]+")
+_FENCE_RE = re.compile(r"^\s*```(?:json|JSON)?\s*\n(.*?)\n\s*```\s*$", re.DOTALL)
+def fields_from_json(prompt) -> tuple[str, bool]:
+    data = prompt
+    if isinstance(prompt, str):
+        text = prompt.strip()
+        fenced = _FENCE_RE.match(text)
+        if fenced:
+            text = fenced.group(1).strip()
+        if not text.startswith("{"):
+            return prompt, False
+        try:
+            import json
+            data = json.loads(text)
+        except ValueError:
+            return prompt, False
+    if not isinstance(data, dict):
+        return prompt, False
+    known = [name for name in spec.REF_FIELDS + spec.BASE_FIELDS if name in data]
+    known = list(dict.fromkeys(known))
+    if len(known) < 2:
+        return prompt, False
+    def text_of(value) -> str:
+        if isinstance(value, (list, tuple)):
+            return "\n".join(text_of(item) for item in value)
+        if isinstance(value, dict):
+            return "\n".join(f"{key}: {text_of(item)}" for key, item in value.items())
+        return str(value if value is not None else "").strip()
+    order = spec.REF_FIELDS if "subject_definitions" in data or "detailed_description" in data else spec.BASE_FIELDS
+    names = [name for name in order if name in data] + [name for name in known if name not in order]
+    return "\n\n".join(f"{name}:\n{text_of(data[name])}" for name in names), True
 def split_fields(prompt: str, mode: str) -> tuple[str | None, dict[str, str]]:
     names = spec.fields_for(mode)
     positions: list[tuple[int, str]] = []
@@ -134,10 +164,14 @@ def validate(
     _check_camera(result, body, main_field)
     _check_dialogue(result, body, main_field, expected_dialogue)
     label_limits = None if available_labels is None else dict(available_labels)
+    declared = _LABEL_RE.findall(bodies.get("subject_definitions", ""))
+    subjects = [int(n) for kind, n in declared if kind == "Subject"]
     if label_limits is not None:
-        declared = _LABEL_RE.findall(bodies.get("subject_definitions", ""))
-        subjects = [int(n) for kind, n in declared if kind == "Subject"]
         label_limits["Subject"] = max(subjects) if subjects else 0
+    elif mode == spec.REF2VA:
+        label_limits = {"Subject": max(subjects) if subjects else 0}
+        _check_labels(result, prompt, label_limits, kinds=("Subject",))
+        label_limits = None
     _check_labels(result, prompt, label_limits)
     _check_sound_fields(result, bodies)
     _check_language(result, bodies)
@@ -513,11 +547,14 @@ def _check_dialogue(
             field=field_name,
         )
 def _check_labels(
-    result: ValidationResult, prompt: str, available: dict[str, int] | None
+    result: ValidationResult, prompt: str, available: dict[str, int] | None,
+    kinds: tuple[str, ...] | None = None,
 ) -> None:
     if available is None:
         return
     for kind, number in {(k, int(n)) for k, n in _LABEL_RE.findall(prompt)}:
+        if kinds is not None and kind not in kinds:
+            continue
         limit = available.get(kind, 0)
         if number < 1 or number > limit:
             source = (

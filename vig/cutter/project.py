@@ -380,6 +380,18 @@ def project_media_path(root: str, path: str) -> str:
     except ValueError:
         return ""
     return full if os.path.isfile(full) else ""
+EXTENSION_MEDIA_DIR = "vig_h3_cutter"
+def extension_media_path(path: str) -> str:
+    path = str(path or "").strip()
+    if not path or not os.path.isabs(path):
+        return ""
+    if os.path.splitext(path)[1].lower() not in PROJECT_MEDIA_EXTS:
+        return ""
+    full = os.path.realpath(path)
+    parts = [part.lower() for part in os.path.normpath(full).split(os.sep)]
+    if EXTENSION_MEDIA_DIR not in parts[:-1]:
+        return ""
+    return full if os.path.isfile(full) else ""
 class ProjectMissing(FileNotFoundError):
     pass
 def require_root(root: str) -> str:

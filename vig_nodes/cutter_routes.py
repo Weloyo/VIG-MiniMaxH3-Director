@@ -28,6 +28,7 @@ FILMS_ROUTE = "/vig/h3/cutter/films"
 ENVELOPES_ROUTE = "/vig/h3/cutter/envelopes"
 FILM_FILE_ROUTE = "/vig/h3/cutter/film_file"
 PROJECT_FILE_ROUTE = "/vig/h3/cutter/project_file"
+MEDIA_FILE_ROUTE = "/vig/h3/cutter/media"
 FILM_JUDGE_ROUTE = "/vig/h3/cutter/film_judge"
 FILMS_PRUNE_ROUTE = "/vig/h3/cutter/films_prune"
 MODELS_ROUTE = "/vig/h3/cutter/llm_models"
@@ -1515,6 +1516,12 @@ def register_routes() -> bool:
         )
         if not found:
             return web.Response(status=404, text="no such project file")
+        return web.FileResponse(found)
+    @routes.get(MEDIA_FILE_ROUTE)
+    async def media_file(request):
+        found = project_folder.extension_media_path(request.query.get("path", ""))
+        if not found:
+            return web.Response(status=404, text="no such file of this extension")
         return web.FileResponse(found)
     @routes.get(TAKE_FILE_ROUTE)
     async def take_file(request):

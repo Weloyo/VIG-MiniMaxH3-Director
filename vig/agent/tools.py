@@ -5,7 +5,7 @@ from typing import Any, Callable
 from .. import guides
 from .. import h3_spec as spec
 from ..llm.prompts import NO_SOFTENING, cast_block
-from ..prompt.validator import ValidationResult, validate
+from ..prompt.validator import ValidationResult, fields_from_json, validate
 from ..styles import library
 from ..styles.schema import DirectorStyle, opening_budget
 from ..timing import Timing, resolve_timing
@@ -357,6 +357,7 @@ class ToolBox:
             )
         return {"accepted": True, "note": note}
 def _prompt_argument(tool: str, value: Any) -> str:
+    value, _ = fields_from_json(value)
     if not isinstance(value, str):
         raise ToolError(
             f"{tool} expects prompt to be a string, got {type(value).__name__}; "

@@ -125,6 +125,16 @@ def camera_from_script(script: str) -> str:
         if any(word in text for word in words):
             return motion
     return ""
+_SCENE_HEADING = re.compile(
+    r"^[ \t>*•\-–—]*\[?\s*(?:сцена|шот|кадр|план|scene|shot)\s*(?:№|#)?\s*(\d{1,2})"
+    r"[ \t]*(?:\]|[:.)\-–—]|$)",
+    re.IGNORECASE | re.MULTILINE,
+)
+def shots_from_script(script: str) -> int:
+    numbers = [int(m.group(1)) for m in _SCENE_HEADING.finditer(str(script or ""))]
+    if len(numbers) < 2 or numbers != list(range(1, len(numbers) + 1)):
+        return 0
+    return len(numbers)
 def is_blocking_source(source) -> bool:
     name = re.split(r"[\\/]", str(source or ""))[-1]
     return bool(re.match(r"blocking", name, re.IGNORECASE)) and name.lower().endswith(".mp4")
@@ -216,7 +226,8 @@ def cite_labels(story: str, bundle: RefBundle) -> tuple[str, list[str]]:
                 "write none, here or in detailed_description -- UNLESS the idea above "
                 "names a colour itself. Then that is the director's own word: write "
                 "exactly those colours, in the definition and in the description, and "
-                "no others. Describe what it DOES."
+                "no others -- and on what the idea puts them: black curls are her HAIR, "
+                "never 'in black'. Describe what it DOES."
             )
         for label in bundle.labels:
             if not ref_sections.is_blocking(label):
@@ -337,7 +348,7 @@ _RU_HUES = (
     ("зелён", "green"), ("зелен", "green"), ("оранжев", "orange"), ("фиолетов", "purple"),
     ("розов", "pink"), ("коричнев", "brown"), ("сер", "grey"), ("серебрист", "silver"),
     ("золотист", "gold"), ("золот", "gold"), ("бирюзов", "turquoise"), ("бордов", "maroon"),
-    ("бежев", "beige"), ("сиренев", "lilac"), ("алый", "scarlet"),
+    ("бежев", "beige"), ("сиренев", "lilac"), ("алый", "scarlet"), ("рыж", "red"),
 )
 _RU_ENDING = r"(?:ый|ий|ой|ая|яя|ое|ее|ые|ие|ого|его|ому|ему|ую|юю|ым|им|ыми|ими|ых|их|ом|ем|ей|о|е)?"
 _RU_TONE = {"тёмн": "dark", "темн": "dark", "светл": "light", "ярк": "bright"}
@@ -353,29 +364,90 @@ def _ru_colour(word: str, table) -> str:
         if re.fullmatch(re.escape(stem) + _RU_ENDING, low):
             return colour
     return ""
-def script_colours(script: str) -> list:
+_RU_FEATURES = (
+    ("волос", "hair"), ("локон", "curls"), ("кудр", "curls"), ("пряд", "strands"),
+    ("кос", "braids"), ("бород", "beard"), ("усам", "moustache"), ("усы", "moustache"),
+    ("бров", "eyebrows"), ("ресниц", "eyelashes"), ("глаз", "eyes"), ("кож", "skin"),
+    ("губ", "lips"), ("шевелюр", "hair"), ("чёлк", "fringe"), ("челк", "fringe"),
+)
+_EN_FEATURES = {
+    "hair": "hair", "curls": "curls", "locks": "locks", "braid": "braid", "braids": "braids",
+    "beard": "beard", "moustache": "moustache", "mustache": "moustache", "eyebrows": "eyebrows",
+    "eyes": "eyes", "skin": "skin", "lips": "lips", "fringe": "fringe", "bangs": "bangs",
+}
+def _feature_of(word: str) -> str:
+    low = word.lower()
+    if low in _EN_FEATURES:
+        return _EN_FEATURES[low]
+    for stem, noun in _RU_FEATURES:
+        if low.startswith(stem) and len(low) - len(stem) <= 4:
+            return noun
+    return ""
+def _script_hues(script: str) -> list:
     words = _WORD.findall(str(script or "").replace("-", " "))
-    found: list = []
+    groups: list = []
     tone = ""
-    for word in words:
+    current: list = []
+    last = -2
+    for i, word in enumerate(words):
         low = word.lower()
         hue = _ru_colour(word, _RU_HUES)
         if not hue and low in _EN_HUES:
             hue = "grey" if low == "gray" else ("gold" if low == "golden" else low)
         if hue:
             colour = f"{tone} {hue}".strip() if tone and not hue.startswith(("light ", "dark ")) else hue
-            if colour not in found:
-                found.append(colour)
             tone = ""
+            if current and i != last + 1:
+                groups.append((current, _feature_after(words, last)))
+                current = []
+            current.append(colour)
+            last = i
             continue
         tone = _ru_colour(word, tuple(_RU_TONE.items())) or (low if low in _EN_TONE else "")
-    return found
+    if current:
+        groups.append((current, _feature_after(words, last)))
+    return groups
+def _feature_after(words: list, index: int) -> str:
+    for ahead in words[index + 1:index + 3]:
+        feature = _feature_of(ahead)
+        if feature:
+            return feature
+    return ""
+def script_colours(script: str) -> list:
+    out: list = []
+    for colours, feature in _script_hues(script):
+        if not feature:
+            out.extend(c for c in colours if c not in out)
+    return out
+def script_features(script: str) -> list:
+    out: list = []
+    for colours, feature in _script_hues(script):
+        phrase = f"{_colour_phrase(colours)} {feature}" if feature else ""
+        if phrase and phrase not in out:
+            out.append(phrase)
+    return out
+_PERSON_RE = re.compile(
+    r"\b(?:girl|woman|man|boy|lady|guy|person|child|kid|teen\w*|brunette|blonde|redhead|"
+    r"commander|soldier|driver|she|he|actor|actress|singer|dancer|character)\b",
+    re.IGNORECASE,
+)
 def _colour_phrase(colours) -> str:
     colours = list(colours)
     if len(colours) <= 1:
         return "".join(colours)
     return ", ".join(colours[:-1]) + " and " + colours[-1]
-def plain_picture_definitions(prompt: str, colours=()) -> tuple:
+_PLACEHOLDER_NOUNS = ("the content carried over", "the subject")
+def picture_nouns(prompt: str) -> dict:
+    plain, _ = plain_picture_definitions(prompt)
+    from ..prompt.validator import split_fields
+    _, bodies = split_fields(plain, spec.REF2VA)
+    nouns = {}
+    for line in bodies.get("subject_definitions", "").splitlines():
+        found = re.match(r"\s*<Subject\s+\d+>\s+is\s+(.*), taken from (<Picture\s+\d+>)\.$", line)
+        if found and found.group(1).strip().lower() not in _PLACEHOLDER_NOUNS:
+            nouns.setdefault(found.group(2), found.group(1).strip())
+    return nouns
+def plain_picture_definitions(prompt: str, colours=(), nouns=None, features=()) -> tuple:
     from ..prompt.validator import split_fields
     _, bodies = split_fields(prompt, spec.REF2VA)
     written = bodies.get("subject_definitions", "")
@@ -393,6 +465,9 @@ def plain_picture_definitions(prompt: str, colours=()) -> tuple:
         if any(re.search(rf"\b{re.escape(c.split()[-1])}\b", lines[i], re.IGNORECASE) for c in colours)
     ]
     owners = set(painted or (drawn if len(drawn) == 1 else []))
+    features = list(features or ())
+    people = [i for i in drawn if _PERSON_RE.search(lines[i])]
+    bearers = set(drawn if len(drawn) == 1 else (people if len(people) == 1 else []))
     for i, line in enumerate(lines):
         head = re.match(r"\s*(<Subject\s+\d+>)\s+is\s+(.*)$", line)
         picture = re.search(r"<Picture\s+\d+>", line)
@@ -409,10 +484,14 @@ def plain_picture_definitions(prompt: str, colours=()) -> tuple:
         noun = re.sub(r"^an\s+(?=[^aeiou\s])", "a ", noun, flags=re.IGNORECASE)
         if not noun or noun.lower() in ("a", "an", "the"):
             noun = "the subject"
+        if noun.lower() in _PLACEHOLDER_NOUNS and (nouns or {}).get(picture.group(0)):
+            noun = nouns[picture.group(0)]
         if colours and i in owners:
             if noun.lower().startswith("the content carried over"):
                 noun = "the subject"
             noun = f"{noun} in {_colour_phrase(colours)}"
+        if features and i in bearers:
+            noun = f"{noun} with {_colour_phrase(features)}"
         plain = f"{head.group(1)} is {noun}, taken from {picture.group(0)}."
         if plain != line.strip():
             lines[i] = plain
@@ -497,8 +576,11 @@ def enforce_reference_sections(prompt: str, bundle, shot_count: int) -> tuple[st
             if text and fields.get(name, "").strip() != text.strip():
                 fields[name] = text
                 changed = True
+        cited = description
+        if fields.get("subject_definitions", "").strip() != written.strip():
+            cited = renumber_citations(description, written, fields.get("subject_definitions", ""))
         promoted = ref_sections.promote_citations(
-            bundle, fields.get("subject_definitions", ""), description
+            bundle, fields.get("subject_definitions", ""), cited
         )
         if promoted != description:
             fields["detailed_description"] = promoted
@@ -532,6 +614,34 @@ def enforce_reference_sections(prompt: str, bundle, shot_count: int) -> tuple[st
         f"WARNING: the rebuilt sections still break the guide ({broke}); "
         f"{why}" if why else
         f"WARNING: the rebuilt sections still break the guide ({broke})"
+    )
+def renumber_citations(description: str, written: str, built: str) -> str:
+    pictures = {}
+    for line in re.split(r"(?=<Subject\s+\d+>)", built or ""):
+        found = re.match(r"<Subject\s+(\d+)>.*?(<Picture\s+\d+>)", line, re.DOTALL)
+        if found:
+            pictures.setdefault(found.group(2), found.group(1))
+    target = {}
+    for chunk in re.split(r"(?=<Subject\s+\d+>)", written or ""):
+        head = re.match(r"<Subject\s+(\d+)>\s+is\s+(.*)", chunk.strip(), re.DOTALL)
+        if not head:
+            continue
+        number, rest = head.group(1), head.group(2)
+        picture = re.search(r"<Picture\s+\d+>", rest)
+        if picture and picture.group(0) in pictures:
+            target[number] = f"<Subject {pictures[picture.group(0)]}>"
+        elif not picture:
+            text = re.sub(r"<[^>]+>", "", rest)
+            cut = _LOOKS_START.search(text)
+            noun = (text[:cut.start()] if cut else text).strip(" ,.;:\n")
+            if noun:
+                target[number] = noun
+    if not target:
+        return description
+    return re.sub(
+        r"<Subject\s+(\d+)>",
+        lambda m: target.get(m.group(1), m.group(0)),
+        description or "",
     )
 def _error_codes(prompt: str, bundle) -> set[str]:
     from ..prompt.validator import validate
@@ -998,16 +1108,27 @@ def _compose(
             "habit."
         )
     max_shots = max(0, min(8, _int_or(segment.get("max_shots"), 0)))
+    by_script = 0 if max_shots else shots_from_script(segment.get("script") or "")
+    max_shots = max_shots or min(8, by_script)
     if max_shots:
         from .. import timing
         capacity = timing.max_shots_for(settings.duration_seconds)
         wanted = min(max_shots, capacity)
         settings.shots_per_clip = wanted
-        standing.append(
-            f"The director set this clip to {wanted} shot(s): write exactly {wanted} "
-            f"[Shot] block(s), no more and no fewer. This outranks the style's own "
-            "editing rhythm."
-        )
+        if by_script:
+            standing.append(
+                f"The director's script is divided into {by_script} numbered scenes "
+                f"(«сцена 1», «сцена 2» ...): write exactly {wanted} [Shot] block(s), "
+                "one per scene, in the script's order, each with its own cut time "
+                "-- never fold a later scene into an earlier shot's camera. This "
+                "outranks the style's own editing rhythm."
+            )
+        else:
+            standing.append(
+                f"The director set this clip to {wanted} shot(s): write exactly {wanted} "
+                f"[Shot] block(s), no more and no fewer. This outranks the style's own "
+                "editing rhythm."
+            )
         if wanted < max_shots:
             standing.append(
                 f"({max_shots} were asked for, but a {settings.duration_seconds:.0f} s "
@@ -1026,18 +1147,14 @@ def _compose(
     opening = segment.get("opening") if isinstance(segment.get("opening"), dict) else {}
     origin = str(opening.get("origin") or "").strip().lower()
     if origin == "run":
-        previous = str(opening.get("previous") or "").strip()[:300]
         standing.append(
             "The clip OPENS IN MID-MOTION: the end of the clip before it is pinned at "
             "the head of this one, so the first instant is that movement still running "
             "-- not a photograph, not an establishing shot and not a new framing. Write "
             "[Shot 1] as the continuation of an action already under way, and reach new "
-            "ground later in the clip through camera or subject motion, or a cut."
-            + (
-                f' The previous clip, as the director put it: "{previous}".'
-                if previous
-                else ""
-            )
+            "ground later in the clip through camera or subject motion, or a cut. Name "
+            "no object, prop or action this clip's own script does not name: the "
+            "pinned frames already show what is there."
         )
     if mode in MODE_FIRST_FRAME:
         opening_ref = _slot_ref("first")
@@ -1193,8 +1310,12 @@ def _compose(
         "model ready — writing" if have_model else "no model — writing on the offline floor",
     )
     sound_fix = (None, "", "")
+    unjsoned = False
     try:
         plan = direct(settings, backend=backend)
+        if plan.clips:
+            from ..prompt.validator import fields_from_json
+            plan.clips[0].prompt, unjsoned = fields_from_json(plan.clips[0].prompt)
         sound_fix = _own_soundscape(
             plan.clips[0].prompt if plan.clips else "", settings, story, mode, backend,
         )
@@ -1208,6 +1329,9 @@ def _compose(
     prompt = plan.clips[0].prompt if plan.clips else ""
     report = "\n".join(note for note in backend_notes if note)
     report = f"{report}\n{plan.report}".strip() if plan.report else report
+    if unjsoned:
+        note = "the model wrote the prompt as a JSON object; it was laid out as H3's fields."
+        report = f"{report}\n{note}".strip() if report else note
     if sound_fix[0]:
         prompt = sound_fix[0]
     if sound_fix[1]:
@@ -1225,8 +1349,12 @@ def _compose(
                 "script, so a definition the model does not write is still the bible's."
             )
             report = f"{report}\n{note}".strip() if report else note
+        written_nouns = picture_nouns(prompt)
         prompt, rebuilt, why = enforce_reference_sections(prompt, settings.refs, 1)
-        prompt, plained = plain_picture_definitions(prompt, script_colours(tagged_script))
+        prompt, plained = plain_picture_definitions(
+            prompt, script_colours(tagged_script), nouns=written_nouns,
+            features=script_features(tagged_script),
+        )
         if plained:
             note = (
                 f"{plained} subject definition(s) drawn from a picture were cut back to what "

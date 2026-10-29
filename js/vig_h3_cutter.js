@@ -320,6 +320,7 @@ function pickAsset(kind) {
   });
 }
 const PROJECT_FILE_ROUTE = "/vig/h3/cutter/project_file";
+const MEDIA_FILE_ROUTE = "/vig/h3/cutter/media";
 function insideFolder(path, root) {
   const norm = (value) => String(value || "").replace(/\\/g, "/").replace(/\/+$/, "").toLowerCase();
   const folder = norm(root);
@@ -336,6 +337,11 @@ function viewUrl(path, projectRoot = "") {
   const clean = String(path).replace(/\\/g, "/");
   const marker = "/vig_h3_cutter/";
   const at = clean.indexOf(marker);
+  if (at >= 0 && /^(?:[A-Za-z]:\/|\/)/.test(clean)) {
+    return api.apiURL(
+      `${MEDIA_FILE_ROUTE}?path=${encodeURIComponent(String(path))}&rand=${Math.random()}`,
+    );
+  }
   if (at >= 0) {
     const tail = clean.slice(at + 1);
     const cut = tail.lastIndexOf("/");
