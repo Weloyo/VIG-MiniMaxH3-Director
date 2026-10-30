@@ -1,0 +1,35 @@
+name: Bug report
+description: Something does not work the way the README says it should.
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you pressed, and what the console did.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+  - type: textarea
+    id: report
+    attributes:
+      label: Run report or error
+      description: The run report under the timeline names what happened to every clip; ComfyUI's error dialog and its console log say the rest. Paste whichever you have.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: As ComfyUI Manager shows it, or the version line of pyproject.toml.
+      placeholder: "1.0.7"
+    validations:
+      required: true
+  - type: input
+    id: setup
+    attributes:
+      label: Your setup
+      description: GPU and VRAM, ComfyUI version, how ComfyUI is installed (portable, Desktop, venv), operating system.

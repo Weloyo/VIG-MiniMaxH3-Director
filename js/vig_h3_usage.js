@@ -1,4 +1,5 @@
 export const USAGE_ROUTE = "/vig/h3/usage";
+export const USAGE_READ_ROUTE = "/vig/h3/usage/read";
 export const FLUSH_MS = 20000;
 export const MAX_LABEL = 40;
 export const OFF_KEY = "vig.h3.usage";
@@ -245,4 +246,50 @@ export function installUsageLog({ post, doc = document, win = window, context } 
   };
   doc.__vigUsageLog = handle;
   return handle;
+}
+export function usageSummary(data, { extension = "", most = 15, never = 15 } = {}) {
+  const rows = Object.entries((data && data.elements) || {}).filter(
+    ([, entry]) => entry && typeof entry === "object",
+  );
+  const whole = (value) => Math.max(0, Math.floor(Number(value) || 0));
+  const now = rows.reduce((late, [, entry]) => {
+    const seen = String(entry.seen || "");
+    return seen > late ? seen : late;
+  }, "");
+  const drawn = (entry) => !now || !entry.seen || String(entry.seen) === now;
+  const byName = (a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0);
+  const pressed = rows
+    .filter(([, entry]) => whole(entry.count) > 0)
+    .sort((a, b) => whole(b[1].count) - whole(a[1].count) || byName(a, b));
+  const idle = rows
+    .filter(([, entry]) => !whole(entry.count) && whole(entry.present) > 0 && drawn(entry))
+    .sort((a, b) => whole(b[1].present) - whole(a[1].present) || byName(a, b));
+  const presses = pressed.reduce((sum, [, entry]) => sum + whole(entry.count), 0);
+  const sessions = rows.reduce((top, [, entry]) => Math.max(top, whole(entry.sessions)), 0);
+  const since = rows.map(([, entry]) => String(entry.first || "").slice(0, 10)).filter(Boolean).sort()[0];
+  const number = (value) => value.toLocaleString("en-US");
+  const lines = [`VIG MiniMax H3 Director usage summary${extension ? `, version ${extension}` : ""}`];
+  lines.push("Control names and press counts only.");
+  if (!pressed.length && !idle.length) {
+    lines.push("", "Nothing recorded yet.");
+    return lines.join("\n") + "\n";
+  }
+  let total = `${number(presses)} presses on ${number(pressed.length)} controls`;
+  if (sessions) total += `, in ${number(sessions)}+ sessions`;
+  if (since) total += `, since ${since}`;
+  lines.push(total + ".");
+  if (pressed.length) {
+    const shown = pressed.slice(0, most);
+    const width = number(whole(shown[0][1].count)).length;
+    lines.push("", "Most pressed:");
+    for (const [name, entry] of shown) lines.push(`  ${number(whole(entry.count)).padStart(width)}  ${name}`);
+    if (pressed.length > shown.length) lines.push(`  ...and ${number(pressed.length - shown.length)} more`);
+  }
+  if (idle.length) {
+    const shown = idle.slice(0, never);
+    lines.push("", "On screen, never pressed:");
+    for (const [name, entry] of shown) lines.push(`  ${name} (on screen ${number(whole(entry.present))}x)`);
+    if (idle.length > shown.length) lines.push(`  ...and ${number(idle.length - shown.length)} more`);
+  }
+  return lines.join("\n") + "\n";
 }

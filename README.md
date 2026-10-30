@@ -13,6 +13,7 @@ clip and only that clip renders again.
 ![The H3 Cutter console](docs/images/console.png)
 
 If it saves you time, you can support its development on **[Ko-fi](https://ko-fi.com/vigpay)**.
+Something missing, or in your way? **[Say so in Discussions](https://github.com/Weloyo/VIG-MiniMaxH3-Director/discussions/new?category=general)** or in the **[Telegram group](https://t.me/vigh3director)** — a sentence is enough.
 
 ---
 
@@ -33,6 +34,7 @@ If it saves you time, you can support its development on **[Ko-fi](https://ko-fi
 - [Example workflows](#example-workflows)
 - [How long a render takes](#how-long-a-render-takes)
 - [Troubleshooting](#troubleshooting)
+- [Feedback](#feedback)
 - [Support](#support)
 - [License and credits](#license-and-credits)
 
@@ -267,7 +269,8 @@ workshop for the selected clip.
 ### Header
 
 **New project** and **Open project**, the project folder and its size (click
-the name to open it in Explorer). On the right: **♥** support, the **colour
+the name to open it in Explorer). On the right: **♥** support, the **speech
+bubble** for [feedback](#feedback) and bug reports, the **colour
 scheme** (six themes, light included), the **gear** with the machine settings
 — the writing model and its folder, temperature, the live preview's resolution
 and decoder, and the **prompt language** H3 is given (English by default;
@@ -592,6 +595,22 @@ much as anything: close GPU-hungry programs before long renders.
 The console keeps a run report for every render — open it under the timeline;
 it names what happened to every clip and why.
 
+## Feedback
+
+What works for you, what gets in the way, what you would change: tell me in
+**[Discussions](https://github.com/Weloyo/VIG-MiniMaxH3-Director/discussions/new?category=general)**,
+or, without a GitHub account, in the
+**[Telegram group](https://t.me/vigh3director)**. A sentence is enough. Bugs go
+to **[Issues](https://github.com/Weloyo/VIG-MiniMaxH3-Director/issues/new/choose)**,
+with the run report if you have one.
+
+The **speech bubble** in the console's header opens all three. Its **Copy usage
+summary** puts on your clipboard which of the console's controls you press and
+how often — the controls' names and the counts, never your scripts, prompts,
+pictures or file names. Nothing is sent anywhere by itself: paste it into a
+discussion or the group if you are willing. It is the most direct way to say which parts of
+the console earn their place and which are only in the way.
+
 ## Support
 
 This extension is built and maintained by one person. If it is useful to you,
@@ -600,7 +619,9 @@ through PayPal, or a card through PayPal where your country allows it. The ♥ i
 the console's header opens the same page. Direct PayPal works too:
 [paypal.me/vigpay](https://paypal.me/vigpay).
 
-Issues and ideas: [github.com/Weloyo/VIG-MiniMaxH3-Director/issues](https://github.com/Weloyo/VIG-MiniMaxH3-Director/issues).
+Ideas and opinions: [Discussions](https://github.com/Weloyo/VIG-MiniMaxH3-Director/discussions)
+or [Telegram](https://t.me/vigh3director);
+bugs: [Issues](https://github.com/Weloyo/VIG-MiniMaxH3-Director/issues).
 The code here is a release build; development happens in a separate repository,
 so a pull request is ported there by hand.
 

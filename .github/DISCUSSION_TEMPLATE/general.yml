@@ -1,0 +1,30 @@
+title: "Feedback: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking a minute. Short answers are fine: one sentence about what got in your way is worth more than a polished review.
+  - type: textarea
+    id: works
+    attributes:
+      label: What works for you
+      description: The parts you reach for, and what you make with them.
+  - type: textarea
+    id: in-the-way
+    attributes:
+      label: What gets in the way
+      description: Anything confusing, slow, missing or broken. A bug you can reproduce is better as an issue, so it is not lost in a thread.
+    validations:
+      required: true
+  - type: textarea
+    id: usage
+    attributes:
+      label: Usage summary (optional)
+      description: In the console, press the speech bubble in the header, then "Copy usage summary", and paste it here. It holds the names of the console's controls and how often you pressed them, nothing else.
+      render: text
+  - type: input
+    id: setup
+    attributes:
+      label: Your setup (optional)
+      description: GPU and VRAM, ComfyUI version.
+      placeholder: RTX 4070 12 GB, ComfyUI 0.33.2

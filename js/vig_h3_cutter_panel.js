@@ -12,8 +12,15 @@ import { openTakesGallery, ensureTakesStyles } from "./vig_h3_cutter_takes.js";
 import { openFilmsGallery } from "./vig_h3_cutter_films.js";
 import { openReferenceEditor, refEditKey } from "./vig_h3_cutter_refedit.js";
 import { openBlockingEditor } from "./vig_h3_blocking.js";
+import { USAGE_READ_ROUTE, usageSummary } from "./vig_h3_usage.js";
 const STYLE_ID = "vig-h3-cutter-styles";
 const SUPPORT_URL = "https://ko-fi.com/vigpay";
+const REPO_URL = "https://github.com/Weloyo/VIG-MiniMaxH3-Director";
+const FEEDBACK_DISCUSSION_URL = `${REPO_URL}/discussions/new?category=general`;
+const FEEDBACK_BUG_URL = `${REPO_URL}/issues/new?template=bug_report.yml`;
+const FEEDBACK_TELEGRAM_URL = "https://t.me/vigh3director";
+const FEEDBACK_KEY = "vig.h3.feedback";
+const FEEDBACK_ASK_AFTER = 5;
 const CSS = `
 .vig-cutter {
   --cut-ctl: 28px;
@@ -689,6 +696,29 @@ const CSS = `
 .vig-cutter-checkline > input { margin: 0; accent-color: var(--cut-accent); }
 .vig-cutter-heart { color: #e5484d; }
 .vig-cutter-heart svg { fill: currentColor; }
+.vig-cutter-headbtn.vig-cutter-ask { position: relative; }
+.vig-cutter-headbtn.vig-cutter-ask::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cut-accent);
+  box-shadow: 0 0 0 2px var(--cut-bg);
+}
+.vig-cutter-popover .pop-summary {
+  width: 300px;
+  height: 160px;
+  resize: none;
+  font-family: inherit;
+  font-size: 10px;
+  color: var(--cut-text);
+  background: var(--cut-input);
+  border: 1px solid var(--cut-border);
+  border-radius: 4px;
+}
 .vig-cutter-schemerow {
   display: flex;
   align-items: center;
@@ -2268,6 +2298,43 @@ function tryCapture(element, pointerId) {
   } catch {
   }
 }
+function readFeedbackNote() {
+  const note = { loads: 0, opened: false };
+  try {
+    const kept = JSON.parse(window.localStorage.getItem(FEEDBACK_KEY) || "{}");
+    note.loads = Math.max(0, Math.floor(Number(kept.loads) || 0));
+    note.opened = kept.opened === true;
+  } catch {
+  }
+  return note;
+}
+function writeFeedbackNote(note) {
+  try {
+    window.localStorage.setItem(FEEDBACK_KEY, JSON.stringify(note));
+  } catch {
+  }
+}
+async function toClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+  }
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0";
+  document.body.appendChild(area);
+  area.select();
+  let copied = false;
+  try {
+    copied = document.execCommand("copy");
+  } catch {
+    copied = false;
+  }
+  area.remove();
+  return copied;
+}
 const STRIP_ROUTE = "/vig/h3/cutter/strip";
 const TAKE_ADOPT_ROUTE = "/vig/h3/cutter/take_adopt";
 const REVEAL_ROUTE = "/vig/h3/cutter/reveal";
@@ -2496,7 +2563,19 @@ export function buildCutterPanel(options = {}) {
   const support = headButton(ICONS.heart, "Support development — Ko-fi (opens in a new tab)", "support");
   support.classList.add("vig-cutter-heart");
   support.addEventListener("click", () => window.open(SUPPORT_URL, "_blank", "noopener"));
-  headRight.append(support, schemeButton, settingsButton, refresh, collapse);
+  const feedback = headButton(
+    ICONS.chat,
+    "Feedback — what works for you, what gets in the way; or report a bug",
+    "feedback",
+  );
+  feedback.addEventListener("click", () => openFeedback());
+  const feedbackNote = readFeedbackNote();
+  if (!feedbackNote.opened) {
+    feedbackNote.loads += 1;
+    writeFeedbackNote(feedbackNote);
+    if (feedbackNote.loads >= FEEDBACK_ASK_AFTER) feedback.classList.add("vig-cutter-ask");
+  }
+  headRight.append(support, feedback, schemeButton, settingsButton, refresh, collapse);
   paintScheme();
   head.append(heading, headProject, el("div", "vig-cutter-spring"), headRight);
   const cutterBox = el("div", "vig-cutter-cardbox cutter");
@@ -2604,6 +2683,58 @@ export function buildCutterPanel(options = {}) {
   };
   parts.paintRenderLang();
   settingsBox.append(agentGroup.wrap, previewGroup.wrap, takesGroup.wrap, renderLangGroup.wrap);
+  function openFeedback() {
+    feedback.classList.remove("vig-cutter-ask");
+    writeFeedbackNote({ ...readFeedbackNote(), opened: true });
+    openPopover(feedback, "feedback", (close) => {
+      const go = (text, title, url, log) => {
+        const row = el("button", "", text);
+        row.title = title;
+        row.dataset.log = log;
+        row.addEventListener("click", () => {
+          window.open(url, "_blank", "noopener");
+          close();
+        });
+        return row;
+      };
+      const copy = el("button", "", "Copy usage summary");
+      copy.title =
+        "Which of the console's controls you press and how often, for pasting into a discussion or the Telegram group";
+      copy.dataset.log = "copy usage summary";
+      copy.addEventListener("click", async () => {
+        copy.textContent = "Reading the tally…";
+        let data = null;
+        try {
+          data = await options.callRoute(USAGE_READ_ROUTE, {});
+        } catch (error) {
+          copy.textContent = `Could not read the tally: ${error.message || error}`;
+          return;
+        }
+        const text = usageSummary(data, { extension: data.extension || "" });
+        if (await toClipboard(text)) {
+          copy.textContent = "Copied — paste it into your message";
+          return;
+        }
+        copy.textContent = "Select it and copy it by hand:";
+        const box = el("textarea", "pop-summary");
+        box.readOnly = true;
+        box.value = text;
+        copy.after(box);
+        box.select();
+      });
+      return [
+        go("What works, and what gets in the way", "A discussion on GitHub — a sentence is enough",
+          FEEDBACK_DISCUSSION_URL, "feedback discussion"),
+        go("Telegram group", "VIG H3 Director feedback on Telegram — a quick word, no GitHub account needed",
+          FEEDBACK_TELEGRAM_URL, "telegram group"),
+        copy,
+        el("div", "pop-rule"),
+        go("Report a bug", "The bug form on GitHub — please paste the run report", FEEDBACK_BUG_URL, "report a bug"),
+      ];
+    }, "The usage summary is the names of the console's controls and how often you pressed each " +
+      "— nothing you wrote, picked or rendered. It goes to your clipboard and nowhere else.",
+    null, { below: true });
+  }
   function openSettings() {
     if (state.settingsOpen) {
       state.settingsOpen();

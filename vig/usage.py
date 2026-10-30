@@ -206,4 +206,14 @@ def handle_usage_journal(payload: Any = None) -> tuple[int, dict]:
         limit = 0
     return 200, {"ok": True, **read_journal(str(payload.get("day") or ""), limit)}
 def handle_usage_read(_payload: Any = None) -> tuple[int, dict]:
-    return 200, {"ok": True, "path": str(store_path()), **read()}
+    return 200, {"ok": True, "path": str(store_path()), "extension": extension_version(), **read()}
+def extension_version() -> str:
+    try:
+        text = (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8")
+    except OSError:
+        return ""
+    for line in text.splitlines():
+        key, _, value = line.partition("=")
+        if key.strip() == "version":
+            return value.strip().strip('"')
+    return ""

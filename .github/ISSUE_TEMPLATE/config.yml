@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Feedback and ideas
+    url: https://github.com/Weloyo/VIG-MiniMaxH3-Director/discussions/new?category=general
+    about: What works for you, what gets in the way, what you would change.
+  - name: Questions
+    url: https://github.com/Weloyo/VIG-MiniMaxH3-Director/discussions/categories/q-a
+    about: How do I ...? Ask here, and the answer stays where the next person can find it.
+  - name: Telegram group
+    url: https://t.me/vigh3director
+    about: A quick word in a chat, with no GitHub account needed.

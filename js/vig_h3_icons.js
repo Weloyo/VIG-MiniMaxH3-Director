@@ -50,6 +50,8 @@ export const ICONS = {
   upload: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path>',
   play: '<path d="M8 5v14l11-7z"></path>',
   heart: '<path d="M12 20.5s-7.5-4.6-7.5-10.1A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 7.5 2.8c0 5.5-7.5 10.1-7.5 10.1z"></path>',
+  chat: '<path d="M4 4.5h16a1.5 1.5 0 011.5 1.5v10a1.5 1.5 0 01-1.5 1.5H9.5L5 21v-3.5H4A1.5 1.5 0 012.5 16V6A1.5 1.5 0 014 4.5z"></path>' +
+    '<path d="M7.5 9.5h9M7.5 13h6"></path>',
   playall: '<path d="M3 5v14l9-7z"></path><path d="M12 5v14l9-7z"></path>',
   stop: '<rect x="6" y="6" width="12" height="12" rx="1.5"></rect>',
   locked: '<rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path>',
